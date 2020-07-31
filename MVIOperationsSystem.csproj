@@ -67,7 +67,11 @@
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
+    <Reference Include="Syncfusion.SfInput.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.SfShared.Wpf, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.SfTextInputLayout.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.Shared.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.Tools.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -96,6 +100,7 @@
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Security" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -118,12 +123,20 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataServices\DataRequest.cs" />
+    <Compile Include="Messages\PasswordMessage.cs" />
+    <Compile Include="Models\DataRequestObjects\Class1.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Menus\AuthMenu.xaml.cs">
       <DependentUpon>AuthMenu.xaml</DependentUpon>
     </Compile>
@@ -132,6 +145,7 @@
     </Compile>
     <Compile Include="Data\LocalStorageContext.cs" />
     <Compile Include="Data\MVIOperationsModel.cs" />
+    <Compile Include="Messages\SignInMessage.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeDto.cs" />
@@ -139,7 +153,7 @@
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\LocalStorage.cs" />
-    <Compile Include="Models\LoginRequest.cs" />
+    <Compile Include="Models\DataRequestObjects\LoginRequest.cs" />
     <Compile Include="Models\PaymentType.cs" />
     <Compile Include="Models\Race.cs" />
     <Compile Include="Models\Region.cs" />
@@ -148,8 +162,14 @@
     <Compile Include="Models\SalesItem.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\Store.cs" />
+    <Compile Include="ViewModels\AuthMenuViewModel.cs" />
+    <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Page Include="Views\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Menus\AuthMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -200,10 +220,120 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
-    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="patrol.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xamlware\Xamlware.csproj">
+      <Project>{f3b5c1cd-3f56-4632-9085-2d972c274564}</Project>
+      <Name>Xamlware</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AddSighting.png" />
+    <Resource Include="Resources\Cancel16x16.png" />
+    <Resource Include="Resources\Cancel24x24.png" />
+    <Resource Include="Resources\Cancel32x32.png" />
+    <Resource Include="Resources\Class.png" />
+    <Resource Include="Resources\DeleteSighting.png" />
+    <Resource Include="Resources\Domain.png" />
+    <Resource Include="Resources\Family.png" />
+    <Resource Include="Resources\FilterList.png" />
+    <Resource Include="Resources\Find12x12.png" />
+    <Resource Include="Resources\Find16x16.png" />
+    <Resource Include="Resources\Find24x24.png" />
+    <Resource Include="Resources\Find32x32.png" />
+    <Resource Include="Resources\FindNext12x12.png" />
+    <Resource Include="Resources\FindNext16x16.png" />
+    <Resource Include="Resources\FindNext24x24.png" />
+    <Resource Include="Resources\FindNext32x32.png" />
+    <Resource Include="Resources\fSearch32x32.png" />
+    <Resource Include="Resources\GearExecute12x12.png" />
+    <Resource Include="Resources\GearExecute16x16.png" />
+    <Resource Include="Resources\GearExecute24x24.png" />
+    <Resource Include="Resources\GearExecute32x32.png" />
+    <Resource Include="Resources\GearExecute48x48.png" />
+    <Resource Include="Resources\Genus.png" />
+    <Resource Include="Resources\GreenLight.png" />
+    <Resource Include="Resources\GridItemAdd16x16.png" />
+    <Resource Include="Resources\GridItemEdit16x16.png" />
+    <Resource Include="Resources\GridItemRemove16x16.png" />
+    <Resource Include="Resources\Help16x16.png" />
+    <Resource Include="Resources\Help24x24.png" />
+    <Resource Include="Resources\Help32x32.png" />
+    <Resource Include="Resources\ImportDataToGrid32x32.png" />
+    <Resource Include="Resources\ItemAdd16x16.png" />
+    <Resource Include="Resources\ItemAdd24x24.png" />
+    <Resource Include="Resources\ItemAdd32x32.png" />
+    <Resource Include="Resources\ItemAddChild32x32.png" />
+    <Resource Include="Resources\ItemAddSibling32x32.png" />
+    <Resource Include="Resources\ItemEdit16x16.png" />
+    <Resource Include="Resources\ItemEdit24x24.png" />
+    <Resource Include="Resources\ItemEdit32x32.png" />
+    <Resource Include="Resources\ItemRemove16x16.png" />
+    <Resource Include="Resources\ItemRemove24x24.png" />
+    <Resource Include="Resources\ItemRemove32x32.png" />
+    <Resource Include="Resources\Kingdom.png" />
+    <Resource Include="Resources\MoveDown.png" />
+    <Resource Include="Resources\MoveDown12x12.png" />
+    <Resource Include="Resources\MoveDown16x16.png" />
+    <Resource Include="Resources\MoveDown24x24.png" />
+    <Resource Include="Resources\MoveDown32x32.png" />
+    <Resource Include="Resources\MoveLeft16x16.png" />
+    <Resource Include="Resources\MoveRight16x16.png" />
+    <Resource Include="Resources\MoveUp.png" />
+    <Resource Include="Resources\MoveUp12x12.png" />
+    <Resource Include="Resources\MoveUp16x16.png" />
+    <Resource Include="Resources\MoveUp24x24.png" />
+    <Resource Include="Resources\MoveUp32x32.png" />
+    <Resource Include="Resources\NavFirst16x16.png" />
+    <Resource Include="Resources\NavLast16x16.png" />
+    <Resource Include="Resources\NavNext16x16.png" />
+    <Resource Include="Resources\NavPrev16x16.png" />
+    <Resource Include="Resources\nextrec.gif" />
+    <Resource Include="Resources\NotAllowedRed12x12.png" />
+    <Resource Include="Resources\NotAllowedRed16x16.png" />
+    <Resource Include="Resources\NotAllowedRed24x24.png" />
+    <Resource Include="Resources\NotAllowedRed32x32.png" />
+    <Resource Include="Resources\OK12x12.png" />
+    <Resource Include="Resources\OK16x16.png" />
+    <Resource Include="Resources\OK24x24.png" />
+    <Resource Include="Resources\OK32x32.png" />
+    <Resource Include="Resources\Order.png" />
+    <Resource Include="Resources\Phylum.png" />
+    <Resource Include="Resources\RedLight.png" />
+    <Resource Include="Resources\Refresh12x12.png" />
+    <Resource Include="Resources\Refresh16x16.png" />
+    <Resource Include="Resources\Refresh24x24.png" />
+    <Resource Include="Resources\Remove12x12.png" />
+    <Resource Include="Resources\Remove16x16.png" />
+    <Resource Include="Resources\Remove24x24.png" />
+    <Resource Include="Resources\Remove32x32.png" />
+    <Resource Include="Resources\Report24x24.png" />
+    <Resource Include="Resources\Save16x16.png" />
+    <Resource Include="Resources\Save24x24.png" />
+    <Resource Include="Resources\Save32x32.png" />
+    <Resource Include="Resources\Search16x16.png" />
+    <Resource Include="Resources\Search24x24.png" />
+    <Resource Include="Resources\Search32x32.png" />
+    <Resource Include="Resources\Species.png" />
+    <Resource Include="Resources\Subspecies.png" />
+    <Resource Include="Resources\Synchronize12x12.png" />
+    <Resource Include="Resources\Synchronize16x16.png" />
+    <Resource Include="Resources\Synchronize24x24.png" />
+    <Resource Include="Resources\Synchronize32x32.png" />
+    <Resource Include="Resources\TreeViewFind16x16.png" />
+    <Resource Include="Resources\TreeViewFind24x24.png" />
+    <Resource Include="Resources\TreeViewFind32x32.png" />
+    <Resource Include="Resources\Undo16x16.png" />
+    <Resource Include="Resources\Undo24x24.png" />
+    <Resource Include="Resources\Undo32x32.png" />
+    <Resource Include="Resources\Warning12x12.png" />
+    <Resource Include="Resources\Warning16x16.png" />
+    <Resource Include="Resources\Warning24x24.png" />
+    <Resource Include="Resources\Warning32x32.png" />
+    <Resource Include="Resources\World.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -6,14 +6,22 @@
              xmlns:local="clr-namespace:MVIOperationsSystem.Controls.Menus"
              xmlns:sf="http://schemas.syncfusion.com/wpf"  
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions >
+             d:DesignHeight="25" d:DesignWidth="800"
+             DataContext="{Binding AuthMenuViewModel, Source={StaticResource Locator}}">
+    
+
+    <Grid Background="Black" >
+        <!--<Grid.RowDefinitions >
             <RowDefinition Height="25" ></RowDefinition>
         </Grid.RowDefinitions>
-        <sf:MenuAdv Background="Black" Foreground="White">
-            <sf:MenuItemAdv Header="File" Command="{Binding FileCommand}" Background="Black" Foreground="White"/>
-            <sf:MenuItemAdv Header="Edit" Background="Black" Foreground="White"/>
-        </sf:MenuAdv>  
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <sf:MenuAdv Grid.Row="0" Grid.Column="0" Background="Black" Foreground="White">
+            <sf:MenuItemAdv Header="Sign In" Command="{Binding LoginCommand, Mode=TwoWay}" Background="Black" Foreground="White"/>
+            <sf:MenuItemAdv Header="Sign Out" Background="Black" Foreground="White"/>
+        </sf:MenuAdv>-->
     </Grid>
 </UserControl>

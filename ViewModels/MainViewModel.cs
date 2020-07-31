@@ -1,5 +1,8 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using MVIOperationsSystem.Controls;
+using MVIOperationsSystem.Messages;
 using System;
 
 namespace MVIOperationsSystem.ViewModels
@@ -9,44 +12,56 @@ namespace MVIOperationsSystem.ViewModels
     {
 
         #region Commands
-        public RelayCommand TestCommand { get; private set; }
-       
+        public RelayCommand LoginCommand { get; private set; }
+
         #endregion
 
-        private string _visibility="Hidden";
+        public const string LabelTextProperty = "LabelText";
+        private string _labelText;
 
         #region Properties
-        public string Visibility
+        public string LabelText
         {
-            get { return  _visibility; }
+            get { return _labelText; }
 
             set
-            {  
-                _visibility = value;
-                this.RaisePropertyChanged(Visibility);
+            {
+                _labelText = value;
+                this.RaisePropertyChanged(LabelTextProperty);
             }
         }
+
         #endregion
 
         public MainViewModel()
         {
-            this.TestCommand = new RelayCommand(this.ExecuteTestCommand, CanExecuteTestCommand);
-
+            this.LabelText = "Sign In";
+            this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, CanExecuteLoginCommand);
         }
 
-        #region Execute/CanExecute
+		#region Execute/CanExecute
 
-        private bool CanExecuteTestCommand()
+		private bool CanExecuteLoginCommand()
         {
-            return true; ;
+            return true;
         }
 
-        private void ExecuteTestCommand()
+        private void ExecuteLoginCommand()
         {
-            //this.SelectedTabItem = this.
+            if (this.LabelText == "Sign In")
+            {
+                this.LabelText = "Sign Out";
+                Messenger.Default.Send(new SignInMessage { Action = "Sign In" });
+            }
+            else
+            {
+                this.LabelText = "Sign In";
+                Messenger.Default.Send(new SignInMessage { Action = "Sign Out" });
+            };
+
+
+            #endregion
+
         }
-
-        #endregion
-
     }
 }

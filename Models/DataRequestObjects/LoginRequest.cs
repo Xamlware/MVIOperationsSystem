@@ -12,5 +12,8 @@ namespace MVIOperations.Models
         public string Password { get; set; }
 
         public string Token { get; set; }
+
+        public string Status { get; set; }
+        public string Message { get; set; }
     }
 }
