@@ -14,6 +14,7 @@
 
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using MVIOperationsSystem.Services;
 
 namespace MVIOperationsSystem.ViewModels
 {
@@ -31,6 +32,9 @@ namespace MVIOperationsSystem.ViewModels
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
+
+            SimpleIoc.Default.Register<ILoginDataService, LoginDataService>();
+
         }
 
         public MainViewModel MainViewModel

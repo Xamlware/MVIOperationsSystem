@@ -3,86 +3,92 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
 using MVIOperationsSystem.Messages;
+using MVIOperationsSystem.Services;
 
 namespace MVIOperationsSystem.ViewModels
 {
 	public class LoginViewModel : ViewModelBase
 	{
+		private readonly ILoginDataService _dataService;
 
 		#region Commands
 
-                # region LoginCommand
-                public RelayCommand LoginCommand { get; private set; }
+		#region LoginCommand
+		public RelayCommand LoginCommand { get; private set; }
 
-		        private bool CanExecuteLoginCommand()
-                {
-                    return true;
-                }
+		private bool CanExecuteLoginCommand()
+		{
+			return true;
+		}
 
-                private void ExecuteLoginCommand()
-                {
-                    var loginRequest = new LoginRequest { Username = this.Username, Password = this.Password, Token = "" };
-                }
-            #endregion
+		private void ExecuteLoginCommand()
+		{
 
-            #region LoginCancelCommand
+			var loginRequest = new LoginRequest { Username = this.Username, Password = this.Password, Token = "" };
+			_dataService.Login(loginRequest);
+		}
+		#endregion
 
-                public RelayCommand LoginCancelCommand { get; private set; }
+		#region LoginCancelCommand
 
-                private bool CanExecuteLoginCancelCommand()
-                {
-                    return true;
-                }
+		public RelayCommand LoginCancelCommand { get; private set; }
 
-                private void ExecuteLoginCancelCommand()
-                {
-                }
+		private bool CanExecuteLoginCancelCommand()
+		{
+			return true;
+		}
+
+		private void ExecuteLoginCancelCommand()
+		{
+		}
 		#endregion
 		#endregion
 
 		#region Properties
 
 		private string _password;
-		public string Password		
-        {
-			get 
-            { 
-                return _password; 
-            }
-			set {
-                _password = value; 
-            }
+		public string Password
+		{
+			get
+			{
+				return _password;
+			}
+			set
+			{
+				_password = value;
+			}
 		}
 
-        private string _username;
-        public string Username
-        {
-            get
-            {
-                return _username;
-            }
-            set
-            {
-                _username = value;
-            }
-        }
+		private string _username;
+		public string Username
+		{
+			get
+			{
+				return _username;
+			}
+			set
+			{
+				_username = value;
+			}
+		}
 
-        #endregion
+		#endregion
 
 
 
-        public LoginViewModel()
-        {
-            Messenger.Default.Register<PasswordMessage>(this, HandlePasswordMessage);
-            this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, this.CanExecuteLoginCommand);
-        }
+		public LoginViewModel(ILoginDataService dataService)
+		{
+			_dataService = dataService;
+			Messenger.Default.Register<PasswordMessage>(this, HandlePasswordMessage);
+			this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, this.CanExecuteLoginCommand);
+		}
 
-        private void HandlePasswordMessage(PasswordMessage msg)
-        {
-            this.Password = msg.Password;
-        }
-        //this.LoginCommand = new RelayCommand<LoginRequest>(this.CanExecuteLoginCommand);
-        //this.LoginCancelCommand = new RelayCommand(this.ExecuteLoginCancelCommand, CanExecuteLoginCancelCommand);
+		private void HandlePasswordMessage(PasswordMessage msg)
+		{
+			this.Password = msg.Password;
+		}
+		//this.LoginCommand = new RelayCommand<LoginRequest>(this.CanExecuteLoginCommand);
+		//this.LoginCancelCommand = new RelayCommand(this.ExecuteLoginCancelCommand, CanExecuteLoginCancelCommand);
 
-    }
+	}
 }

@@ -133,6 +133,9 @@
     <Compile Include="DataServices\DataRequest.cs" />
     <Compile Include="Messages\PasswordMessage.cs" />
     <Compile Include="Models\DataRequestObjects\Class1.cs" />
+    <Compile Include="Services\HttpRequest.cs" />
+    <Compile Include="Services\ILoginDataServe.cs" />
+    <Compile Include="Services\LoginDataService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
