@@ -134,11 +134,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataServices\DataRequest.cs" />
+    <Compile Include="DataServices\LocalStorageService.cs" />
     <Compile Include="HttpRequestMethods.cs" />
     <Compile Include="Messages\PasswordMessage.cs" />
     <Compile Include="Migrations\LocalStorage\202008031849372_InitialCommit.cs" />
     <Compile Include="Migrations\LocalStorage\202008031849372_InitialCommit.designer.cs">
       <DependentUpon>202008031849372_InitialCommit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\LocalStorage\202008031927117_changes.cs" />
+    <Compile Include="Migrations\LocalStorage\202008031927117_changes.designer.cs">
+      <DependentUpon>202008031927117_changes.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\LocalStorage\LsConfiguration.cs" />
     <Compile Include="Models\DataRequestObjects\Class1.cs" />
@@ -219,6 +224,9 @@
     </Compile>
     <EmbeddedResource Include="Migrations\LocalStorage\202008031849372_InitialCommit.resx">
       <DependentUpon>202008031849372_InitialCommit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\LocalStorage\202008031927117_changes.resx">
+      <DependentUpon>202008031927117_changes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

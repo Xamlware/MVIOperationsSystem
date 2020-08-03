@@ -2,6 +2,8 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
+using MVIOperationsSystem.Data;
+using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Services;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +14,7 @@ namespace MVIOperationsSystem.ViewModels
 	public class LoginViewModel : ViewModelBase
 	{
 		private readonly ILoginDataService _dataService;
-
+		private readonly LocalStorageService _ls = new LocalStorageService();
 		#region Commands
 
 		#region LoginCommand
@@ -35,9 +37,18 @@ namespace MVIOperationsSystem.ViewModels
 				{
 					// display error
 				}
-
-				//write data to local storage
+				else
+				{
+					//write data to local storage
+					var result = _ls.WriteValue("token", lr.Token);
+					if (result == "OK")
+					{ 
+						
+					}
+				}
 			}
+
+
 
 		}
 		#endregion
