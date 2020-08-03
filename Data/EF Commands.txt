@@ -1,0 +1,5 @@
+﻿Enable-Migrations -MigrationsDirectory "Migrations\LocalStorage" -ContextTypeName MVIOperationsSystem.Data.LocalStorageContext
+
+Add-Migration -ConfigurationTypeName LsConfiguration
+
+Update-Database -ConfigurationTypeName LsConfiguration

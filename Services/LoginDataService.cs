@@ -1,4 +1,5 @@
 ﻿using MVIOperations.Models;
+using MVIOperationsSystem.DataServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,11 @@ namespace MVIOperationsSystem.Services
 {
 	public class LoginDataService : ILoginDataService
 	{
-		public LoginRequest Login(LoginRequest lr)
+		public async Task<LoginRequest> Login(LoginRequest lr)
 		{
-			return null;
+			var loginRequest = await DataRequest.Login(lr);
+
+			return loginRequest;			
 		}
 	}
 }

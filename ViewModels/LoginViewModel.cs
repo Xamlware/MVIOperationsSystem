@@ -4,6 +4,8 @@ using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Services;
+using System.ComponentModel.DataAnnotations;
+using Xamlware.Framework.Extensions;
 
 namespace MVIOperationsSystem.ViewModels
 {
@@ -21,11 +23,22 @@ namespace MVIOperationsSystem.ViewModels
 			return true;
 		}
 
-		private void ExecuteLoginCommand()
+		private async void ExecuteLoginCommand()
 		{
 
 			var loginRequest = new LoginRequest { Username = this.Username, Password = this.Password, Token = "" };
-			_dataService.Login(loginRequest);
+			var lr = await _dataService.Login(loginRequest);
+
+			if (lr != null)
+			{
+				if (lr.Status.IsNotNullOrEmpty())
+				{
+					// display error
+				}
+
+				//write data to local storage
+			}
+
 		}
 		#endregion
 
