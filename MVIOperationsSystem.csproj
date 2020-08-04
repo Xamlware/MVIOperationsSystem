@@ -249,12 +249,6 @@
     <Resource Include="patrol.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Xamlware\Xamlware.csproj">
-      <Project>{f3b5c1cd-3f56-4632-9085-2d972c274564}</Project>
-      <Name>Xamlware</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\AddSighting.png" />
     <Resource Include="Resources\Cancel16x16.png" />
     <Resource Include="Resources\Cancel24x24.png" />
@@ -361,6 +355,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Data\EF Commands.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xamlware\Xamlware.csproj">
+      <Project>{f3b5c1cd-3f56-4632-9085-2d972c274564}</Project>
+      <Name>Xamlware</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
