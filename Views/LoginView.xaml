@@ -27,7 +27,8 @@
 				<ColumnDefinition Width="25" />
 			</Grid.ColumnDefinitions>
 
-			<!--row 1-->
+			
+				<!--row 1-->
 			<Label Grid.Row="0" Grid.ColumnSpan="6" Content="Login" HorizontalAlignment="Center" FontSize="16" FontWeight="Black"></Label>
 			<!--row 2-->
 			<!--<Label Grid.Row="2" Grid.Column="1" Content="Username:" HorizontalAlignment="Right" />-->
@@ -40,7 +41,7 @@
 				
 				Hint="Username" 
 				ContainerType="Outlined">
-				<TextBox Text="{Binding Username, Mode=OneWayToSource}"/>
+				<TextBox Text="{Binding Username, Mode=TwoWay}"/>
 			</sf:SfTextInputLayout>
 
 			<sf:SfTextInputLayout  
@@ -53,8 +54,8 @@
 				<PasswordBox  x:Name="LoginPassword" PasswordChar="*" PasswordChanged="LoginPassword_PasswordChanged" Margin="3,0,24,0" />
 			</sf:SfTextInputLayout>
 
-
-			<!--CommandParameter="{Binding LoginRequest}"-->
+			
+				<!--CommandParameter="{Binding LoginRequest}"-->
 			<sf:ButtonAdv 
 				Grid.Row="7" 
 				Grid.Column="1" 
@@ -78,8 +79,14 @@
 				Background="#FFF1D05D" 
 				SmallIcon="/MVIOperationsSystem;component/Resources/Cancel16x16.png" 
 				MinWidth="90" />
-			
 
+			<!--<sfBusyIndicator  
+				x:Name="BusyIndicator"
+				Grid.Row="4"
+				Grid.RowSpan="2"
+				Grid.Column="1"
+				Grid.ColumnSpan="2"
+                IsBusy="{Binding IsBusy, Mode=TwoWay}"/>-->
 		</Grid>
 	</Border>
 </UserControl>

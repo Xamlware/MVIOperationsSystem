@@ -67,6 +67,7 @@
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
+    <Reference Include="Syncfusion.SfBusyIndicator.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfInput.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfShared.Wpf, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfTextInputLayout.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
@@ -136,6 +137,7 @@
     <Compile Include="DataServices\DataRequest.cs" />
     <Compile Include="DataServices\LocalStorageService.cs" />
     <Compile Include="HttpRequestMethods.cs" />
+    <Compile Include="Messages\ClosingMessage.cs" />
     <Compile Include="Messages\PasswordMessage.cs" />
     <Compile Include="Migrations\LocalStorage\202008031849372_InitialCommit.cs" />
     <Compile Include="Migrations\LocalStorage\202008031849372_InitialCommit.designer.cs">
@@ -144,6 +146,10 @@
     <Compile Include="Migrations\LocalStorage\202008031927117_changes.cs" />
     <Compile Include="Migrations\LocalStorage\202008031927117_changes.designer.cs">
       <DependentUpon>202008031927117_changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\LocalStorage\202008040945233_addxamlware.cs" />
+    <Compile Include="Migrations\LocalStorage\202008040945233_addxamlware.designer.cs">
+      <DependentUpon>202008040945233_addxamlware.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\LocalStorage\LsConfiguration.cs" />
     <Compile Include="Models\DataRequestObjects\Class1.cs" />
@@ -227,6 +233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\LocalStorage\202008031927117_changes.resx">
       <DependentUpon>202008031927117_changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\LocalStorage\202008040945233_addxamlware.resx">
+      <DependentUpon>202008040945233_addxamlware.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

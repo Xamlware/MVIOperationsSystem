@@ -7,6 +7,7 @@ using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Xamlware.Framework.Extensions;
 
 namespace MVIOperationsSystem.ViewModels
@@ -22,12 +23,18 @@ namespace MVIOperationsSystem.ViewModels
 
 		private bool CanExecuteLoginCommand()
 		{
-			return true;
+			var retVal = true;
+			if (this.Username.IsNullOrEmpty() || this.Password.IsNullOrEmpty())
+			{
+				retVal = false;
+			}
+
+			return retVal;
 		}
 
 		private async void ExecuteLoginCommand()
 		{
-
+			this.IsBusy = true;
 			var loginRequest = new LoginRequest { Username = this.Username, Password = this.Password, Token = "" };
 			var lr = await _dataService.Login(loginRequest);
 
@@ -70,6 +77,7 @@ namespace MVIOperationsSystem.ViewModels
 
 		#region Properties
 
+		public const string PasswordProperty = "Password";
 		private string _password;
 		public string Password
 		{
@@ -80,19 +88,37 @@ namespace MVIOperationsSystem.ViewModels
 			set
 			{
 				_password = value;
+				this.RaisePropertyChanged(PasswordProperty);
+				LoginCommand.RaiseCanExecuteChanged();
 			}
 		}
 
+
+		public const string UsernameTextProperty = "Username";
 		private string _username;
+
 		public string Username
 		{
-			get
-			{
-				return _username;
-			}
+			get { return _username; }
+
 			set
 			{
 				_username = value;
+				this.RaisePropertyChanged(UsernameTextProperty);
+			}
+		}
+
+		public const string IsBusyTextProperty = "IsBusy";
+		private bool _isBusy;
+
+		public bool IsBusy
+		{
+			get { 
+				return _isBusy; 
+			}
+			set {
+				_isBusy = value;
+				this.RaisePropertyChanged(IsBusyTextProperty);
 			}
 		}
 
