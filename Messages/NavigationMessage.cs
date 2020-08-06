@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MVIOperationsSystem.Messages
 {
-	public class SignInMessage
+	public class NavigationMessage
 	{
         public string Action { get; set; }
 	}

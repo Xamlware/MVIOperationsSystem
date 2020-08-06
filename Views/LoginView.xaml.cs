@@ -26,6 +26,12 @@ namespace MVIOperationsSystem.Controls
 		public LoginView()
 		{
 			InitializeComponent();
+			Messenger.Default.Register<CancelLoginMessage>(this, HandleCancelLoginMessage);
+		}
+
+		private void HandleCancelLoginMessage(CancelLoginMessage obj)
+		{
+
 		}
 
 		private void LoginPassword_PasswordChanged(object sender, RoutedEventArgs e)

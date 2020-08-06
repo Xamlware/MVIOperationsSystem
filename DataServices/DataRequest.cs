@@ -1,4 +1,5 @@
-﻿using MVIOperations.Models;
+﻿using MilVetIndApi.Authentication.Models;
+using MVIOperations.Models;
 using MVIOperationsSystem.Services;
 using Newtonsoft.Json;
 using System;
@@ -14,26 +15,26 @@ namespace MVIOperationsSystem.DataServices
 	{
 		private static ExecuteDataRequest dr = new ExecuteDataRequest();
 
-		public static async Task<LoginRequest> Login(LoginRequest lr)
+		public static async Task<LoginResponse> Login(LoginRequest lr)
 		{
 			// Initialization.  
 			// RegInfoResponseObj responseObj = new RegInfoResponseObj();
-			LoginRequest resultlr = null;
+			LoginResponse resp = null;
 			var result = "";
 			try
 			{
 				var jsonString = JsonConvert.SerializeObject(lr);
 				result = await dr.ExecuteRequest("api/authenticate/login", HttpRequestMethods.Post, jsonString);
 			
-				resultlr =  JsonConvert.DeserializeObject<LoginRequest>(result);
+				resp =  JsonConvert.DeserializeObject<LoginResponse>(result);
 			}
 			catch (Exception ex)
 			{
 				
-				resultlr = null;
+				resp = null;
 			}
 
-			return resultlr;
+			return resp;
 		}
 	}
 }

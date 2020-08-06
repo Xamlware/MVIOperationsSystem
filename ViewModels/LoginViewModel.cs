@@ -16,66 +16,45 @@ namespace MVIOperationsSystem.ViewModels
 	{
 		private readonly ILoginDataService _dataService;
 		private readonly LocalStorageService _ls = new LocalStorageService();
+
 		#region Commands
-
-		#region LoginCommand
 		public RelayCommand LoginCommand { get; private set; }
+		public RelayCommand CancelLoginCommand { get; private set; }
 
-		private bool CanExecuteLoginCommand()
-		{
-			var retVal = true;
-			if (this.Username.IsNullOrEmpty() || this.Password.IsNullOrEmpty())
-			{
-				retVal = false;
-			}
-
-			return retVal;
-		}
-
-		private async void ExecuteLoginCommand()
-		{
-			this.IsBusy = true;
-			var loginRequest = new LoginRequest { Username = this.Username, Password = this.Password, Token = "" };
-			var lr = await _dataService.Login(loginRequest);
-
-			if (lr != null)
-			{
-				if (lr.Status.IsNotNullOrEmpty())
-				{
-					// display error
-				}
-				else
-				{
-					//write data to local storage
-					var result = _ls.WriteValue("token", lr.Token);
-					if (result == "OK")
-					{ 
-						
-					}
-				}
-			}
-
-
-
-		}
-		#endregion
-
-		#region LoginCancelCommand
-
-		public RelayCommand LoginCancelCommand { get; private set; }
-
-		private bool CanExecuteLoginCancelCommand()
-		{
-			return true;
-		}
-
-		private void ExecuteLoginCancelCommand()
-		{
-		}
-		#endregion
 		#endregion
 
 		#region Properties
+
+		public const string ColorProperty = "Color";
+		private string _color;
+
+		public string Color
+		{
+			get
+			{
+				return _color;
+			}
+			set
+			{
+				_color = value;
+				this.RaisePropertyChanged(ColorProperty);
+			}
+		}
+
+
+		public const string MessageProperty = "Message";
+		private string _message;
+
+		public string Message
+		{
+			get { return _message; }
+			set
+			{
+				_message = value;
+				this.RaisePropertyChanged(MessageProperty);
+			}
+		}
+
 
 		public const string PasswordProperty = "Password";
 		private string _password;
@@ -89,6 +68,7 @@ namespace MVIOperationsSystem.ViewModels
 			{
 				_password = value;
 				this.RaisePropertyChanged(PasswordProperty);
+				this.Message = "";
 				LoginCommand.RaiseCanExecuteChanged();
 			}
 		}
@@ -104,6 +84,7 @@ namespace MVIOperationsSystem.ViewModels
 			set
 			{
 				_username = value;
+				this.Message = "";
 				this.RaisePropertyChanged(UsernameTextProperty);
 			}
 		}
@@ -113,10 +94,12 @@ namespace MVIOperationsSystem.ViewModels
 
 		public bool IsBusy
 		{
-			get { 
-				return _isBusy; 
+			get
+			{
+				return _isBusy;
 			}
-			set {
+			set
+			{
 				_isBusy = value;
 				this.RaisePropertyChanged(IsBusyTextProperty);
 			}
@@ -131,14 +114,81 @@ namespace MVIOperationsSystem.ViewModels
 			_dataService = dataService;
 			Messenger.Default.Register<PasswordMessage>(this, HandlePasswordMessage);
 			this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, this.CanExecuteLoginCommand);
+			this.CancelLoginCommand = new RelayCommand(this.ExecuteCancelLoginCommand, this.CanExecuteLoginCancelCommand);
 		}
 
 		private void HandlePasswordMessage(PasswordMessage msg)
 		{
 			this.Password = msg.Password;
 		}
-		//this.LoginCommand = new RelayCommand<LoginRequest>(this.CanExecuteLoginCommand);
-		//this.LoginCancelCommand = new RelayCommand(this.ExecuteLoginCancelCommand, CanExecuteLoginCancelCommand);
 
+
+		#region Can/Execute
+		#region LoginCommand
+
+		private bool CanExecuteLoginCommand()
+		{
+			var retVal = true;
+			if (this.Username.IsNullOrEmpty() || this.Password.IsNullOrEmpty())
+			{
+				retVal = false;
+			}
+
+			return retVal;
+		}
+
+		private async void ExecuteLoginCommand()
+		{
+			this.IsBusy = true;
+			var loginRequest = new LoginRequest { Username = this.Username, Password = this.Password };
+			var lr = await _dataService.Login(loginRequest);
+
+			if (lr != null)
+			{
+				if (Message.IsNotNullOrEmpty())
+				{
+					this.Message = "";
+				}
+
+				if (lr.Status.IsNotNullOrEmpty())
+				{
+					this.IsBusy = false;
+					this.Color = "Red";
+					this.Message = "Username or Password error!";
+				}
+				else
+				{
+					//write data to local storage
+					var result = _ls.WriteValue("token", lr.Token);
+					if (result == "OK")
+					{
+						this.IsBusy = false;
+						this.Color = "SaddleBrown";
+						this.Message = "Login succeeded";
+						this.IsBusy = false;
+
+						if (lr.Roles.Contains("Admin"))
+						{
+							Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "AdminLogin" });
+						}
+					}
+				}
+			}
+		}
+		#endregion
+
+		#region CancelLoginCommand
+		private bool CanExecuteLoginCancelCommand()
+		{
+			return true;
+		}
+
+		private void ExecuteCancelLoginCommand()
+		{
+			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "CancelLogin" });
+		}
+		#endregion
+
+		#endregion
 	}
 }

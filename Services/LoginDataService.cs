@@ -1,4 +1,5 @@
-﻿using MVIOperations.Models;
+﻿using MilVetIndApi.Authentication.Models;
+using MVIOperations.Models;
 using MVIOperationsSystem.DataServices;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ namespace MVIOperationsSystem.Services
 {
 	public class LoginDataService : ILoginDataService
 	{
-		public async Task<LoginRequest> Login(LoginRequest lr)
+		public async Task<LoginResponse> Login(LoginRequest lr)
 		{
-			var loginRequest = await DataRequest.Login(lr);
+			var loginResponse = await DataRequest.Login(lr);
 
-			return loginRequest;			
+			return loginResponse;			
 		}
 	}
 }

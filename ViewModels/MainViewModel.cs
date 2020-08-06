@@ -3,7 +3,9 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.Controls;
 using MVIOperationsSystem.Data;
+using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Messages;
+using MVIOperationsSystem.Models;
 using System;
 
 namespace MVIOperationsSystem.ViewModels
@@ -12,6 +14,8 @@ namespace MVIOperationsSystem.ViewModels
     {
 
         private LocalStorageContext _db = new LocalStorageContext();
+        private LocalStorageService _ls = new LocalStorageService();
+
 
         #region Commands
         public RelayCommand LoginCommand { get; private set; }
@@ -44,7 +48,7 @@ namespace MVIOperationsSystem.ViewModels
 
         public void HandleClosingMessage(ClosingMessage cm)
         {
-        
+            _ls.ClearLocalStorage();
         }
 
 
@@ -61,15 +65,18 @@ namespace MVIOperationsSystem.ViewModels
             if (this.LabelText == "Sign In")
             {
                 this.LabelText = "Sign Out";
-                Messenger.Default.Send(new SignInMessage { Action = "Sign In" });
+                Messenger.Default.Send(new NavigationMessage { Action = "Login" });
             }
             else
             {
                 this.LabelText = "Sign In";
-                Messenger.Default.Send(new SignInMessage { Action = "Sign Out" });
+                Messenger.Default.Send(new NavigationMessage { Action = "Logout" });
             };
 
-
+            if (this.LabelText == "Sign Out")
+            {
+                _ls.ClearLocalStorage(); 
+            }
             #endregion
 
         }

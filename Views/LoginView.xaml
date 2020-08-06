@@ -3,11 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:sf="http://schemas.syncfusion.com/wpf" 
+			 xmlns:sf="http://schemas.syncfusion.com/wpf"
+	         xmlns:Notification="clr-namespace:Syncfusion.Windows.Controls.Notification;assembly=Syncfusion.SfBusyIndicator.WPF"
+			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
 			 mc:Ignorable="d"
 			 DataContext="{Binding LoginViewModel, Source={StaticResource Locator}}">
 
-	<Border Width="250" Height="220" Background="#FFFDEDA4" BorderBrush="Black" BorderThickness="1,1,1,1" CornerRadius="30,30,30,30">
+	<Border Width="250" Height="220" Background="LightGoldenrodYellow" BorderBrush="Black" BorderThickness="1,1,1,1" CornerRadius="30,30,30,30">
 		<Grid >
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
@@ -16,7 +18,7 @@
 				<RowDefinition Height="50"/>
 				<RowDefinition Height="10"/>
 				<RowDefinition Height="50"/>
-				<RowDefinition Height="15"/>
+				<RowDefinition Height="25"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 
@@ -27,9 +29,17 @@
 				<ColumnDefinition Width="25" />
 			</Grid.ColumnDefinitions>
 
-			
-				<!--row 1-->
-			<Label Grid.Row="0" Grid.ColumnSpan="6" Content="Login" HorizontalAlignment="Center" FontSize="16" FontWeight="Black"></Label>
+
+			<!--row 1-->
+			<Label 
+				Grid.Row="0" 
+				Grid.ColumnSpan="6"
+				Content="Login" 
+				HorizontalAlignment="Center" 
+				FontSize="16" 
+				FontWeight="ExtraBlack"
+				Foreground="SaddleBrown"
+				/>
 			<!--row 2-->
 			<!--<Label Grid.Row="2" Grid.Column="1" Content="Username:" HorizontalAlignment="Right" />-->
 			<!--<sf:SfTextBoxExt  Text="{Binding Text, Mode=TwoWay}" Grid.Row="2" Grid.Column="2" />-->
@@ -50,12 +60,16 @@
 				ContainerBackground="White" 
 				Hint="Password" 
 				ContainerType="Outlined">
-				
-				<PasswordBox  x:Name="LoginPassword" PasswordChar="*" PasswordChanged="LoginPassword_PasswordChanged" Margin="3,0,24,0" />
+
+				<PasswordBox 
+					x:Name="LoginPassword" 
+					PasswordChar="*" 
+					PasswordChanged="LoginPassword_PasswordChanged" 
+					/>
 			</sf:SfTextInputLayout>
 
-			
-				<!--CommandParameter="{Binding LoginRequest}"-->
+
+			<!--CommandParameter="{Binding LoginRequest}"-->
 			<sf:ButtonAdv 
 				Grid.Row="7" 
 				Grid.Column="1" 
@@ -67,26 +81,36 @@
 				SmallIcon="/MVIOperationsSystem;component/Resources/OK16x16.png" 
 				HorizontalAlignment="Center" 
 				MinWidth="90" />
-			
+
 			<sf:ButtonAdv
 				Grid.Row="7" 
 				Grid.Column="2" 
 				HorizontalAlignment="Center" 
 				HorizontalContentAlignment="Center" 
-				Command="{Binding LoginCancelCommand}" 
+				Command="{Binding CancelLoginCommand}" 
 				Margin="10,5,5,5" 
 				Label="Cancel" 
 				Background="#FFF1D05D" 
 				SmallIcon="/MVIOperationsSystem;component/Resources/Cancel16x16.png" 
-				MinWidth="90" />
+				MinWidth="90" >
+			</sf:ButtonAdv>
 
-			<!--<sfBusyIndicator  
-				x:Name="BusyIndicator"
-				Grid.Row="4"
-				Grid.RowSpan="2"
-				Grid.Column="1"
+			<Notification:SfBusyIndicator  
+				Grid.Row="6"
 				Grid.ColumnSpan="2"
-                IsBusy="{Binding IsBusy, Mode=TwoWay}"/>-->
+				Grid.Column="1"
+				Foreground="SaddleBrown"
+				Height="10"
+				x:Name="BusyIndicator" 
+				AnimationType="HorizontalPulsingBox"
+				IsBusy="{Binding IsBusy, Mode=TwoWay}" />
+
+			<Label
+				Grid.Row="6"
+				Grid.ColumnSpan="2"
+				Grid.Column="1"
+				Foreground="{Binding Color}"
+				Content="{Binding Message}" />
 		</Grid>
 	</Border>
 </UserControl>

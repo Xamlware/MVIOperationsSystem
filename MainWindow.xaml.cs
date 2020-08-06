@@ -2,6 +2,7 @@
 using MVIOperationsSystem.Controls;
 using MVIOperationsSystem.Data;
 using MVIOperationsSystem.Messages;
+using MVIOperationsSystem.Views;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -18,8 +19,8 @@ namespace MVIOperationsSystem
         public MainWindow()
         {
             InitializeComponent();
-			Messenger.Default.Register<SignInMessage>(this, HandleSignInMessage);
-            Closing += this.OnWindowClosing;
+			Messenger.Default.Register<NavigationMessage>(this, HandleNavigationMessage);
+			Closing += this.OnWindowClosing;
     
 			
 
@@ -29,16 +30,27 @@ namespace MVIOperationsSystem
 		private void OnWindowClosing(object sender, CancelEventArgs e)
 		{
 
-			var cm = new ClosingMessage { IsClosing = true };
-			Messenger.Default.Send<ClosingMessage>(cm);	
+			Messenger.Default.Send<ClosingMessage>(new ClosingMessage { IsClosing = true });	
+
 		}
 
-		private void HandleSignInMessage(SignInMessage obj)
+		private void HandleNavigationMessage(NavigationMessage obj)
 		{
-            if (obj.Action == "Sign In")
-            {
-                this.ContentPresenter.Content = new LoginView();
-            }
+			switch (obj.Action)
+			{
+
+				case "Login":
+					this.ContentPresenter.Content = new LoginView();
+					break;
+				case "CancelLogin":
+					this.SignInButton.Label = "Sign In";
+					this.ContentPresenter.Content = "";
+					break;
+				case "AdminLogin":
+					this.ContentPresenter.Content = new AdminManagementView();
+					break;
+
+			}
 		}
 	}
 }

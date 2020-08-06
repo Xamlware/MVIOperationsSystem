@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamlware.Framework.Extensions;
 
 namespace MVIOperationsSystem.DataServices
 {
@@ -16,6 +17,11 @@ namespace MVIOperationsSystem.DataServices
 			var status = "Error";
 			try
 			{
+				if (ValueExists(key))
+				{
+					this.ClearValue(key);
+				}
+				
 				var ls = new LocalStorage();
 				ls.KeyString = key;
 				ls.ValueString = value;
@@ -32,6 +38,12 @@ namespace MVIOperationsSystem.DataServices
 			return status;
 		}
 
+		public bool ValueExists(string key)
+		{
+			return (GetValue(key).IsNotNullOrEmpty());
+		}
+
+
 		public string GetValue(string key)
 		{
 			var d = db.LocalStorage.Where(w => w.KeyString == key).FirstOrDefault();
@@ -39,14 +51,36 @@ namespace MVIOperationsSystem.DataServices
 			return d.ValueString;
 		}
 
-		public string ClearValue(string key)
+
+
+		public bool ClearValue(string key)
 		{
-			return "";
+			var retVal = true;
+			try
+			{
+				var ls = db.LocalStorage.Where(r => r.KeyString == key).FirstOrDefault();
+				db.LocalStorage.Remove(ls);
+				db.SaveChanges();
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+				retVal = false;
+			}
+
+			return retVal;
+			
 		}
 
-		public string ClearLocalStorage()
+		public void ClearLocalStorage()
 		{
-			return "";
+			var list = db.LocalStorage.ToList() ;
+			foreach (var ls in list)
+			{
+				this.ClearValue(ls.KeyString);
+			}
+
+			db.SaveChanges();
 		}
 
 	}

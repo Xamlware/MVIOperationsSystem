@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sf="http://schemas.syncfusion.com/wpf"
 		xmlns:menu="clr-namespace:MVIOperationsSystem.Controls.Menus"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+		
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
 
 	
