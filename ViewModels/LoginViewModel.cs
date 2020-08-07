@@ -115,6 +115,8 @@ namespace MVIOperationsSystem.ViewModels
 			Messenger.Default.Register<PasswordMessage>(this, HandlePasswordMessage);
 			this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, this.CanExecuteLoginCommand);
 			this.CancelLoginCommand = new RelayCommand(this.ExecuteCancelLoginCommand, this.CanExecuteLoginCancelCommand);
+			this.Username = "jbaird";
+			this.Password = "((B((jb((1(";
 		}
 
 		private void HandlePasswordMessage(PasswordMessage msg)

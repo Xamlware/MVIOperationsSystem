@@ -4,9 +4,63 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MVIOperationsSystem.Views"
+			 xmlns:sf="http://schemas.syncfusion.com/wpf"  
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-		<Label Content ="hello there"/>  
-    </Grid>
+             d:DesignHeight="450" d:DesignWidth="800"
+			DataContext="{Binding AdminManagementViewModel, Source={StaticResource Locator}}">
+
+	<Grid Background="LightGoldenrodYellow">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="20" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="40" />
+			<RowDefinition Height="20" />
+
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="20"/>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="10" />			  
+			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="20"/>
+		</Grid.ColumnDefinitions>
+
+		<sf:TreeViewAdv 
+			x:Name="ActionTree"
+			Grid.Row="1" 
+			Grid.Column="1" 
+			ItemsSource="{Binding ActionList}"
+			SelectedTreeItem="{Binding SelectedTreeItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+			SelectedItemChanged="OnSelectedItemChanged"
+			ShowRootLines="False"
+			Foreground="SaddleBrown"
+
+			SelectedBackground="SaddleBrown"
+			SelectedForeground="White">
+			<sf:TreeViewAdv.ItemTemplate >
+				<HierarchicalDataTemplate 
+					ItemsSource="{Binding SubItems}">
+					<TextBlock Text="{Binding Header}" />
+				</HierarchicalDataTemplate>
+			</sf:TreeViewAdv.ItemTemplate>
+			<sf:TreeViewAdv.ItemContainerStyle>
+				<Style TargetType="sf:TreeViewItemAdv">
+					<Setter Property="IsExpanded" Value="True"/>
+				</Style>
+			</sf:TreeViewAdv.ItemContainerStyle>
+		</sf:TreeViewAdv>
+
+		<GridSplitter 
+			x:Name="gridSplitter"
+			Grid.Row="1"
+			Grid.Column="2"
+			HorizontalAlignment="Center" 
+			VerticalAlignment="Top" 
+			Width="5"/>
+
+		<ContentPresenter 
+			x:Name="ContentPresenter"
+			Grid.Row="1" 
+			Grid.Column="3" />
+	</Grid>
 </UserControl>

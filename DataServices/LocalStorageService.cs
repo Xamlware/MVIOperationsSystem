@@ -47,6 +47,10 @@ namespace MVIOperationsSystem.DataServices
 		public string GetValue(string key)
 		{
 			var d = db.LocalStorage.Where(w => w.KeyString == key).FirstOrDefault();
+			if(d == null || d.ValueString.IsNullOrEmpty())
+			{
+				return "";
+			}
 
 			return d.ValueString;
 		}

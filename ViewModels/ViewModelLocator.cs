@@ -31,7 +31,9 @@ namespace MVIOperationsSystem.ViewModels
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<MainMenuViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
+            SimpleIoc.Default.Register<AdminManagementViewModel>();
 
             SimpleIoc.Default.Register<ILoginDataService, LoginDataService>();
 
@@ -45,6 +47,14 @@ namespace MVIOperationsSystem.ViewModels
             }
         }
 
+        public MainMenuViewModel MainMenuViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MainMenuViewModel>();
+            }
+        }
+
         public LoginViewModel LoginViewModel
         {
             get
@@ -52,9 +62,16 @@ namespace MVIOperationsSystem.ViewModels
                 return ServiceLocator.Current.GetInstance<LoginViewModel>();
             }
         }
+        public AdminManagementViewModel AdminManagementViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AdminManagementViewModel>();
+            }
+        }
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
         }
     }
-}
+} 

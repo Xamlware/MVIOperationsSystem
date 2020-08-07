@@ -4,9 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sf="http://schemas.syncfusion.com/wpf"
-		xmlns:menu="clr-namespace:MVIOperationsSystem.Controls.Menus"
-		
-        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
+		xmlns:m="clr-namespace:MVIOperationsSystem.Views"
+		DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
 
 	
 	<Grid>
@@ -29,8 +28,17 @@
 
 		
 		
-		<Image Source="patrol.jpg" Grid.RowSpan="6" Grid.ColumnSpan="6" Stretch="UniformToFill"></Image>
-		<menu:MainMenu Grid.Row="0" Grid.ColumnSpan="6"></menu:MainMenu>
+		<Image Source="patrol.jpg" 
+			   Grid.RowSpan="6" 
+			   Grid.ColumnSpan="6" 
+			   
+			   Stretch="UniformToFill"></Image>
+
+		<m:MainMenuView
+			Grid.Row="0" 
+			Grid.ColumnSpan="6">
+		</m:MainMenuView>
+		
 		<sf:ButtonAdv
 			x:Name="SignInButton"
             Grid.Row="0" 
@@ -41,8 +49,8 @@
             Height="25" 
             VerticalAlignment="Top" 
 			Width="100" 
-			Background="Black" 
-			Foreground="White" 
+			Background="SaddleBrown" 
+			Foreground="LightGoldenrodYellow" 
 			BorderBrush="Black" IconWidth="0" IconHeight="0"
 			/>
 

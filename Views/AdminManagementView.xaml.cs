@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using MVIOperationsSystem.Messages;
+using MVIOperationsSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +26,19 @@ namespace MVIOperationsSystem.Views
 		public AdminManagementView()
 		{
 			InitializeComponent();
+			Messenger.Default.Register<NavigationMessage>(this, HandleNavigationMessage);
+
+		}
+
+		private void HandleNavigationMessage(NavigationMessage obj)
+		{
+			this.ActionTree.ClearSelection();
+			this.ActionTree.SelectedTreeItem = this.ActionTree.Items[0];
+		}
+
+		private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		{
+			var item = ((AdminManagementTreeModel) e.NewValue).Header;
 		}
 	}
 }

@@ -70,6 +70,7 @@
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
+    <Reference Include="Syncfusion.SfAccordion.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfBusyIndicator.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfInput.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfShared.Wpf, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
@@ -134,6 +135,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\AdminManagementTreeModel.cs" />
+    <Compile Include="Models\MainMenuModel.cs" />
+    <Compile Include="ViewModels\AdminManagementViewModel.cs" />
     <Compile Include="ViewModels\NotifyViewModel.cs" />
     <Compile Include="Views\NotifyView.xaml.cs">
       <DependentUpon>NotifyView.xaml</DependentUpon>
@@ -169,11 +173,8 @@
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Menus\AuthMenu.xaml.cs">
-      <DependentUpon>AuthMenu.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Menus\MainMenu.xaml.cs">
-      <DependentUpon>MainMenu.xaml</DependentUpon>
+    <Compile Include="Views\MainMenuView.xaml.cs">
+      <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\LocalStorageContext.cs" />
     <Compile Include="Data\MVIOperationsModel.cs" />
@@ -194,7 +195,6 @@
     <Compile Include="Models\SalesItem.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\Store.cs" />
-    <Compile Include="ViewModels\AuthMenuViewModel.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -210,11 +210,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Menus\AuthMenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Menus\MainMenu.xaml">
+    <Page Include="Views\MainMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -268,6 +264,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controls\" />
     <Folder Include="Enums\" />
     <Folder Include="Images\" />
   </ItemGroup>
