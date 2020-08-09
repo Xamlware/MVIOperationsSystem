@@ -141,41 +141,44 @@ namespace MVIOperationsSystem.ViewModels
 
 		private async void ExecuteLoginCommand()
 		{
-			this.IsBusy = true;
-			var loginRequest = new LoginRequest { Username = this.Username, Password = this.Password };
-			var lr = await _dataService.Login(loginRequest);
+			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "AdminLogin" });
+			//			}
+			//		}
+			//this.IsBusy = true;
+			//var loginRequest = new LoginRequest { Username = this.Username, Password = this.Password };
+			//var lr = await _dataService.Login(loginRequest);
 
-			if (lr != null)
-			{
-				if (Message.IsNotNullOrEmpty())
-				{
-					this.Message = "";
-				}
+			//if (lr != null)
+			//{
+			//	if (Message.IsNotNullOrEmpty())
+			//	{
+			//		this.Message = "";
+			//	}
 
-				if (lr.Status.IsNotNullOrEmpty())
-				{
-					this.IsBusy = false;
-					this.Color = "Red";
-					this.Message = "Username or Password error!";
-				}
-				else
-				{
-					//write data to local storage
-					var result = _ls.WriteValue("token", lr.Token);
-					if (result == "OK")
-					{
-						this.IsBusy = false;
-						this.Color = "SaddleBrown";
-						this.Message = "Login succeeded";
-						this.IsBusy = false;
+			//	if (lr.Status.IsNotNullOrEmpty())
+			//	{
+			//		this.IsBusy = false;
+			//		this.Color = "Red";
+			//		this.Message = "Username or Password error!";
+			//	}
+			//	else
+			//	{
+			//		//write data to local storage
+			//		var result = _ls.WriteValue("token", lr.Token);
+			//		if (result == "OK")
+			//		{
+			//			this.IsBusy = false;
+			//			this.Color = "SaddleBrown";
+			//			this.Message = "Login succeeded";
+			//			this.IsBusy = false;
 
-						if (lr.Roles.Contains("Admin"))
-						{
-							Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "AdminLogin" });
-						}
-					}
-				}
-			}
+			//			if (lr.Roles.Contains("Admin"))
+			//			{
+			//				Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "AdminLogin" });
+			//			}
+			//		}
+			//	}
+			//}
 		}
 		#endregion
 

@@ -13,7 +13,7 @@ namespace MVIOperationsSystem.Services
 	{
 		public async Task<LoginResponse> Login(LoginRequest lr)
 		{
-			var loginResponse = await DataRequest.Login(lr);
+			var loginResponse = await LoginDataRequest.Login(lr);
 
 			return loginResponse;			
 		}

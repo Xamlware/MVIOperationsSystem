@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MVIOperationsSystem.DataServices
 {
-	public class DataRequest
+	public class LoginDataRequest
 	{
 		private static ExecuteDataRequest dr = new ExecuteDataRequest();
 

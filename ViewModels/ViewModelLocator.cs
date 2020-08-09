@@ -15,6 +15,7 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using MVIOperationsSystem.Services;
+using MVIOperationsSystem.ViewModels.DataEditViewModels;
 
 namespace MVIOperationsSystem.ViewModels
 {
@@ -34,6 +35,8 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<MainMenuViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
             SimpleIoc.Default.Register<AdminManagementViewModel>();
+            SimpleIoc.Default.Register<DistrictEditViewModel>(); 
+            SimpleIoc.Default.Register<RegionEditViewModel>();
 
             SimpleIoc.Default.Register<ILoginDataService, LoginDataService>();
 
@@ -62,6 +65,7 @@ namespace MVIOperationsSystem.ViewModels
                 return ServiceLocator.Current.GetInstance<LoginViewModel>();
             }
         }
+       
         public AdminManagementViewModel AdminManagementViewModel
         {
             get
@@ -69,6 +73,24 @@ namespace MVIOperationsSystem.ViewModels
                 return ServiceLocator.Current.GetInstance<AdminManagementViewModel>();
             }
         }
+
+
+        public DistrictEditViewModel DistrictEditViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<DistrictEditViewModel>();
+            }
+        }
+
+        public RegionEditViewModel RegionEditViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<RegionEditViewModel>();
+            }
+        }
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

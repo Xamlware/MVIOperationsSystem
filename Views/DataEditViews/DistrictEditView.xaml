@@ -9,7 +9,6 @@
             d:DesignHeight="450" d:DesignWidth="800"
 			DataContext="{Binding DistrictEditViewModel, Source={StaticResource Locator}}">
 
-
 	<Border
 		BorderBrush="SaddleBrown" 
 		BorderThickness="1"
@@ -39,6 +38,7 @@
 				<ListBox
 					Grid.Row="1"
 					Grid.Column="1"
+					ItemsSource="{Binding DistrictList, Mode=TwoWay}"
 					Background="LightGoldenrodYellow"
 					Width="150"
 					BorderBrush="SaddleBrown"
@@ -60,21 +60,21 @@
 				Orientation="Horizontal" 
 				HorizontalAlignment="Left" >
 
-			<Button
-				Command="{Binding AddDistrict}"
-				IsEnabled="{Binding IsAddButtonEnabled}"
-				HorizontalAlignment="Left"
-				Style="{DynamicResource ImageButtonStyle}"
-				c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemAdd32x32.png" 
-				ToolTip="Add new district record" />
+				<!--IsEnabled="{Binding IsAddButtonEnabled}"-->
+				<Button
+					Command="{Binding AddDistrict}"
+					HorizontalAlignment="Left"
+					Style="{DynamicResource ImageButtonStyle}"
+					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemAdd32x32.png" 
+					ToolTip="Add new district record" />
 
-			<Button
-				Command="{Binding DeleteDistrict}"
-				IsEnabled="{Binding IsDeleteButtonEnabled}"
-				HorizontalAlignment="Left"
-				Style="{DynamicResource ImageButtonStyle}"
-				c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemRemove32x32.png" 
-				ToolTip="Delete selected district record" />
+				<!--IsEnabled="{Binding IsDeleteButtonEnabled}"-->
+				<Button
+					Command="{Binding DeleteDistrict}"
+					HorizontalAlignment="Left"
+					Style="{DynamicResource ImageButtonStyle}"
+					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemRemove32x32.png" 
+					ToolTip="Delete selected district record" />
 		</StackPanel>
 
 		<StackPanel 
@@ -83,23 +83,23 @@
 			Orientation="Horizontal" 
 			HorizontalAlignment="Right" >
 
-			<Button
-				Command="{Binding SaveDistrict}"
-				IsEnabled="{Binding IsSaveButtonEnabled}"
-                HorizontalAlignment="Right"
-				Margin="0,0,20,0"
-                Style="{DynamicResource ImageButtonStyle}"
-                c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Save32x32.png" 
-                ToolTip="Save changes" />
+				<!--IsEnabled="{Binding IsSaveButtonEnabled}"-->
+				<Button
+					Command="{Binding SaveDistrict}"
+					HorizontalAlignment="Right"
+					Margin="0,0,20,0"
+					Style="{DynamicResource ImageButtonStyle}"
+					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Save32x32.png" 
+					ToolTip="Save changes" />
 
-			<Button
-        		Command="{Binding CancelDistrict}"
-				IsEnabled="{Binding IsCancelButtonEnabled}"
-                HorizontalAlignment="Right"
-				Margin="0,0,20,0"
-                Style="{DynamicResource ImageButtonStyle}"
-                c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
-                ToolTip="cancel changes record" />
+				<!--IsEnabled="{Binding IsCancelButtonEnabled}"-->
+				<Button
+        			Command="{Binding CancelDistrict}"
+					HorizontalAlignment="Right"
+					Margin="0,0,20,0"
+					Style="{DynamicResource ImageButtonStyle}"
+					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
+					ToolTip="Cancel changes" />
 		</StackPanel>
 
 	</Grid>

@@ -4,9 +4,104 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MVIOperationsSystem.Views.DataEditViews"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             xmlns:c="clr-namespace:MVIOperationsSystem.Controls"
+			 mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+			 DataContext="{Binding RegionEditViewModel, Source={StaticResource Locator}}">
+
+	<Border
+		BorderBrush="SaddleBrown" 
+		BorderThickness="1"
+		CornerRadius="30">
+
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="20"/>
+			</Grid.RowDefinitions>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="20" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="4*" />
+			</Grid.ColumnDefinitions>
+
+			<StackPanel 
+				Grid.Row="1" 
+				Grid.Column="1"
+				Grid.ColumnSpan="2"
+				Orientation="Horizontal" 
+				HorizontalAlignment="Left" >
+
+				<ListBox
+					Grid.Row="1"
+					Grid.Column="1"
+					ItemsSource="{Binding RegionList, Mode=TwoWay}"
+					Background="LightGoldenrodYellow"
+					Width="150"
+					BorderBrush="SaddleBrown"
+					BorderThickness="1,1,1,1" />
+
+				<Border 
+					Grid.Row="1"
+					Grid.Column="2"
+					Width="600"
+					BorderBrush="SaddleBrown" 
+					BorderThickness="1" >
+
+				</Border>
+			</StackPanel>
+
+			<StackPanel 
+				Grid.Row="2" 
+				Grid.Column="1"
+				Orientation="Horizontal" 
+				HorizontalAlignment="Left" >
+
+				<!--IsEnabled="{Binding IsAddButtonEnabled}"-->
+				<Button
+					Command="{Binding AddRegion}"
+					HorizontalAlignment="Left"
+					Style="{DynamicResource ImageButtonStyle}"
+					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemAdd32x32.png" 
+					ToolTip="Add new Region record" />
+
+				<!--IsEnabled="{Binding IsDeleteButtonEnabled}"-->
+				<Button
+					Command="{Binding DeleteRegion}"
+					HorizontalAlignment="Left"
+					Style="{DynamicResource ImageButtonStyle}"
+					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemRemove32x32.png" 
+					ToolTip="Delete selected Region record" />
+			</StackPanel>
+
+			<StackPanel 
+			Grid.Row="2" 
+			Grid.Column="2"
+			Orientation="Horizontal" 
+			HorizontalAlignment="Right" >
+
+				<!--IsEnabled="{Binding IsSaveButtonEnabled}"-->
+				<Button
+					Command="{Binding SaveRegion}"
+					HorizontalAlignment="Right"
+					Margin="0,0,20,0"
+					Style="{DynamicResource ImageButtonStyle}"
+					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Save32x32.png" 
+					ToolTip="Save changes" />
+
+				<!--IsEnabled="{Binding IsCancelButtonEnabled}"-->
+				<Button
+        			Command="{Binding CancelRegion}"
+					HorizontalAlignment="Right"
+					Margin="0,0,20,0"
+					Style="{DynamicResource ImageButtonStyle}"
+					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
+					ToolTip="Cancel changes" />
+			</StackPanel>
+
+		</Grid>
+	</Border>
 </UserControl>

@@ -136,9 +136,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\xwImageButton.cs" />
+    <Compile Include="DataServices\DistrictDataRequest.cs" />
     <Compile Include="Models\AdminManagementTreeModel.cs" />
+    <Compile Include="Models\DataRequestObjects\DistrictResponse.cs" />
+    <Compile Include="Models\DataRequestObjects\RegionResponse.cs" />
     <Compile Include="Models\MainMenuModel.cs" />
     <Compile Include="ViewModels\AdminManagementViewModel.cs" />
+    <Compile Include="ViewModels\DataEditViewModels\DistrictEditViewModel.cs" />
+    <Compile Include="ViewModels\DataEditViewModels\InventoryEditViewModel.cs" />
+    <Compile Include="ViewModels\DataEditViewModels\RegionEditViewModel.cs" />
+    <Compile Include="ViewModels\DataEditViewModels\EmployeeEditViewModel.cs" />
+    <Compile Include="ViewModels\DataEditViewModels\GenderEditViewModel.cs" />
     <Compile Include="ViewModels\NotifyViewModel.cs" />
     <Compile Include="Views\DataEditViews\DistrictEditView.xaml.cs">
       <DependentUpon>DistrictEditView.xaml</DependentUpon>
@@ -158,7 +166,7 @@
     <Compile Include="Views\NotifyView.xaml.cs">
       <DependentUpon>NotifyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataServices\DataRequest.cs" />
+    <Compile Include="DataServices\LoginDataRequest.cs" />
     <Compile Include="DataServices\LocalStorageService.cs" />
     <Compile Include="HttpRequestMethods.cs" />
     <Compile Include="Messages\CancelLoginMessage.cs" />
@@ -423,12 +431,6 @@
       <Project>{f3b5c1cd-3f56-4632-9085-2d972c274564}</Project>
       <Name>Xamlware</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\Save32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\ItemAdd32x32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -11,6 +11,8 @@ namespace MVIOperations.Models
 
 		[Key]
 		public int PK_Inventory { get; set; }
+		public string ItemName { get; set; }
 
+	
 	}
 }
