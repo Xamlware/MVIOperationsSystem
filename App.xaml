@@ -8,6 +8,9 @@
              StartupUri="MainWindow.xaml">
   <Application.Resources>
     <ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Controls\ButtonStyles.xaml" />
+			</ResourceDictionary.MergedDictionaries>
             <vm1:ViewModelLocator x:Key="Locator" />
         </ResourceDictionary>
   </Application.Resources>

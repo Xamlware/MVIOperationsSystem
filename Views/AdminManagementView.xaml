@@ -4,63 +4,156 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MVIOperationsSystem.Views"
+			 xmlns:controls="clr-namespace:MVIOperationsSystem.Controls"
 			 xmlns:sf="http://schemas.syncfusion.com/wpf"  
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
 			DataContext="{Binding AdminManagementViewModel, Source={StaticResource Locator}}">
 
-	<Grid Background="LightGoldenrodYellow">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="20" />
-			<RowDefinition Height="*" />
-			<RowDefinition Height="40" />
-			<RowDefinition Height="20" />
 
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="20"/>
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="10" />			  
-			<ColumnDefinition Width="2*"/>
-			<ColumnDefinition Width="20"/>
-		</Grid.ColumnDefinitions>
+	<Border 
+		BorderBrush="SaddleBrown" 
+		Background="LightGoldenrodYellow"
+		CornerRadius="30,30,30,30"
+		BorderThickness="1,1,1,1" 
+		Margin="30">
 
-		<sf:TreeViewAdv 
-			x:Name="ActionTree"
-			Grid.Row="1" 
-			Grid.Column="1" 
-			ItemsSource="{Binding ActionList}"
-			SelectedTreeItem="{Binding SelectedTreeItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-			SelectedItemChanged="OnSelectedItemChanged"
-			ShowRootLines="False"
-			Foreground="SaddleBrown"
+		<Grid >
+			<Grid.RowDefinitions>
+				<RowDefinition Height="40" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="40" />
+				<RowDefinition Height="20" />
 
-			SelectedBackground="SaddleBrown"
-			SelectedForeground="White">
-			<sf:TreeViewAdv.ItemTemplate >
-				<HierarchicalDataTemplate 
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="20"/>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="10" />
+				<ColumnDefinition Width="2*"/>
+				<ColumnDefinition Width="20"/>
+			</Grid.ColumnDefinitions>
+
+			<Label 
+				Grid.Row="0"
+				Grid.Column="1"
+				Grid.ColumnSpan="3"
+				Content="{Binding DataLabel, Mode=TwoWay}" 
+				HorizontalContentAlignment="Center"
+				Foreground="SaddleBrown" 
+				FontSize="16" 
+				FontWeight="Black" />
+
+			<sf:TreeViewAdv 
+				x:Name="ActionTree"
+				Grid.Row="1" 
+				Grid.Column="1" 
+				BorderBrush="SaddleBrown"
+				BorderThickness="0,0,1,0"
+				ItemsSource="{Binding ActionList}"
+				SelectedTreeItem="{Binding SelectedTreeItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+				SelectedItemChanged="OnSelectedItemChanged"
+				ShowRootLines="False"
+				Foreground="SaddleBrown"
+				SelectedBackground="SaddleBrown"
+				SelectedForeground="White" Grid.RowSpan="2">
+
+				<sf:TreeViewAdv.ItemTemplate >
+					<HierarchicalDataTemplate 
 					ItemsSource="{Binding SubItems}">
-					<TextBlock Text="{Binding Header}" />
-				</HierarchicalDataTemplate>
-			</sf:TreeViewAdv.ItemTemplate>
-			<sf:TreeViewAdv.ItemContainerStyle>
-				<Style TargetType="sf:TreeViewItemAdv">
-					<Setter Property="IsExpanded" Value="True"/>
-				</Style>
-			</sf:TreeViewAdv.ItemContainerStyle>
-		</sf:TreeViewAdv>
+						<TextBlock Text="{Binding Header}" />
+					</HierarchicalDataTemplate>
+				</sf:TreeViewAdv.ItemTemplate>
+				<sf:TreeViewAdv.ItemContainerStyle>
+					<Style TargetType="sf:TreeViewItemAdv">
+						<Setter Property="IsExpanded" Value="True"/>
+					</Style>
+				</sf:TreeViewAdv.ItemContainerStyle>
+			</sf:TreeViewAdv>
 
-		<GridSplitter 
-			x:Name="gridSplitter"
-			Grid.Row="1"
-			Grid.Column="2"
-			HorizontalAlignment="Center" 
-			VerticalAlignment="Top" 
-			Width="5"/>
+			<GridSplitter 
+				x:Name="gridSplitter"
+				Grid.Row="1"
+				Grid.Column="2"
+				HorizontalAlignment="Center" 
+				VerticalAlignment="Top" 
+				Width="5"/>
 
-		<ContentPresenter 
-			x:Name="ContentPresenter"
-			Grid.Row="1" 
-			Grid.Column="3" />
-	</Grid>
+			<Border Grid.Row="1" 
+					Grid.Column="3" 
+					BorderBrush="SaddleBrown" 
+					BorderThickness="1">
+				
+				<StackPanel Orientation="Horizontal">
+					<ListBox
+						Background="LightGoldenrodYellow"
+						Width="150"
+						BorderBrush="SaddleBrown"
+						BorderThickness="1,1,1,1" />
+	
+					<ContentPresenter 
+						x:Name="ContentPresenter" />
+					</StackPanel>
+			</Border>
+
+			<StackPanel 
+				Grid.Row="2" 
+				Grid.Column="3"
+				Orientation="Horizontal" 
+				HorizontalAlignment="Left" >
+
+				<Button
+                    Grid.Row="8"
+                    Grid.Column="3"
+					Command="{Binding AddDistrict}"
+					IsEnabled="{Binding IsAddButtonEnabled}"
+                    HorizontalAlignment="Right"
+ 					Margin="70,0,10,0"
+                    Style="{DynamicResource ImageButtonStyle}"
+                    controls:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemAdd32x32.png" 
+                    ToolTip="Add new district record" />
+
+				<Button
+                    Grid.Row="8"
+                    Grid.Column="3"
+					Command="{Binding DeleteDistrict}"
+					IsEnabled="{Binding IsDeleteButtonEnabled}"
+                    HorizontalAlignment="Right"
+                    Style="{DynamicResource ImageButtonStyle}"
+                    controls:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemRemove32x32.png" 
+                    ToolTip="Delete selected district record" />
+
+			</StackPanel>
+				
+			<StackPanel 
+				Grid.Row="2" 
+				Grid.Column="3"
+				Orientation="Horizontal" 
+				HorizontalAlignment="Right" >
+				
+				<Button
+                    Grid.Row="8"
+                    Grid.Column="3"
+					Command="{Binding SaveDistrict}"
+					IsEnabled="{Binding IsSaveButtonEnabled}"
+                    HorizontalAlignment="Right"
+					Margin="0,0,20,0"
+                    Style="{DynamicResource ImageButtonStyle}"
+                    controls:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Save32x32.png" 
+                    ToolTip="Save changes" />
+
+				<Button
+                    Grid.Row="8"
+                    Grid.Column="3"
+					Command="{Binding CancelDistrict}"
+					IsEnabled="{Binding IsCancelButtonEnabled}"
+                    HorizontalAlignment="Right"
+					Margin="0,0,20,0"
+                    Style="{DynamicResource ImageButtonStyle}"
+                    controls:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
+                    ToolTip="cancel changes record" />
+
+			</StackPanel>
+		</Grid>
+	</Border>
 </UserControl>

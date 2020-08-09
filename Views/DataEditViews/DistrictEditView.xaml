@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="MVIOperationsSystem.Views.DataEditViews.DistrictEditView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MVIOperationsSystem.Views.DataEditViews"
+             xmlns:c="clr-namespace:MVIOperationsSystem.Controls"
+			mc:Ignorable="d" 
+            d:DesignHeight="450" d:DesignWidth="800"
+			DataContext="{Binding DistrictEditViewModel, Source={StaticResource Locator}}">
+
+
+	<Border
+		BorderBrush="SaddleBrown" 
+		BorderThickness="1"
+		CornerRadius="30">
+		
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="40"/>
+				<RowDefinition Height="20"/>
+			</Grid.RowDefinitions>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="20" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="4*" />
+			</Grid.ColumnDefinitions>
+
+			<StackPanel 
+				Grid.Row="1" 
+				Grid.Column="1"
+				Grid.ColumnSpan="2"
+				Orientation="Horizontal" 
+				HorizontalAlignment="Left" >
+
+				<ListBox
+					Grid.Row="1"
+					Grid.Column="1"
+					Background="LightGoldenrodYellow"
+					Width="150"
+					BorderBrush="SaddleBrown"
+					BorderThickness="1,1,1,1" />
+
+				<Border 
+					Grid.Row="1"
+					Grid.Column="2"
+					Width="600"
+					BorderBrush="SaddleBrown" 
+					BorderThickness="1" >
+
+				</Border>
+			</StackPanel>
+			
+			<StackPanel 
+				Grid.Row="2" 
+				Grid.Column="1"
+				Orientation="Horizontal" 
+				HorizontalAlignment="Left" >
+
+			<Button
+				Command="{Binding AddDistrict}"
+				IsEnabled="{Binding IsAddButtonEnabled}"
+				HorizontalAlignment="Left"
+				Style="{DynamicResource ImageButtonStyle}"
+				c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemAdd32x32.png" 
+				ToolTip="Add new district record" />
+
+			<Button
+				Command="{Binding DeleteDistrict}"
+				IsEnabled="{Binding IsDeleteButtonEnabled}"
+				HorizontalAlignment="Left"
+				Style="{DynamicResource ImageButtonStyle}"
+				c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemRemove32x32.png" 
+				ToolTip="Delete selected district record" />
+		</StackPanel>
+
+		<StackPanel 
+			Grid.Row="2" 
+			Grid.Column="2"
+			Orientation="Horizontal" 
+			HorizontalAlignment="Right" >
+
+			<Button
+				Command="{Binding SaveDistrict}"
+				IsEnabled="{Binding IsSaveButtonEnabled}"
+                HorizontalAlignment="Right"
+				Margin="0,0,20,0"
+                Style="{DynamicResource ImageButtonStyle}"
+                c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Save32x32.png" 
+                ToolTip="Save changes" />
+
+			<Button
+        		Command="{Binding CancelDistrict}"
+				IsEnabled="{Binding IsCancelButtonEnabled}"
+                HorizontalAlignment="Right"
+				Margin="0,0,20,0"
+                Style="{DynamicResource ImageButtonStyle}"
+                c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
+                ToolTip="cancel changes record" />
+		</StackPanel>
+
+	</Grid>
+	</Border>
+</UserControl>

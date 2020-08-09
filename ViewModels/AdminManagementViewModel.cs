@@ -5,6 +5,7 @@ using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
+using System;
 using System.Collections.ObjectModel;
 
 namespace MVIOperationsSystem.ViewModels
@@ -20,25 +21,40 @@ namespace MVIOperationsSystem.ViewModels
 
 		#endregion
 
+
 		#region Properties
 
-		private string SelectedItemProperty { get; set; }
-		private object selectedtreeitem;
-		public object SelectedTreeItem
+		public const string IsDirtyProperty = "IsDirty";
+		private bool _isDirty;
+
+		public bool IsDirty
 		{
-			get
-			{
-				return selectedtreeitem;
-			}
-			set
-			{
-				selectedtreeitem = value;
-				this.RaisePropertyChanged("SelectedTreeItem");
+			get { return _isDirty; }
+			set {
+				_isDirty = value;
+				this.RaisePropertyChanged(IsDirtyProperty);
 			}
 		}
 
 
-		private string ActionListProperty { get; set; }
+
+		public const string SelectedTreeItemProperty = "SelectedTreeItem";
+		private object _selectedTreeItem;
+		public object SelectedTreeItem
+		{
+			get
+			{
+				return _selectedTreeItem;
+			}
+			set
+			{
+				_selectedTreeItem = value;
+				this.RaisePropertyChanged(SelectedTreeItemProperty);
+
+			}
+		}
+
+		public const string ActionListProperty = "ActionList";
 		private ObservableCollection<AdminManagementTreeModel> _actionList;
 
 		public ObservableCollection<AdminManagementTreeModel> ActionList
@@ -75,6 +91,8 @@ namespace MVIOperationsSystem.ViewModels
 		public AdminManagementViewModel(ILoginDataService dataService)
 		{
 			_dataService = dataService;
+			this.IsDirty = false;
+
 			//Messenger.Default.Register<PasswordMessage>(this, HandlePasswordMessage);
 			this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, this.CanExecuteLoginCommand);
 			this.CancelLoginCommand = new RelayCommand(this.ExecuteCancelLoginCommand, this.CanExecuteLoginCancelCommand);
@@ -96,6 +114,7 @@ namespace MVIOperationsSystem.ViewModels
 		}
 
 
+		#region CreateTree
 		public void AddDataSubItems(AdminManagementTreeModel dataRoot)
 		{
 			AdminManagementTreeModel region = new AdminManagementTreeModel() { Header = " Region" };
@@ -121,8 +140,9 @@ namespace MVIOperationsSystem.ViewModels
 		}
 
 
+		#endregion
 
-		public void SelectedTreeItemChanged()
+		public void OnSelectedItemChanged()
 		{
 			var item = this.SelectedTreeItem;	
 
