@@ -155,8 +155,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.CancelCommand = new RelayCommand(this.ExecuteCancelRegionCommand, this.CanExecuteCancelRegionCommand);
 
 			var dist = new Region() { RegionName = "PA Region"};
-			this.RegionList = new List<Region>();
-			this.RegionList.Add(dist);
+			this.RegionList = new List<Region>
+			{
+				dist
+			};
 			//this.IsAddButtonEnabled = true;
 			//this.IsDeleteButtonEnabled = false;
 			//this.IsSaveButtonEnabled = false;

@@ -70,8 +70,10 @@
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
+    <Reference Include="Syncfusion.Data.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfAccordion.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfBusyIndicator.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
+    <Reference Include="Syncfusion.SfGrid.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfInput.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfShared.Wpf, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfTextInputLayout.WPF, Version=18.2460.0.44, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
@@ -137,10 +139,15 @@
     </ApplicationDefinition>
     <Compile Include="Controls\xwImageButton.cs" />
     <Compile Include="DataServices\DistrictDataRequest.cs" />
+    <Compile Include="Messages\ActionMessage.cs" />
+    <Compile Include="Messages\AdminLoginMessage.cs" />
+    <Compile Include="Messages\DistrictNameChangedMessage.cs" />
     <Compile Include="Models\AdminManagementTreeModel.cs" />
     <Compile Include="Models\DataRequestObjects\DistrictResponse.cs" />
     <Compile Include="Models\DataRequestObjects\RegionResponse.cs" />
     <Compile Include="Models\MainMenuModel.cs" />
+    <Compile Include="Services\IDistrictDataService.cs" />
+    <Compile Include="Services\DistrictDataService.cs" />
     <Compile Include="ViewModels\AdminManagementViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\DistrictEditViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\InventoryEditViewModel.cs" />
@@ -187,7 +194,7 @@
     <Compile Include="Migrations\LocalStorage\LsConfiguration.cs" />
     <Compile Include="Models\DataRequestObjects\Class1.cs" />
     <Compile Include="Models\DataRequestObjects\LoginResponse.cs" />
-    <Compile Include="Services\HttpRequest.cs" />
+    <Compile Include="Services\ExecuteDataRequest.cs" />
     <Compile Include="Services\ILoginDataServe.cs" />
     <Compile Include="Services\LoginDataService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

@@ -1,18 +1,21 @@
-﻿<UserControl x:Class="MVIOperationsSystem.Views.DataEditViews.DistrictEditView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MVIOperationsSystem.Views.DataEditViews"
-             xmlns:c="clr-namespace:MVIOperationsSystem.Controls"
-			mc:Ignorable="d" 
-            d:DesignHeight="450" d:DesignWidth="800"
-			DataContext="{Binding DistrictEditViewModel, Source={StaticResource Locator}}">
+﻿<UserControl 
+	x:Class="MVIOperationsSystem.Views.DataEditViews.DistrictEditView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:MVIOperationsSystem.Views.DataEditViews"
+ 	xmlns:sf="http://schemas.syncfusion.com/wpf"
+	xmlns:c="clr-namespace:MVIOperationsSystem.Controls"
+	mc:Ignorable="d" 
+	d:DesignHeight="450" d:DesignWidth="800"
+	DataContext="{Binding DistrictEditViewModel, Source={StaticResource Locator}}">
 
 	<Border
 		BorderBrush="SaddleBrown" 
 		BorderThickness="1"
-		CornerRadius="30">
+		CornerRadius="30"
+		Width="Auto">
 		
 		<Grid>
 			<Grid.RowDefinitions>
@@ -26,82 +29,173 @@
 				<ColumnDefinition Width="20" />
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="4*" />
+				<ColumnDefinition Width="20" />
+
 			</Grid.ColumnDefinitions>
 
-			<StackPanel 
-				Grid.Row="1" 
+			<Label
+				Grid.Row="0"
+				Grid.Column="0"
+				Grid.ColumnSpan="4"
+				HorizontalAlignment="Center"
+				FontSize="16"
+				FontWeight="Black"
+				Content="District Data Management" />
+
+
+			<Border 
+				Grid.Row="1"
+				Grid.RowSpan="2"
 				Grid.Column="1"
 				Grid.ColumnSpan="2"
-				Orientation="Horizontal" 
-				HorizontalAlignment="Left" >
+				BorderBrush="SaddleBrown"
+				BorderThickness="1" >
 
-				<ListBox
+				<Grid 
 					Grid.Row="1"
+					Grid.RowSpan="2"
 					Grid.Column="1"
-					ItemsSource="{Binding DistrictList, Mode=TwoWay}"
-					Background="LightGoldenrodYellow"
-					Width="150"
-					BorderBrush="SaddleBrown"
-					BorderThickness="1,1,1,1" />
+					Grid.ColumnSpan="2">
 
-				<Border 
-					Grid.Row="1"
-					Grid.Column="2"
-					Width="600"
-					BorderBrush="SaddleBrown" 
-					BorderThickness="1" >
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="40"/>
+					</Grid.RowDefinitions>
 
-				</Border>
-			</StackPanel>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="4*" />
+											</Grid.ColumnDefinitions>
+
+
+					<ListBox
+						Grid.Row="0"
+						Grid.Column="0"
+						ItemsSource="{Binding DistrictList, Mode=TwoWay}"
+						DisplayMemberPath="DistrictName"
+						SelectedItem="{Binding SelectedListItem, Mode=TwoWay}"
+						Background="LightGoldenrodYellow"
+						BorderBrush="SaddleBrown"
+						BorderThickness="0,0,1,1" SelectionChanged="ListBox_SelectionChanged" />
+
+
+					<StackPanel
+						Grid.Row="2"
+						Grid.Column="0"
+						Orientation="Horizontal" 
+						HorizontalAlignment="Left" >
+
+
+						<!--IsEnabled="{Binding IsAddButtonEnabled}"-->
+						<Button
+							Command="{Binding AddDistrictCommand}"
+							HorizontalAlignment="Left"
+							Margin="0,0,20,0"
+							Style="{DynamicResource ImageButtonStyle}"
+							c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemAdd32x32.png" 
+							ToolTip="Add new district record" />
+
+						<!--IsEnabled="{Binding IsDeleteButtonEnabled}"-->
+						<Button
+							Command="{Binding DeleteDistrictCommand}"
+							HorizontalAlignment="Left"
+							Margin="0,0,5,0"
+							Style="{DynamicResource ImageButtonStyle}"
+							c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemRemove32x32.png" 
+							ToolTip="Delete selected district record" />
+					</StackPanel>
+				</Grid>
+			</Border>
 			
+			<Border
+				Grid.Row="1"
+				Grid.Column="2"
+				BorderBrush="SaddleBrown"
+				BorderThickness="0,1,1,1">
+
+				<Grid>
+
+					<Grid.RowDefinitions>
+						<RowDefinition Height="30"/>
+						<RowDefinition Height="10"/>
+						<RowDefinition Height="35"/>
+						<RowDefinition Height="10"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="10"/>
+					</Grid.RowDefinitions>
+
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="5" />
+						<ColumnDefinition Width="100" />
+						<ColumnDefinition Width="5" />
+						<ColumnDefinition Width="250" />
+						
+					</Grid.ColumnDefinitions>
+						<Label 
+							Grid.Row="0"
+							Grid.Column="1"
+							Content="District Name:"
+							VerticalAlignment="Center"
+							HorizontalAlignment="Right"/>
+						
+						<sf:SfTextBoxExt 
+							Grid.Row="0"
+							Grid.Column="3"
+							Background="White"
+							HorizontalContentAlignment="Center"
+							VerticalContentAlignment="Center"
+							Text="{Binding SelectedListItem.DistrictName, Mode=TwoWay}" TextChanged="SfTextBoxExt_TextChanged"/>
+
+					<Label 
+							Grid.Row="2"
+							Grid.Column="1"
+							Content="Region Name:" 
+							VerticalAlignment="Center"
+							HorizontalAlignment="Center" />
+
+					<sf:ComboBoxAdv
+							Grid.Row="2"
+							Grid.Column="3"
+							MaxHeight="30"
+							Background="White"
+							ItemsSource="{Binding RegionList}"
+							DisplayMemberPath="RegionName"
+							SelectedItem="{Binding SelectedRegionItem}"
+							
+							MinWidth="250"	
+							MinHeight="35"
+							HorizontalContentAlignment="Center" 
+							VerticalAlignment="Top" />
+
+
+				</Grid>
+			</Border>
+
 			<StackPanel 
-				Grid.Row="2" 
-				Grid.Column="1"
-				Orientation="Horizontal" 
-				HorizontalAlignment="Left" >
-
-				<!--IsEnabled="{Binding IsAddButtonEnabled}"-->
-				<Button
-					Command="{Binding AddDistrict}"
-					HorizontalAlignment="Left"
-					Style="{DynamicResource ImageButtonStyle}"
-					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemAdd32x32.png" 
-					ToolTip="Add new district record" />
-
-				<!--IsEnabled="{Binding IsDeleteButtonEnabled}"-->
-				<Button
-					Command="{Binding DeleteDistrict}"
-					HorizontalAlignment="Left"
-					Style="{DynamicResource ImageButtonStyle}"
-					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemRemove32x32.png" 
-					ToolTip="Delete selected district record" />
-		</StackPanel>
-
-		<StackPanel 
-			Grid.Row="2" 
-			Grid.Column="2"
-			Orientation="Horizontal" 
-			HorizontalAlignment="Right" >
+					Grid.Row="2" 
+					Grid.Column="2"
+					Orientation="Horizontal" 
+					HorizontalAlignment="Right" >
 
 				<!--IsEnabled="{Binding IsSaveButtonEnabled}"-->
 				<Button
-					Command="{Binding SaveDistrict}"
-					HorizontalAlignment="Right"
-					Margin="0,0,20,0"
-					Style="{DynamicResource ImageButtonStyle}"
-					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Save32x32.png" 
-					ToolTip="Save changes" />
+						Command="{Binding SaveDistrictCommand}"
+						HorizontalAlignment="Right"
+						Margin="0,0,20,0"
+						Style="{DynamicResource ImageButtonStyle}"
+						c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Save32x32.png" 
+						ToolTip="Save changes" />
 
 				<!--IsEnabled="{Binding IsCancelButtonEnabled}"-->
 				<Button
-        			Command="{Binding CancelDistrict}"
-					HorizontalAlignment="Right"
-					Margin="0,0,20,0"
-					Style="{DynamicResource ImageButtonStyle}"
-					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
-					ToolTip="Cancel changes" />
-		</StackPanel>
+        				Command="{Binding CancelDistrictCommand}"
+						HorizontalAlignment="Right"
+						Margin="0,0,20,0"
+						Style="{DynamicResource ImageButtonStyle}"
+						c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
+						ToolTip="Cancel changes" />
+			</StackPanel>
 
-	</Grid>
+		</Grid>
 	</Border>
 </UserControl>

@@ -13,14 +13,14 @@ namespace MVIOperationsSystem.DataServices
 {
 	public class LoginDataRequest
 	{
-		private static ExecuteDataRequest dr = new ExecuteDataRequest();
+		private static readonly ExecuteDataRequest dr = new ExecuteDataRequest();
 
 		public static async Task<LoginResponse> Login(LoginRequest lr)
 		{
 			// Initialization.  
 			// RegInfoResponseObj responseObj = new RegInfoResponseObj();
-			LoginResponse resp = null;
-			var result = "";
+			LoginResponse resp;
+			var result="";
 			try
 			{
 				var jsonString = JsonConvert.SerializeObject(lr);

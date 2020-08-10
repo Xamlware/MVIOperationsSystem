@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MVIOperationsSystem.Models
 {
-	class DistrictResponse
+	public class DistrictResponse
 	{
 		public List<District> DistrictList { get; set; }
 	}

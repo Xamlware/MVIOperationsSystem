@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using MVIOperationsSystem.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +26,18 @@ namespace MVIOperationsSystem.Views.DataEditViews
 		{
 			InitializeComponent();
 		}
+
+		private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+
+		}
+
+		private void SfTextBoxExt_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			Messenger.Default.Send<DistrictNameChangedMessage>(new DistrictNameChangedMessage { Action = "TextChanged" });
+		}
 	}
 }
+
+
+

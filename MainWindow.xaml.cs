@@ -20,11 +20,18 @@ namespace MVIOperationsSystem
         {
             InitializeComponent();
 			Messenger.Default.Register<NavigationMessage>(this, HandleNavigationMessage);
+			Messenger.Default.Register<CancelLoginMessage>(this, HandleCancelLoginMessage);
 			Closing += this.OnWindowClosing;
     
 			
 
 
+		}
+
+		private void HandleCancelLoginMessage(CancelLoginMessage obj)
+		{
+			this.SignInButton.Label = "Sign In";
+			this.ContentPresenter.Content = "";
 		}
 
 		private void OnWindowClosing(object sender, CancelEventArgs e)
@@ -41,10 +48,6 @@ namespace MVIOperationsSystem
 
 				case "Login":
 					this.ContentPresenter.Content = new LoginView();
-					break;
-				case "CancelLogin":
-					this.SignInButton.Label = "Sign In";
-					this.ContentPresenter.Content = "";
 					break;
 				case "AdminLogin":
 					this.ContentPresenter.Content = new AdminManagementView();

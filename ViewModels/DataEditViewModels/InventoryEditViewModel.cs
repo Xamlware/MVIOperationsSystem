@@ -160,8 +160,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.CancelCommand = new RelayCommand(this.ExecuteCancelInventoryCommand, this.CanExecuteCancelInventoryCommand);
 
 			var dist = new Inventory() { ItemName = "Inventory 1" };
-			this.InventoryList = new List<Inventory>();
-			this.InventoryList.Add(dist);
+			this.InventoryList = new List<Inventory>{ dist };
 			//this.IsAddButtonEnabled = true;
 			//this.IsDeleteButtonEnabled = false;
 			//this.IsSaveButtonEnabled = false;

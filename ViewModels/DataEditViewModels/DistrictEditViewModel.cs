@@ -4,25 +4,24 @@ using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
 using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Messages;
+using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows.Documents;
 using Xamlware.Framework.Extensions;
 
 namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
 	public class DistrictEditViewModel : ViewModelBase
 	{
-		private readonly ILoginDataService _dataService;
+		private readonly IDistrictDataService _dataService;
 		private readonly LocalStorageService _ls = new LocalStorageService();
 
 		#region Commands
-		public RelayCommand AddCommand { get; private set; }
-		public RelayCommand DeleteCommand { get; private set; }
-		public RelayCommand SaveCommand { get; private set; }
-		public RelayCommand	CancelCommand { get; private set; }
+		public RelayCommand AddDistrictCommand { get; private set; }
+		public RelayCommand DeleteDistrictCommand { get; private set; }
+		public RelayCommand SaveDistrictCommand { get; private set; }
+		public RelayCommand	CancelDistrictCommand { get; private set; }
 
 		#endregion
 
@@ -31,9 +30,9 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 
 		public const string DistrictListProperty = "DistrictList";
-		private List<District> _districtList;
+		private ObservableCollection<District> _districtList;
 
-		public List<District> DistrictList
+		public ObservableCollection<District> DistrictList
 		{
 			get
 			{
@@ -45,6 +44,52 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 				this.RaisePropertyChanged(DistrictListProperty);
 			}
 		}
+
+		public const string RegionListProperty = "RegionList";
+		private ObservableCollection<Region> _RegionList;
+
+		public ObservableCollection<Region> RegionList
+		{
+			get
+			{
+				return _RegionList;
+			}
+			set
+			{
+				_RegionList = value;
+				this.RaisePropertyChanged(RegionListProperty);
+			}
+		}
+
+
+		public const string SelectedListItemProperty = "SelectedListItem";
+		private District _selectedListItem;
+
+		public District SelectedListItem
+		{
+			get { return _selectedListItem; }
+			set { 
+				_selectedListItem = value;
+				this.RaisePropertyChanged(SelectedListItemProperty);
+			}
+		}
+
+
+
+		public const string SelectedRegionItemProperty = "SelectedRegionItem";
+		private Region _selectedRegionItem;
+
+		public Region SelectedRegionItem
+		{
+			get { return _selectedRegionItem; }
+			set
+			{
+				_selectedRegionItem = value;
+				this.CanExecuteSaveDistrictCommand();
+				this.RaisePropertyChanged(SelectedRegionItemProperty);
+			}
+		}
+
 
 
 		public const string DistrictNameProperty = "DistrictName";
@@ -153,23 +198,44 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		{
 
 			_dataService = dataService;
-			//Messenger.Default.Register<PasswordMessage>(this, HandlePasswordMessage);
-			this.AddCommand = new RelayCommand(this.ExecuteAddDistrictCommand, this.CanExecuteAddDistrictCommand);
-			this.DeleteCommand = new RelayCommand(this.ExecuteDeleteDistrictCommand, this.CanExecuteDeleteDistrictCommand);
-			this.SaveCommand = new RelayCommand(this.ExecuteSaveDistrictCommand, this.CanExecuteSaveDistrictCommand);
-			this.CancelCommand = new RelayCommand(this.ExecuteCancelDistrictCommand, this.CanExecuteCancelDistrictCommand);
+			Messenger.Default.Register<DistrictNameChangedMessage>(this, this.HandleDistrictNameChangedMessage);
+			this.AddDistrictCommand = new RelayCommand(this.ExecuteAddDistrictCommand, this.CanExecuteAddDistrictCommand);
+			this.DeleteDistrictCommand = new RelayCommand(this.ExecuteDeleteDistrictCommand, this.CanExecuteDeleteDistrictCommand);
+			this.SaveDistrictCommand = new RelayCommand(this.ExecuteSaveDistrictCommand, this.CanExecuteSaveDistrictCommand);
+			this.CancelDistrictCommand = new RelayCommand(this.ExecuteCancelDistrictCommand, this.CanExecuteCancelDistrictCommand);
 
-			var dist = new District() { DistrictName = "GapDistrict", FK_Region = 1 };
-			this.DistrictList = new List<District>();
-			this.DistrictList.Add(dist);
-			//this.IsAddButtonEnabled = true;
-			//this.IsDeleteButtonEnabled = false;
-			//this.IsSaveButtonEnabled = false;
+			var dist = new District() { PK_District=1, DistrictName = "Gap District", FK_Region = 2 };
+			this.DistrictList = new ObservableCollection<District>
+			{
+				dist
+			};
+			if (this.DistrictList.Count > 0)
+			{ 
+				this.SelectedListItem = this.DistrictList[0];
+			}
+
+			var reg = new Region() { PK_Region=2, RegionName = "Pennsylvania Region" };
+			this.RegionList = new ObservableCollection<Region> { reg };
+			reg = new Region() { PK_Region=1, RegionName = "Alabama Region" };
+			this.RegionList.Add(reg);
+			if (this.RegionList.Count > 0)
+			{
+				var item = this.RegionList.Where(w => w.PK_Region == dist.FK_Region).FirstOrDefault();
+				if(item != null)
+				{
+					this.SelectedRegionItem = item;
+				}
+			}
 		}
 
-	
+		private void HandleDistrictNameChangedMessage(DistrictNameChangedMessage obj)
+		{
+			this.IsDirty = true;
+		}
+
+
 		#region Can/Execute
-	
+
 		private void ExecuteCancelDistrictCommand()
 		{
 		
@@ -199,14 +265,15 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private bool CanExecuteSaveDistrictCommand()
 		{
-			
-			return this.IsDirty;
+
+			return this.IsDirty && this.SelectedListItem.DistrictName.IsNotNull() && this.SelectedListItem.DistrictName != "New District" && this.SelectedRegionItem.RegionName.IsNotNull();
 
 		}
 
 		private void ExecuteSaveDistrictCommand()
 		{
-			
+			//wire to database
+			_dataService.UpdateDistrict(this.SelectedListItem);
 		}
 
 		private bool CanExecuteAddDistrictCommand()
@@ -217,7 +284,11 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteAddDistrictCommand()
 		{
-			
+			var item = new District { DistrictName = "New District" };
+			this.DistrictList.Add(item);
+			this.SelectedListItem = item;
+			this.SelectedRegionItem = null;
+			this.IsDirty = true;
 		}
 		#endregion
 

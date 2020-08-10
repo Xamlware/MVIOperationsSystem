@@ -171,7 +171,7 @@ namespace MVIOperationsSystem.ViewModels
 
 		private void ExecuteCancelLoginCommand()
 		{
-			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "CancelLogin" });
+			Messenger.Default.Send<CancelLoginMessage>(new CancelLoginMessage { Action = "CancelLogin" });
 		}
 		#endregion
 

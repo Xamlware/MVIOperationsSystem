@@ -1,6 +1,8 @@
 ﻿using MilVetIndApi.Authentication.Models;
 using MVIOperations.Models;
+using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,28 +13,28 @@ namespace MVIOperationsSystem.DataServices
 {
 	public class DistrictDataRequest
 	{
-		//private static ExecuteDataRequest dr = new ExecuteDataRequest();
+		private static ExecuteDataRequest edr = new ExecuteDataRequest();
 
-		//public static async Task<LoginResponse> Login(LoginRequest lr)
-		//{
-		//	// Initialization.  
-		//	// RegInfoResponseObj responseObj = new RegInfoResponseObj();
-		//	LoginResponse resp = null;
-		//	var result = "";
-		//	try
-		//	{
-		//		var jsonString = JsonConvert.SerializeObject(lr);
-		//		result = await dr.ExecuteRequest("api/authenticate/login", HttpRequestMethods.Post, jsonString);
+		public static async Task<DistrictResponse> UpdateDistrict(District dr)
+		{
+			// Initialization.  
+			// RegInfoResponseObj responseObj = new RegInfoResponseObj();
+			DistrictResponse resp = null;
+			var result = "";
+			try
+			{
+				var jsonString = JsonConvert.SerializeObject(dr);
+				result = await edr.ExecuteRequest("api/district/", HttpRequestMethods.Post, jsonString);
 
-		//		resp = JsonConvert.DeserializeObject<LoginResponse>(result);
-		//	}
-		//	catch (Exception ex)
-		//	{
+				resp = JsonConvert.DeserializeObject<DistrictResponse>(result);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				//resp = ex.Message.ToString();
+			}
 
-		//		resp = null;
-		//	}
-
-		//	return resp;
-		//}
+			return resp;
+		}
 	}
 }
