@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace MVIOperationsSystem.Services
 {
-	public class DistrictDataService
+	public class DistrictDataService : IDistrictDataService
 	{
-		public async Task<DistrictResponse> UpdateDistrict(District dr)
+		public async Task<DistrictResponse> UpdateDistrict(District dr, HttpRequestMethods method)
 		{
-			var districtResponse = await DistrictDataRequest.UpdateDistrict(dr);
+			var districtResponse = await DistrictDataRequest.UpdateDistrict(dr, method);
 
 			return districtResponse;
 		}

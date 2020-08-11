@@ -1,16 +1,13 @@
 ﻿using MVIOperations.Models;
 using MVIOperationsSystem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MVIOperationsSystem.Services
 {
 	public interface IDistrictDataService
 	{
-		Task<DistrictResponse> UpdateDistrict(District dr);
+		Task<DistrictResponse> UpdateDistrict(District dr, HttpRequestMethods method);
+		//Task<System.Collections.ObjectModel.ObservableCollection<District>> GetDistrict
 	}
 
 }

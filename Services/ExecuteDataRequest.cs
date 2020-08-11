@@ -11,6 +11,8 @@ namespace MVIOperationsSystem.Services
 		public async Task<String> ExecuteRequest(string route, HttpRequestMethods method, string content)
 		{
 			string result = null;
+			StringContent pContent = null;
+
 			using (var client = new System.Net.Http.HttpClient())
 			{
 				try
@@ -29,10 +31,12 @@ namespace MVIOperationsSystem.Services
 					switch (method)
 					{
 						case HttpRequestMethods.Post:
-							var pContent = new StringContent(content, Encoding.UTF8, "application/json");
+							pContent = new StringContent(content, Encoding.UTF8, "application/json");
 							response = await client.PostAsync(route, pContent).ConfigureAwait(false);
 							break;
 						case HttpRequestMethods.Put:
+							pContent = new StringContent(content, Encoding.UTF8, "application/json");
+							response = await client.PutAsync(route, pContent).ConfigureAwait(false);
 							break;
 						case HttpRequestMethods.Delete:
 							break;

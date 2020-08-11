@@ -147,27 +147,25 @@
 							Text="{Binding SelectedListItem.DistrictName, Mode=TwoWay}" TextChanged="SfTextBoxExt_TextChanged"/>
 
 					<Label 
-							Grid.Row="2"
-							Grid.Column="1"
-							Content="Region Name:" 
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center" />
+						Grid.Row="2"
+						Grid.Column="1"
+						Content="Region Name:" 
+						VerticalAlignment="Center"
+						HorizontalAlignment="Center" />
 
 					<sf:ComboBoxAdv
-							Grid.Row="2"
-							Grid.Column="3"
-							MaxHeight="30"
-							Background="White"
-							ItemsSource="{Binding RegionList}"
-							DisplayMemberPath="RegionName"
-							SelectedItem="{Binding SelectedRegionItem}"
-							
-							MinWidth="250"	
-							MinHeight="35"
-							HorizontalContentAlignment="Center" 
-							VerticalAlignment="Top" />
-
-
+						Grid.Row="2"
+						Grid.Column="3"
+						MaxHeight="30"
+						Background="White"
+						ItemsSource="{Binding RegionList}"
+						DisplayMemberPath="RegionName"
+						SelectedItem="{Binding SelectedRegionItem}"
+						SelectionChanged="RegionComboSelectionChanged"
+						MinWidth="250"	
+						MinHeight="35"
+						HorizontalContentAlignment="Center" 
+						VerticalAlignment="Top" />
 				</Grid>
 			</Border>
 

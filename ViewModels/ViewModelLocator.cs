@@ -39,6 +39,7 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<RegionEditViewModel>();
 
             SimpleIoc.Default.Register<ILoginDataService, LoginDataService>();
+            SimpleIoc.Default.Register<IDistrictDataService, DistrictDataService>();
 
         }
 

@@ -167,6 +167,7 @@
     <Compile Include="Views\DataEditViews\InventoryEditView.xaml.cs">
       <DependentUpon>InventoryEditView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DataEditViews\RegionComboChangedMessage.cs" />
     <Compile Include="Views\DataEditViews\RegionEditView.xaml.cs">
       <DependentUpon>RegionEditView.xaml</DependentUpon>
     </Compile>

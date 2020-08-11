@@ -5,6 +5,7 @@ using MVIOperationsSystem.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,18 +16,20 @@ namespace MVIOperationsSystem.DataServices
 	{
 		private static ExecuteDataRequest edr = new ExecuteDataRequest();
 
-		public static async Task<DistrictResponse> UpdateDistrict(District dr)
+		public static async Task<DistrictResponse> UpdateDistrict(District dr, HttpRequestMethods method)
 		{
 			// Initialization.  
 			// RegInfoResponseObj responseObj = new RegInfoResponseObj();
 			DistrictResponse resp = null;
 			var result = "";
+			//HttpRequestMethods method = HttpRequestMethods.Put;
 			try
 			{
 				var jsonString = JsonConvert.SerializeObject(dr);
-				result = await edr.ExecuteRequest("api/district/", HttpRequestMethods.Post, jsonString);
 
-				resp = JsonConvert.DeserializeObject<DistrictResponse>(result);
+				result = await edr.ExecuteRequest("api/district/", method, jsonString);
+
+				var sresp = JsonConvert.DeserializeObject<ObservableCollection<District>>(result);
 			}
 			catch (Exception ex)
 			{

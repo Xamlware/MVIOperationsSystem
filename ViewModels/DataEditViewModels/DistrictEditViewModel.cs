@@ -6,6 +6,7 @@ using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
+using MVIOperationsSystem.Views.DataEditViews;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Xamlware.Framework.Extensions;
@@ -14,8 +15,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
 	public class DistrictEditViewModel : ViewModelBase
 	{
-		private readonly IDistrictDataService _dataService;
+		private readonly IDistrictDataService _dataService ;
 		private readonly LocalStorageService _ls = new LocalStorageService();
+		private bool isInitializing = false;
+		private bool isNew = false;
 
 		#region Commands
 		public RelayCommand AddDistrictCommand { get; private set; }
@@ -194,37 +197,66 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 
 
-		public DistrictEditViewModel(ILoginDataService dataService)
+		public DistrictEditViewModel(IDistrictDataService dataService)
 		{
-
 			_dataService = dataService;
+			this.isInitializing = true;
+
 			Messenger.Default.Register<DistrictNameChangedMessage>(this, this.HandleDistrictNameChangedMessage);
+			Messenger.Default.Register<Views.DataEditViews.RegionComboChangedMessage>(this, this.HandleRegionComboChangedMessage);
 			this.AddDistrictCommand = new RelayCommand(this.ExecuteAddDistrictCommand, this.CanExecuteAddDistrictCommand);
 			this.DeleteDistrictCommand = new RelayCommand(this.ExecuteDeleteDistrictCommand, this.CanExecuteDeleteDistrictCommand);
 			this.SaveDistrictCommand = new RelayCommand(this.ExecuteSaveDistrictCommand, this.CanExecuteSaveDistrictCommand);
 			this.CancelDistrictCommand = new RelayCommand(this.ExecuteCancelDistrictCommand, this.CanExecuteCancelDistrictCommand);
 
-			var dist = new District() { PK_District=1, DistrictName = "Gap District", FK_Region = 2 };
-			this.DistrictList = new ObservableCollection<District>
-			{
-				dist
-			};
-			if (this.DistrictList.Count > 0)
-			{ 
-				this.SelectedListItem = this.DistrictList[0];
-			}
+			//this.DistrictList = new ObservableCollection<District>();
 
-			var reg = new Region() { PK_Region=2, RegionName = "Pennsylvania Region" };
-			this.RegionList = new ObservableCollection<Region> { reg };
-			reg = new Region() { PK_Region=1, RegionName = "Alabama Region" };
-			this.RegionList.Add(reg);
-			if (this.RegionList.Count > 0)
+			this.GetDataListAsync();
+		
+				//ObservableCollection<MyType> obsCollection = new ObservableCollection<MyType>(myList);
+	
+				#region CreateManualLists
+			//var dist = new District() { PK_District=1, DistrictName = "Gap District", FK_Region = 2 };
+			//this.DistrictList = new ObservableCollection<District>
+			//{
+			//	dist
+			//};
+
+			//if (this.DistrictList.Count > 0)
+			//{ 
+			//	this.SelectedListItem = this.DistrictList[0];
+			//}
+
+			//var reg = new Region() { PK_Region=2, RegionName = "Pennsylvania Region" };
+			//this.RegionList = new ObservableCollection<Region> { reg };
+			//reg = new Region() { PK_Region=1, RegionName = "Alabama Region" };
+			//this.RegionList.Add(reg);
+			//if (this.RegionList.Count > 0)
+			//{
+			//	var item = this.RegionList.Where(w => w.PK_Region == dist.FK_Region).FirstOrDefault();
+			//	if(item != null)
+			//	{
+			//		this.SelectedRegionItem = item;
+			//	}
+			//}
+			#endregion
+
+
+			this.isInitializing = false;
+		}
+
+
+		private async void GetDataListAsync()
+		{
+			var resp = await _dataService.UpdateDistrict(null, HttpRequestMethods.Get);
+		}
+
+
+		private void HandleRegionComboChangedMessage(RegionComboChangedMessage obj)
+		{
+			if (!this.isInitializing && this.SelectedRegionItem != null)
 			{
-				var item = this.RegionList.Where(w => w.PK_Region == dist.FK_Region).FirstOrDefault();
-				if(item != null)
-				{
-					this.SelectedRegionItem = item;
-				}
+				this.SelectedListItem.FK_Region = this.SelectedRegionItem.PK_Region;
 			}
 		}
 
@@ -238,7 +270,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteCancelDistrictCommand()
 		{
-		
+
 		}
 
 
@@ -249,7 +281,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteDeleteDistrictCommand()
 		{
-			
+			var resp =_dataService.UpdateDistrict(SelectedListItem, HttpRequestMethods.Delete);
 		}
 
 		private bool CanExecuteDeleteDistrictCommand()
@@ -266,29 +298,36 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		private bool CanExecuteSaveDistrictCommand()
 		{
 
-			return this.IsDirty && this.SelectedListItem.DistrictName.IsNotNull() && this.SelectedListItem.DistrictName != "New District" && this.SelectedRegionItem.RegionName.IsNotNull();
+			return this.IsDirty &&   
+				this.SelectedListItem.DistrictName.IsNotNull() && 
+				this.SelectedListItem.DistrictName != "New District" && 
+				this.SelectedRegionItem.RegionName.IsNotNull();
 
 		}
 
 		private void ExecuteSaveDistrictCommand()
 		{
 			//wire to database
-			_dataService.UpdateDistrict(this.SelectedListItem);
+			var resp = _dataService.UpdateDistrict(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put);
+			this.isNew = false;
 		}
 
 		private bool CanExecuteAddDistrictCommand()
 		{
-			return true;
+			return !this.isNew;
 		
 		}
 
 		private void ExecuteAddDistrictCommand()
 		{
+			this.isNew = true;
+			this.IsDirty = true;
+
 			var item = new District { DistrictName = "New District" };
 			this.DistrictList.Add(item);
 			this.SelectedListItem = item;
 			this.SelectedRegionItem = null;
-			this.IsDirty = true;
+			
 		}
 		#endregion
 
