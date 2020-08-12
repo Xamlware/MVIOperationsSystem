@@ -1,6 +1,7 @@
 ﻿using MVIOperations.Models;
 using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Models;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace MVIOperationsSystem.Services
@@ -12,6 +13,10 @@ namespace MVIOperationsSystem.Services
 			var districtResponse = await DistrictDataRequest.UpdateDistrict(dr, method);
 
 			return districtResponse;
+		}
+		public async Task<ObservableCollection<District>> GetDistrictList(HttpRequestMethods method)
+		{
+			return  await DistrictDataRequest.GetDistrictList(method);
 		}
 	}
 }

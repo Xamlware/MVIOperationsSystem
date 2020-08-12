@@ -8,7 +8,7 @@ namespace MVIOperationsSystem.Services
 {
 	public class ExecuteDataRequest
 	{
-		public async Task<String> ExecuteRequest(string route, HttpRequestMethods method, string content)
+		public async string ExecuteRequest(string route, HttpRequestMethods method, string content=null)
 		{
 			string result = null;
 			StringContent pContent = null;

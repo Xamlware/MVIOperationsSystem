@@ -139,21 +139,28 @@
     </ApplicationDefinition>
     <Compile Include="Controls\xwImageButton.cs" />
     <Compile Include="DataServices\DistrictDataRequest.cs" />
+    <Compile Include="DataServices\RegionDataRequest.cs" />
     <Compile Include="Messages\ActionMessage.cs" />
     <Compile Include="Messages\AdminLoginMessage.cs" />
     <Compile Include="Messages\DistrictNameChangedMessage.cs" />
     <Compile Include="Models\AdminManagementTreeModel.cs" />
+    <Compile Include="Models\DataRequestObjects\DataRequest.cs" />
     <Compile Include="Models\DataRequestObjects\DistrictResponse.cs" />
     <Compile Include="Models\DataRequestObjects\RegionResponse.cs" />
     <Compile Include="Models\MainMenuModel.cs" />
+    <Compile Include="Services\DataService.cs" />
+    <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IDistrictDataService.cs" />
     <Compile Include="Services\DistrictDataService.cs" />
+    <Compile Include="Services\IRegionDataService.cs" />
+    <Compile Include="Services\RegionDataService.cs" />
     <Compile Include="ViewModels\AdminManagementViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\DistrictEditViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\InventoryEditViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\RegionEditViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\EmployeeEditViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\GenderEditViewModel.cs" />
+    <Compile Include="ViewModels\ListItemChangedMessage.cs" />
     <Compile Include="ViewModels\NotifyViewModel.cs" />
     <Compile Include="Views\DataEditViews\DistrictEditView.xaml.cs">
       <DependentUpon>DistrictEditView.xaml</DependentUpon>

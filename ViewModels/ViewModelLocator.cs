@@ -14,6 +14,8 @@
 
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using MVIOperations.Models;
+using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using MVIOperationsSystem.ViewModels.DataEditViewModels;
 
@@ -39,7 +41,8 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<RegionEditViewModel>();
 
             SimpleIoc.Default.Register<ILoginDataService, LoginDataService>();
-            SimpleIoc.Default.Register<IDistrictDataService, DistrictDataService>();
+            SimpleIoc.Default.Register<IDataService<District>, DataService<District>>();
+            SimpleIoc.Default.Register<IDataService<Region>, DataService<Region>>();
 
         }
 

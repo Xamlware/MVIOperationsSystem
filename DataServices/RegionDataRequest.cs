@@ -1,6 +1,7 @@
 ﻿using MilVetIndApi.Authentication.Models;
 using MVIOperations.Models;
 using MVIOperationsSystem.Models;
+using MVIOperationsSystem.Models.DataRequestObjects;
 using MVIOperationsSystem.Services;
 using Newtonsoft.Json;
 using System;
@@ -12,24 +13,24 @@ using System.Threading.Tasks;
 
 namespace MVIOperationsSystem.DataServices
 {
-	public class DistrictDataRequest
+	public class RegionDataRequest
 	{
 		private static ExecuteDataRequest edr = new ExecuteDataRequest();
 
-		public static async Task<DistrictResponse> UpdateDistrict(District dr, HttpRequestMethods method)
+		public static async Task<RegionResponse> UpdateRegion(Region dr, HttpRequestMethods method)
 		{
 			// Initialization.  
 			// RegInfoResponseObj responseObj = new RegInfoResponseObj();
-			DistrictResponse resp = null;
+			RegionResponse resp = null;
 			var result = "";
 			//HttpRequestMethods method = HttpRequestMethods.Put;
 			try
 			{
 				var jsonString = JsonConvert.SerializeObject(dr);
 
-				result = await edr.ExecuteRequest("api/district/", method, jsonString);
+				result = await edr.ExecuteRequest("api/Region/", method, jsonString);
 
-				var sresp = JsonConvert.DeserializeObject<ObservableCollection<District>>(result);
+				var sresp = JsonConvert.DeserializeObject<ObservableCollection<Region>>(result);
 			}
 			catch (Exception ex)
 			{
@@ -39,15 +40,15 @@ namespace MVIOperationsSystem.DataServices
 
 			return resp;
 		}
-		public static async Task<ObservableCollection<District>> GetDistrictList(HttpRequestMethods method)
+		public static async Task<ObservableCollection<Region>> GetRegionList(HttpRequestMethods method)
 		{
-			ObservableCollection<District> resp = null;
+			ObservableCollection<Region> resp = null;
 			var result = "";
- 
+
 			try
 			{
-				result = await edr.ExecuteRequest("api/district/", method, null);
-				resp = JsonConvert.DeserializeObject<ObservableCollection<District>>(result);
+				result = await edr.ExecuteRequest("api/Region/", method, null);
+				resp = JsonConvert.DeserializeObject<ObservableCollection<Region>>(result);
 			}
 			catch (Exception ex)
 			{
