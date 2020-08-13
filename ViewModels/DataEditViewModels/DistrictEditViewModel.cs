@@ -7,15 +7,17 @@ using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using MVIOperationsSystem.Views.DataEditViews;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamlware.Framework.Extensions;
 
 namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
 	public class DistrictEditViewModel : ViewModelBase
 	{
-		IDataService<District> _districtDataService ;
+		private readonly IDataService<District> _districtDataService ;
 		private readonly IDataService<Region> _regionDataService;
 		private readonly LocalStorageService _ls = new LocalStorageService();
 		private bool isInitializing = false;
@@ -30,6 +32,20 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		#endregion
 
 		#region Properties
+		public const string IsBusyProperty = "IsBusy";
+		private bool _isBusy;
+
+		public bool IsBusy
+		{
+			get { 
+				return _isBusy; 
+			}
+			set 
+			{ 
+				_isBusy = value;
+				this.RaisePropertyChanged(IsBusyProperty);
+			}
+		}
 
 
 
@@ -197,7 +213,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		#endregion
 
 
-
+		//
 		public DistrictEditViewModel(IDataService<District> districtDataService, IDataService<Region> regionDataService)
 		{
 			_districtDataService = districtDataService;
@@ -213,12 +229,21 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.SaveDistrictCommand = new RelayCommand(this.ExecuteSaveDistrictCommand, this.CanExecuteSaveDistrictCommand);
 			this.CancelDistrictCommand = new RelayCommand(this.ExecuteCancelDistrictCommand, this.CanExecuteCancelDistrictCommand);
 
+			this.IsBusy = true;
 			//this.DistrictList = new ObservableCollection<District>();
-			this.GetRegionListAsync();
-			this.GetDistrictListAsync();
-		
-				//ObservableCollection<MyType> obsCollection = new ObservableCollection<MyType>(myList);
-	
+			ObservableCollection<Region> regTask = this.GetRegionListAsync();
+			this.RegionList = regTask;
+
+			ObservableCollection<District> disTask = this.GetDistrictListAsync();
+			this.DistrictList = disTask;
+
+			if (this.DistrictList.IsNotNull() && this.DistrictList.Count > 0)
+			{
+				this.SelectedListItem = this.DistrictList[0];
+			}
+
+			this.IsBusy = false;
+
 				#region CreateManualLists
 			//var dist = new District() { PK_District=1, DistrictName = "Gap District", FK_Region = 2 };
 			//this.DistrictList = new ObservableCollection<District>
@@ -254,18 +279,16 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.SelectedRegionItem = this.RegionList.Where(w=>w.PK_Region == this.SelectedListItem.FK_Region).FirstOrDefault();
 		}
 
-		private void GetRegionList()
+		private ObservableCollection<Region> GetRegionListAsync()
 		{
-			this.RegionList =  _regionDataService.GetTableList(HttpRequestMethods.Get, "api/route");
+			var task = _regionDataService.GetTableList(HttpRequestMethods.Get, "api/region"); 
+			return task;
 		}
 
-		private void GetDistrictList()
+		private ObservableCollection<District> GetDistrictListAsync()
 		{
-			this.DistrictList = await _districtDataService.GetDistrictList(HttpRequestMethods.Get);
-			if (this.DistrictList.Count > 0)
-			{
-				this.SelectedListItem = this.DistrictList[0];
-			}
+			var task = _districtDataService.GetTableList(HttpRequestMethods.Get, "api/district");
+			return task;
 		}
 
 
@@ -331,7 +354,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		private void ExecuteSaveDistrictCommand()
 		{
 			//wire to database
-			var resp = _districtDataService.UpdateDistrict(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put);
+			var resp = _districtDataService.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district", this.SelectedListItem.PK_District);
 			this.isNew = false;
 		}
 

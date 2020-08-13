@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -8,21 +9,46 @@ namespace MVIOperationsSystem.Services
 	public class DataService<T> : IDataService<T>
 	{
 		ExecuteDataRequest edr = new ExecuteDataRequest();
-		public async Task<ObservableCollection<T>> UpdateTable(T t, HttpRequestMethods method, string route)
+		public T UpdateTable(T t, HttpRequestMethods method, string route = "", int? id = null)
 		{
-			var jsonString = JsonConvert.SerializeObject(t);
-			var result = await edr.ExecuteRequest(route, method, jsonString).Result;
-			ObservableCollection<T> sresp = JsonConvert.DeserializeObject<ObservableCollection<T>>(result);
+			T retVal = default(T);
+			try
+			{
+				var jsonString = JsonConvert.SerializeObject(t);
+				var result = edr.ExecuteRequest(route, method, jsonString, id);
 
-			return sresp;
+				if (method.ToString() != "Put")
+				{
+					retVal = JsonConvert.DeserializeObject<T>(result.ToString());
+				}
+			}
+			catch (Exception e)
+			{
+
+
+			}
+			return retVal;
 		}
 
-		public async Task<ObservableCollection<T>> GetTableList(HttpRequestMethods method, string route)
+		public ObservableCollection<T> GetTableList(HttpRequestMethods method, string route)
 		{
-			var result = await edr.ExecuteRequest(route, method).Result;
-			var sresp = JsonConvert.DeserializeObject<ObservableCollection<T>>(result);
-
-			return sresp;
+			try
+			{
+				var task = edr.ExecuteRequest(route, method);
+				if (task.Result.Contains("Exception"))
+				{
+					return null;
+				}
+				else
+				{
+					return JsonConvert.DeserializeObject<ObservableCollection<T>>(task.Result);
+				}
+			}
+			catch (Exception e)
+			{
+				return null;
+			}
+			
 		}
 	}
 }

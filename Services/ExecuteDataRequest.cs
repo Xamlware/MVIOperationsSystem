@@ -8,7 +8,7 @@ namespace MVIOperationsSystem.Services
 {
 	public class ExecuteDataRequest
 	{
-		public async string ExecuteRequest(string route, HttpRequestMethods method, string content=null)
+		public async Task<string> ExecuteRequest(string route, HttpRequestMethods method, string content=null, int? id = null)
 		{
 			string result = null;
 			StringContent pContent = null;
@@ -32,16 +32,16 @@ namespace MVIOperationsSystem.Services
 					{
 						case HttpRequestMethods.Post:
 							pContent = new StringContent(content, Encoding.UTF8, "application/json");
-							response = await client.PostAsync(route, pContent).ConfigureAwait(false);
+							response = client.PostAsync(route, pContent).GetAwaiter().GetResult();
 							break;
 						case HttpRequestMethods.Put:
 							pContent = new StringContent(content, Encoding.UTF8, "application/json");
-							response = await client.PutAsync(route, pContent).ConfigureAwait(false);
+							response = client.PutAsync(route + id.ToString(), pContent).GetAwaiter().GetResult();
 							break;
 						case HttpRequestMethods.Delete:
 							break;
 						case HttpRequestMethods.Get:
-							response = await client.GetAsync(route);
+							response = client.GetAsync(route).GetAwaiter().GetResult();
 							break;
 						default:
 							break;
