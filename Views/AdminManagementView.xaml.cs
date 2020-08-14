@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using MVIOperationsSystem.Controls;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Views.DataEditViews;
@@ -16,7 +17,12 @@ namespace MVIOperationsSystem.Views
 		{
 			InitializeComponent();
 			Messenger.Default.Register<NavigationMessage>(this, HandleNavigationMessage);
+			Messenger.Default.Register<CloseMessage>(this, HandleCloseMessage);
+		}
 
+		private void HandleCloseMessage(CloseMessage obj)
+		{
+			
 		}
 
 		private void HandleNavigationMessage(NavigationMessage obj)
@@ -27,7 +33,8 @@ namespace MVIOperationsSystem.Views
 
 		private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
-			var item = ((AdminManagementTreeModel) e.NewValue).Header.Trim();
+
+			var item = ((AdminManagementTreeModel)e.NewValue).Header.Trim();
 
 			switch (item)
 			{
@@ -50,11 +57,13 @@ namespace MVIOperationsSystem.Views
 			}
 
 		}
+
+		private void ContentPresenter_ContentChanged(object sender, RoutedEventArgs e)
+		{
+			var item = ((MVIContentPresenter)e.Source).Content;
+			var t = item.GetType();
+			Messenger.Default.Send<RemoveAdminLabelMessage>(new RemoveAdminLabelMessage { Action = "" });
+			Messenger.Default.Send<ContentPresenterChangedMessage>(new ContentPresenterChangedMessage { Action = t.Name });
+		}
 	}
 }
-//dataRoot.SubItems.Add(region);
-//			dataRoot.SubItems.Add(district);
-//			dataRoot.SubItems.Add(employee);
-//			dataRoot.SubItems.Add(employeeTime);
-//			dataRoot.SubItems.Add(gender);
-//			dataRoot.SubItems.Add(inventory);

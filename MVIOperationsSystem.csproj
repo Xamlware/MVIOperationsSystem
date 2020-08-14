@@ -137,12 +137,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ContentFilledMessage.cs" />
+    <Compile Include="Controls\MVIContentPresenter.cs" />
+    <Compile Include="Controls\MVINotifyBox.cs" />
     <Compile Include="Controls\xwImageButton.cs" />
     <Compile Include="DataServices\DistrictDataRequest.cs" />
     <Compile Include="DataServices\RegionDataRequest.cs" />
+    <Compile Include="Enums\NotifyButtonEnum.cs" />
+    <Compile Include="Enums\NotifyButtonLabelEnum.cs" />
     <Compile Include="Messages\ActionMessage.cs" />
     <Compile Include="Messages\AdminLoginMessage.cs" />
+    <Compile Include="Messages\CloseMessage.cs" />
+    <Compile Include="Messages\ContentEmptyMessage.cs" />
+    <Compile Include="Messages\ContentPresenterChangedMessage.cs" />
     <Compile Include="Messages\DistrictNameChangedMessage.cs" />
+    <Compile Include="Messages\NotifyViewActionMessage.cs" />
+    <Compile Include="Messages\RemoveAdminLabelMessage.cs" />
     <Compile Include="Models\AdminManagementTreeModel.cs" />
     <Compile Include="Models\DataRequestObjects\DataRequest.cs" />
     <Compile Include="Models\DataRequestObjects\DistrictResponse.cs" />
@@ -162,6 +172,7 @@
     <Compile Include="ViewModels\DataEditViewModels\GenderEditViewModel.cs" />
     <Compile Include="ViewModels\ListItemChangedMessage.cs" />
     <Compile Include="ViewModels\NotifyViewModel.cs" />
+    <Compile Include="ViewModels\SignOutMessage.cs" />
     <Compile Include="Views\DataEditViews\DistrictEditView.xaml.cs">
       <DependentUpon>DistrictEditView.xaml</DependentUpon>
     </Compile>
@@ -327,7 +338,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Enums\" />
     <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>

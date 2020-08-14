@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sf="http://schemas.syncfusion.com/wpf"
-		xmlns:m="clr-namespace:MVIOperationsSystem.Views"
+		xmlns:m="clr-namespace:MVIOperationsSystem.Views" xmlns:controls="clr-namespace:MVIOperationsSystem.Controls"
 		DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
 
 	
@@ -45,6 +45,7 @@
             Grid.Column="6"  
             Command="{Binding LoginCommand}"
 			Label="{Binding LabelText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+			Visibility="{Binding LoginButtonVisibility}"
 			HorizontalAlignment="Left"
             Height="25" 
             VerticalAlignment="Top" 
@@ -54,12 +55,13 @@
 			BorderBrush="Black" IconWidth="0" IconHeight="0"
 			/>
 
-		<ContentPresenter 
+		<controls:MVIContentPresenter 
 			x:Name="ContentPresenter"
 			Grid.Row="1" 
 			Grid.RowSpan="5" 
 			Grid.Column="0" 
 			Grid.ColumnSpan="6"
+			ContentChanged="ContentPresenter_ContentChanged"
 			/>
 	</Grid>
 </Window>

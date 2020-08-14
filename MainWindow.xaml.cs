@@ -6,6 +6,7 @@ using MVIOperationsSystem.Views;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using Xamlware.Framework.Extensions;
 
 namespace MVIOperationsSystem
 {
@@ -52,6 +53,23 @@ namespace MVIOperationsSystem
 				case "AdminLogin":
 					this.ContentPresenter.Content = new AdminManagementView();
 					break;
+				case "Close":
+					this.ContentPresenter.Content = "";
+					break;
+
+			}
+
+		}
+
+		private void ContentPresenter_ContentChanged(object sender, RoutedEventArgs e)
+		{
+			if (this.ContentPresenter.Content.ToString().IsNullOrEmpty())
+			{
+				Messenger.Default.Send<ContentEmptyMessage>(new ContentEmptyMessage());
+			}
+			else
+			{
+				Messenger.Default.Send<ContentFilledMessage>(new ContentFilledMessage());
 
 			}
 		}

@@ -18,7 +18,7 @@ namespace MVIOperationsSystem.ViewModels
 		#region Commands
 		public RelayCommand LoginCommand { get; private set; }
 		public RelayCommand CancelLoginCommand { get; private set; }
-
+		public RelayCommand CloseAdminDataWindowCommand { get; private set; }
 		#endregion
 
 
@@ -35,6 +35,21 @@ namespace MVIOperationsSystem.ViewModels
 				this.RaisePropertyChanged(IsDirtyProperty);
 			}
 		}
+
+
+		public const string IsBusyProperty = "IsBusy";
+		private bool _isBusy;
+
+		public bool IsBusy
+		{
+			get { return _isBusy; }
+			set
+			{
+				_isBusy = value;
+				this.RaisePropertyChanged(IsBusyProperty);
+			}
+		}
+
 
 
 
@@ -84,6 +99,20 @@ namespace MVIOperationsSystem.ViewModels
 			}
 		}
 
+
+		public const string DataLabelProperty = "DataLabel";
+		private string _dataLabel;
+
+		public string DataLabel
+		{
+			get { return _dataLabel; }
+			set 
+			{
+				_dataLabel = value;
+				this.RaisePropertyChanged(DataLabelProperty);
+			}
+		}
+
 		#endregion
 
 
@@ -94,11 +123,40 @@ namespace MVIOperationsSystem.ViewModels
 			this.IsDirty = false;
 
 			//Messenger.Default.Register<PasswordMessage>(this, HandlePasswordMessage);
+			Messenger.Default.Register<RemoveAdminLabelMessage>(this, this.HandleRemoveAdminLabelMessage);
+			Messenger.Default.Register<SignOutMessage>(this, this.HandleSignOutMessage);
+			
 			this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, this.CanExecuteLoginCommand);
 			this.CancelLoginCommand = new RelayCommand(this.ExecuteCancelLoginCommand, this.CanExecuteLoginCancelCommand);
-
+			this.CloseAdminDataWindowCommand = new RelayCommand(this.ExecuteCloseAdminDataWindowCommand, this.CanExecuteCloseAdminDataWindowCommand);
 			this.InitialzieActionList();
+			this.DataLabel = "Admin Data Management";
 
+		}
+
+		private void ExecuteCloseAdminDataWindowCommand()
+		{
+			if (this.IsDirty)
+			{ 
+			}
+
+			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "Close" });
+			
+		}
+
+		private bool CanExecuteCloseAdminDataWindowCommand()
+		{
+			return true;
+		}
+
+		private void HandleSignOutMessage(SignOutMessage obj)
+		{
+			
+		}
+
+		private void HandleRemoveAdminLabelMessage(RemoveAdminLabelMessage obj)
+		{
+			this.DataLabel = "";
 		}
 
 		public void InitialzieActionList()

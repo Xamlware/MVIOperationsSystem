@@ -39,6 +39,7 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<AdminManagementViewModel>();
             SimpleIoc.Default.Register<DistrictEditViewModel>(); 
             SimpleIoc.Default.Register<RegionEditViewModel>();
+            SimpleIoc.Default.Register<NotifyViewModel>();
 
             SimpleIoc.Default.Register<ILoginDataService, LoginDataService>();
             SimpleIoc.Default.Register<IDataService<District>, DataService<District>>();
@@ -94,6 +95,16 @@ namespace MVIOperationsSystem.ViewModels
                 return ServiceLocator.Current.GetInstance<RegionEditViewModel>();
             }
         }
+
+
+        public NotifyViewModel NotifyViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<NotifyViewModel>();
+            }
+        }
+
 
         public static void Cleanup()
         {

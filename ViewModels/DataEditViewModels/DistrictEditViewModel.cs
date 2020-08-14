@@ -3,15 +3,19 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
 using MVIOperationsSystem.DataServices;
+using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using MVIOperationsSystem.Views.DataEditViews;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using Xamlware.Framework.Extensions;
+using Region = MVIOperationsSystem.Models.Region;
 
 namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
@@ -28,10 +32,42 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		public RelayCommand DeleteDistrictCommand { get; private set; }
 		public RelayCommand SaveDistrictCommand { get; private set; }
 		public RelayCommand	CancelDistrictCommand { get; private set; }
-
+		public RelayCommand NotificationMessageViewedCommand { get; private set; }
 		#endregion
 
 		#region Properties
+
+		public const string NotifyLabelTextColorProperty = "NotifyLabelTextColor";
+		private Color _notifyLabelTextColor;
+
+		public Color NotifyLabelTextColor
+		{
+			get { return _notifyLabelTextColor; }
+			set
+			{
+				_notifyLabelTextColor = value;
+				this.RaisePropertyChanged(NotifyLabelTextColorProperty);
+			}
+		}
+
+		public const string IsNotifyStackPanelVisibleProperty = "IsNotifyStackPanelVisible";
+		private Visibility _isNotifyStackPanelVisible;
+
+		public Visibility IsNotifyStackPanelVisible
+		{
+			get
+			{
+				return _isNotifyStackPanelVisible;
+			}
+			set
+			{
+				_isNotifyStackPanelVisible = value;
+				this.RaisePropertyChanged(IsNotifyStackPanelVisibleProperty);
+			}
+		}
+
+
+
 		public const string IsBusyProperty = "IsBusy";
 		private bool _isBusy;
 
@@ -221,29 +257,14 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.isInitializing = true;
 
 			Messenger.Default.Register<DistrictNameChangedMessage>(this, this.HandleDistrictNameChangedMessage);
-			
+			Messenger.Default.Register<ContentPresenterChangedMessage>(this, this.HandleContentPresenterChangedMessage);
 			Messenger.Default.Register<ListItemChangedMessage>(this, this.HandleListItemChangedMessage);
 			Messenger.Default.Register<RegionComboChangedMessage>(this, this.HandleRegionComboChangedMessage);
 			this.AddDistrictCommand = new RelayCommand(this.ExecuteAddDistrictCommand, this.CanExecuteAddDistrictCommand);
 			this.DeleteDistrictCommand = new RelayCommand(this.ExecuteDeleteDistrictCommand, this.CanExecuteDeleteDistrictCommand);
 			this.SaveDistrictCommand = new RelayCommand(this.ExecuteSaveDistrictCommand, this.CanExecuteSaveDistrictCommand);
 			this.CancelDistrictCommand = new RelayCommand(this.ExecuteCancelDistrictCommand, this.CanExecuteCancelDistrictCommand);
-
-			this.IsBusy = true;
-			//this.DistrictList = new ObservableCollection<District>();
-			ObservableCollection<Region> regTask = this.GetRegionListAsync();
-			this.RegionList = regTask;
-
-			ObservableCollection<District> disTask = this.GetDistrictListAsync();
-			this.DistrictList = disTask;
-
-			if (this.DistrictList.IsNotNull() && this.DistrictList.Count > 0)
-			{
-				this.SelectedListItem = this.DistrictList[0];
-			}
-
-			this.IsBusy = false;
-
+			this.NotificationMessageViewedCommand = new RelayCommand(this.ExecuteNotificationMessageViewedCommand, thisCanExecuteNotificationMessageViewedCommand);
 				#region CreateManualLists
 			//var dist = new District() { PK_District=1, DistrictName = "Gap District", FK_Region = 2 };
 			//this.DistrictList = new ObservableCollection<District>
@@ -270,8 +291,29 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			//}
 			#endregion
 
-
 			this.isInitializing = false;
+			//this.IsNotifyLabelVisible = Visibility.Hidden;
+		}
+
+
+		private void HandleContentPresenterChangedMessage(ContentPresenterChangedMessage obj)
+		{
+			if (obj.Action.Contains("District"))
+			{
+				this.IsBusy = true;
+				ObservableCollection<Region> regTask = this.GetRegionListAsync();
+				this.RegionList = regTask;
+
+				ObservableCollection<District> disTask = this.GetDistrictListAsync();
+				this.DistrictList = disTask;
+
+				if (this.DistrictList.IsNotNull() && this.DistrictList.Count > 0)
+				{
+					this.SelectedListItem = this.DistrictList[0];
+				}
+
+				this.IsBusy = false;
+			}
 		}
 
 		private void HandleListItemChangedMessage(ListItemChangedMessage obj)
@@ -356,6 +398,13 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			//wire to database
 			var resp = _districtDataService.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district", this.SelectedListItem.PK_District);
 			this.isNew = false;
+			var am = new NotifyViewActionMessage();
+			am.ButtonMode = NotifyButtonEnum.OneButton;
+			am.ButtonLabels = new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok };
+			am.IsError = false;
+			am.Message = "Changes successfully sent to database.";
+
+			Messenger.Default.Send<NotifyViewActionMessage>(am);
 		}
 
 		private bool CanExecuteAddDistrictCommand()
@@ -373,8 +422,29 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.DistrictList.Add(item);
 			this.SelectedListItem = item;
 			this.SelectedRegionItem = null;
-			
+		
+			this.isNew = false;
+			var am = new NotifyViewActionMessage();
+			am.ButtonMode = NotifyButtonEnum.OneButton;
+			am.ButtonLabels = new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok };
+			am.IsError = false;
+			am.Message = "Changes successfully sent to database.";
+
+			Messenger.Default.Send<NotifyViewActionMessage>(am);
+
+
 		}
+
+		private bool thisCanExecuteNotificationMessageViewedCommand()
+		{
+			return true;
+		}
+
+		private void ExecuteNotificationMessageViewedCommand()
+		{
+			//this.NotificationStackPanel.Visibility
+		}
+
 		#endregion
 
 	}

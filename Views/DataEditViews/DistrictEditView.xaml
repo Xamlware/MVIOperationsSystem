@@ -16,7 +16,7 @@
 		BorderThickness="1"
 		CornerRadius="30"
 		Width="Auto">
-		
+
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>
@@ -73,7 +73,7 @@
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*" />
 						<ColumnDefinition Width="4*" />
-											</Grid.ColumnDefinitions>
+					</Grid.ColumnDefinitions>
 
 
 					<ListBox
@@ -115,7 +115,7 @@
 					</StackPanel>
 				</Grid>
 			</Border>
-			
+
 			<Border
 				Grid.Row="1"
 				Grid.Column="2"
@@ -129,7 +129,7 @@
 						<RowDefinition Height="10"/>
 						<RowDefinition Height="35"/>
 						<RowDefinition Height="10"/>
-						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="*"/>
 						<RowDefinition Height="10"/>
 					</Grid.RowDefinitions>
 
@@ -138,23 +138,25 @@
 						<ColumnDefinition Width="100" />
 						<ColumnDefinition Width="5" />
 						<ColumnDefinition Width="250" />
-						
+
 					</Grid.ColumnDefinitions>
-						<Label 
+					<Label 
 							Grid.Row="0"
 							Grid.Column="1"
 							Content="District Name:"
 							VerticalAlignment="Center"
 							HorizontalAlignment="Right"/>
-						
-						<sf:SfTextBoxExt 
+
+					<sf:SfTextBoxExt 
 							Grid.Row="0"
 							Grid.Column="3"
 							Grid.RowSpan="2"
 							Background="White"
 							Padding="10,5,0,0"
 							Height="30"
+							Width="200"
 							VerticalAlignment="Top"
+							HorizontalAlignment="Left"
 							HorizontalContentAlignment="Left"
 							VerticalContentAlignment="Center"
 							Text="{Binding SelectedListItem.DistrictName, Mode=TwoWay}" 
@@ -177,11 +179,55 @@
 						DisplayMemberPath="RegionName"
 						SelectedItem="{Binding SelectedRegionItem}"
 						SelectionChanged="RegionComboSelectionChanged"
-						MinWidth="250"	
 						MinHeight="35"
+						Width="200"
 						HorizontalContentAlignment="Left" 
 						VerticalContentAlignment="Center"
-						VerticalAlignment="Top" HorizontalAlignment="Left" Width="251" />
+						VerticalAlignment="Top" 
+						HorizontalAlignment="Left"  />
+
+					<c:NotifyView
+						x:Name="NotifyView"
+						Grid.Column="3"
+						HorizontalContentAlignment="Center" 
+						Visibility="{Binding NotifyVisibility }"					Margin="0,0,-231,2" Grid.RowSpan="5" Loaded="NotifyView_Loaded" />
+				
+					<!--<StackPanel 
+						x:Name="NotifyStackPanel"
+						Orientation="Horizontal"
+						Grid.Row="4"
+						Grid.Column="1"
+						Grid.ColumnSpan="3"
+						Visibility="{Binding IsNotifyStackPanelVisible}"
+						VerticalAlignment="Bottom"
+						HorizontalAlignment="Center"
+						Margin="0,0,-231,0">
+
+						<Label
+							x:Name="NotifyLabel"
+							VerticalAlignment="Bottom"
+							HorizontalAlignment="Left"
+							HorizontalContentAlignment="Center"
+							FontSize="16"
+							FontWeight="Bold"
+							Foreground="{Binding NotifyLabelTextColor}"
+							Content="This is my label" 
+							Margin="0,0,10,0"/>
+
+						<sf:ButtonAdv
+							Height="35"
+							Label="Ok"
+							Width="40"
+							IconWidth="0"
+							Background="Tan"
+							Foreground="SaddleBrown"
+							FontWeight="Black"
+							Command="{Binding NotificationMessageViewedCommand, Mode=TwoWay}"
+							HorizontalContentAlignment="Left" 
+							VerticalContentAlignment="Center"
+							VerticalAlignment="Top" 
+							HorizontalAlignment="Left"  />
+					</StackPanel>-->
 				</Grid>
 			</Border>
 
