@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:vm1="clr-namespace:MVIOperationsSystem.ViewModels"
+             xmlns:vm="clr-namespace:MVIOperationsSystem.ViewModels"
 			 d1p1:Ignorable="d"   
              StartupUri="MainWindow.xaml">
   <Application.Resources>
@@ -11,7 +11,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Controls\ButtonStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-            <vm1:ViewModelLocator x:Key="Locator" />
+            <vm:ViewModelLocator x:Key="Locator" />
         </ResourceDictionary>
   </Application.Resources>
 </Application>
