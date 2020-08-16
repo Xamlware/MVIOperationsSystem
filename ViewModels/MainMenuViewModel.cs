@@ -1,12 +1,16 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
+using Syncfusion.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MVIOperationsSystem.ViewModels
 {
@@ -18,7 +22,6 @@ namespace MVIOperationsSystem.ViewModels
 
         #endregion
 
-        private string _visibility = "Visible";
 
         #region Properties
 
@@ -54,14 +57,16 @@ namespace MVIOperationsSystem.ViewModels
             }
         }
 
-        public string Visibility
+        private string MenuVisibilityProperty { get; set; }
+        private Visibility _menuVisibility;
+        public Visibility MenuVisibility
         {
-            get { return _visibility; }
+            get { return _menuVisibility; }
 
             set
             {
-                _visibility = value;
-                this.RaisePropertyChanged(Visibility);
+                _menuVisibility = value;
+                this.RaisePropertyChanged(MenuVisibilityProperty);
             }
         }
         #endregion
@@ -69,12 +74,24 @@ namespace MVIOperationsSystem.ViewModels
         public MainMenuViewModel()
         {
             //this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, CanExecuteLoginCommand);
-
+            Messenger.Default.Register<MenuMessage>(this, this.HandleShowMenuMessage);
             this.InitialzieMenuItems();
-
+            this.MenuVisibility = Visibility.Hidden;
         }
 
-        public void InitialzieMenuItems()
+        private void HandleShowMenuMessage(MenuMessage m)
+        {
+            if (m.Action.Equals("Show"))
+            {
+                this.MenuVisibility = Visibility.Visible;
+            }
+			else
+			{
+                this.MenuVisibility = Visibility.Hidden;
+			}
+        }
+
+		public void InitialzieMenuItems()
         {
             this.MenuItems = new ObservableCollection<MainMenuModel>();
             MainMenuModel DataRoot = new MainMenuModel() { Header = "Data" };
@@ -129,7 +146,6 @@ namespace MVIOperationsSystem.ViewModels
 
         private void ExecuteLoginCommand()
         {
-            //this.SelectedTabItem = this.
         }
 
         #endregion

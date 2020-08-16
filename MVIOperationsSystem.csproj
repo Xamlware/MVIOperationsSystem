@@ -153,6 +153,7 @@
     <Compile Include="Messages\DistrictNameChangedMessage.cs" />
     <Compile Include="Messages\NotifyViewActionMessage.cs" />
     <Compile Include="Messages\RemoveAdminLabelMessage.cs" />
+    <Compile Include="Messages\MenuMessage.cs" />
     <Compile Include="Models\AdminManagementTreeModel.cs" />
     <Compile Include="Models\DataRequestObjects\DataRequest.cs" />
     <Compile Include="Models\DataRequestObjects\DistrictResponse.cs" />

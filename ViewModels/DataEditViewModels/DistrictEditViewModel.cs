@@ -161,6 +161,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			{
 				_districtName = value;
 				this.RaisePropertyChanged(DistrictNameProperty);
+				this.SaveDistrictCommand.RaiseCanExecuteChanged();
 			}
 		}
 
@@ -175,6 +176,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			{
 				_region = value;
 				this.RaisePropertyChanged(RegionProperty);
+				this.SaveDistrictCommand.RaiseCanExecuteChanged();
 			}
 		}
 
@@ -191,6 +193,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			set
 			{
 				_isDirty = value;
+				SaveDistrictCommand.RaiseCanExecuteChanged();
 				this.RaisePropertyChanged(IsDirtyTextProperty);
 			}
 		}
@@ -342,13 +345,13 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 
 			this.IsDirty = true;
-			this.CanExecuteSaveDistrictCommand();
+			this.SaveDistrictCommand.RaiseCanExecuteChanged();
 		}
 
 		private void HandleDistrictNameChangedMessage(DistrictNameChangedMessage obj)
 		{
 			this.IsDirty = true;
-			this.CanExecuteSaveDistrictCommand();
+			this.SaveDistrictCommand.RaiseCanExecuteChanged();
 		}
 
 

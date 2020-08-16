@@ -142,6 +142,7 @@ namespace MVIOperationsSystem.ViewModels
 		private async void ExecuteLoginCommand()
 		{
 			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "AdminLogin" });
+			Messenger.Default.Send<MenuMessage>(new MenuMessage { Action = "Show" });
 			//			}
 			//		}
 			//this.IsBusy = true;

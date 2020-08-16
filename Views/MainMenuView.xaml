@@ -5,18 +5,37 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:sf="http://schemas.syncfusion.com/wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="25" d:DesignWidth="800"
 			 DataContext="{Binding MainMenuViewModel, Source={StaticResource Locator}}">
 
 
 
-	<Grid>
+	<Grid Background="SaddleBrown">
         <Grid.RowDefinitions >
-            <RowDefinition Height="25" ></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
         </Grid.RowDefinitions>
 
-		<sf:MenuAdv 
+		<!--<sf:MenuAdv Background="SaddleBrown" Foreground="LightGoldenrodYellow">
+			<sf:MenuItemAdv 
+				Header="Admin" 
+				Foreground="LightGoldenrodYellow"
+				Visibility="{Binding AdminMenuVisibility}">
+
+				<sf:MenuItemAdv
+					Foreground="LightGoldenrodYellow"
+					Header="Data Management"
+				/>
+				<sf:MenuItemAdv 
+					Header="Reports" 
+					Foreground="LightGoldenrodYellow" />
+			</sf:MenuItemAdv>
+
+		</sf:MenuAdv>-->
+		
+		<!--<sf:MenuAdv 
+		
 			ItemsSource="{Binding MenuItems, Mode=TwoWay}" 
+			Visibility="{Binding MenuVisibility}"
 			Background="SaddleBrown">
 			<sf:MenuAdv.ItemTemplate>
 				<HierarchicalDataTemplate 
@@ -27,7 +46,7 @@
 						Background="SaddleBrown" />
 				</HierarchicalDataTemplate>
 			</sf:MenuAdv.ItemTemplate>
-		</sf:MenuAdv>
+		</sf:MenuAdv>-->
 	</Grid>
 </UserControl>
 	
