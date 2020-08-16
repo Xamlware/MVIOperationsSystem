@@ -37,9 +37,9 @@ namespace MVIOperationsSystem.ViewModels
 
 
 		public const string YesLabelProperty = "YesLabel";
-		private NotifyButtonLabelEnum _yesLabel;
+		private string _yesLabel;
 
-		public NotifyButtonLabelEnum YesLabel
+		public string YesLabel
 		{
 			get { return _yesLabel; }
 			set 
@@ -50,9 +50,9 @@ namespace MVIOperationsSystem.ViewModels
 		}
 
 		public const string NoLabelProperty = "NoLabel";
-		private NotifyButtonLabelEnum _noLabel;
+		private string _noLabel;
 
-		public NotifyButtonLabelEnum NoLabel
+		public string NoLabel
 		{
 			get { return _noLabel; }
 			set
@@ -64,9 +64,9 @@ namespace MVIOperationsSystem.ViewModels
 
 
 		public const string OneLabelProperty = "OneLabel";
-		private NotifyButtonLabelEnum _oneLabel;
+		private string _oneLabel;
 
-		public NotifyButtonLabelEnum OneLabel
+		public string OneLabel
 		{
 			get { return _oneLabel; }
 			set
@@ -179,7 +179,7 @@ namespace MVIOperationsSystem.ViewModels
 
 					if (nam.ButtonLabels.Count.Equals(1))
 					{
-						this.OneLabel = nam.ButtonLabels[0];
+						this.OneLabel = nam.ButtonLabels[0].ToString();
 					}
 					break;
 
@@ -189,8 +189,8 @@ namespace MVIOperationsSystem.ViewModels
 
 					if (nam.ButtonLabels.Count.Equals(2))
 					{
-						this.YesLabel = nam.ButtonLabels[0];
-						this.NoLabel = nam.ButtonLabels[1];
+						this.YesLabel = nam.ButtonLabels[0].ToString();
+						this.NoLabel = nam.ButtonLabels[1].ToString();
 					}
 					break;
 

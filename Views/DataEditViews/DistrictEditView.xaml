@@ -9,6 +9,7 @@
 	xmlns:c="clr-namespace:MVIOperationsSystem.Controls"
 	mc:Ignorable="d" 
 	d:DesignHeight="450" d:DesignWidth="800"
+	FocusManager.FocusedElement="{Binding ElementName=DistrictName}"
 	DataContext="{Binding DistrictEditViewModel, Source={StaticResource Locator}}">
 
 	<Border
@@ -91,6 +92,7 @@
 					<StackPanel
 						Grid.Row="2"
 						Grid.Column="0"
+						Visibility="{Binding IsEditButtonPanelVisible}"
 						Orientation="Horizontal" 
 						HorizontalAlignment="Left" >
 
@@ -98,20 +100,31 @@
 						<!--IsEnabled="{Binding IsAddButtonEnabled}"-->
 						<Button
 							Command="{Binding AddDistrictCommand}"
+							Visibility="{Binding}"
 							HorizontalAlignment="Left"
 							Margin="0,0,20,0"
 							Style="{DynamicResource ImageButtonStyle}"
 							c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemAdd32x32.png" 
-							ToolTip="Add new district record" />
+							ToolTip="Add new district" />
 
-						<!--IsEnabled="{Binding IsDeleteButtonEnabled}"-->
+						<Button
+        					Command="{Binding EditDistrictCommand}"
+							Visibility="{Binding}"
+							HorizontalAlignment="Right"
+							Margin="0,0,20,0"
+							Style="{DynamicResource ImageButtonStyle}"
+							c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemEdit16x16.png" 
+							ToolTip="Edit selected district" />
+					
+					<!--IsEnabled="{Binding IsDeleteButtonEnabled}"-->
 						<Button
 							Command="{Binding DeleteDistrictCommand}"
+							Visibility="{Binding}"
 							HorizontalAlignment="Left"
 							Margin="0,0,5,0"
 							Style="{DynamicResource ImageButtonStyle}"
 							c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemRemove32x32.png" 
-							ToolTip="Delete selected district record" />
+							ToolTip="Delete selected district" />
 					</StackPanel>
 				</Grid>
 			</Border>
@@ -148,6 +161,7 @@
 							HorizontalAlignment="Right"/>
 
 					<sf:SfTextBoxExt 
+							x:Name="DistrictName"
 							Grid.Row="0"
 							Grid.Column="3"
 							Grid.RowSpan="2"
@@ -159,6 +173,7 @@
 							HorizontalAlignment="Left"
 							HorizontalContentAlignment="Left"
 							VerticalContentAlignment="Center"
+							IsEnabled="{Binding IsDistrictNameEnabled}"
 							Text="{Binding SelectedListItem.DistrictName, Mode=TwoWay}" 
 							TextChanged="DistrictNameChanged" 
 							/>
@@ -171,6 +186,7 @@
 						HorizontalAlignment="Right" />
 
 					<sf:ComboBoxAdv
+						x:Name="RegionCombo"
 						Grid.Row="2"
 						Grid.Column="3"
 						MaxHeight="30"
@@ -178,6 +194,7 @@
 						ItemsSource="{Binding RegionList}"
 						DisplayMemberPath="RegionName"
 						SelectedItem="{Binding SelectedRegionItem}"
+						IsEnabled="{Binding IsRegionComboEnabled}"
 						SelectionChanged="RegionComboSelectionChanged"
 						MinHeight="35"
 						Width="200"
@@ -191,69 +208,35 @@
 						Grid.Column="3"
 						HorizontalContentAlignment="Center" 
 						Visibility="{Binding NotifyVisibility }"					Margin="0,0,-231,2" Grid.RowSpan="5" Loaded="NotifyView_Loaded" />
-				
-					<!--<StackPanel 
-						x:Name="NotifyStackPanel"
-						Orientation="Horizontal"
-						Grid.Row="4"
-						Grid.Column="1"
-						Grid.ColumnSpan="3"
-						Visibility="{Binding IsNotifyStackPanelVisible}"
-						VerticalAlignment="Bottom"
-						HorizontalAlignment="Center"
-						Margin="0,0,-231,0">
-
-						<Label
-							x:Name="NotifyLabel"
-							VerticalAlignment="Bottom"
-							HorizontalAlignment="Left"
-							HorizontalContentAlignment="Center"
-							FontSize="16"
-							FontWeight="Bold"
-							Foreground="{Binding NotifyLabelTextColor}"
-							Content="This is my label" 
-							Margin="0,0,10,0"/>
-
-						<sf:ButtonAdv
-							Height="35"
-							Label="Ok"
-							Width="40"
-							IconWidth="0"
-							Background="Tan"
-							Foreground="SaddleBrown"
-							FontWeight="Black"
-							Command="{Binding NotificationMessageViewedCommand, Mode=TwoWay}"
-							HorizontalContentAlignment="Left" 
-							VerticalContentAlignment="Center"
-							VerticalAlignment="Top" 
-							HorizontalAlignment="Left"  />
-					</StackPanel>-->
 				</Grid>
 			</Border>
 
 			<StackPanel 
 					Grid.Row="2" 
 					Grid.Column="2"
+					Visibility="{Binding IsSaveButtonPanelVisible}"
 					Orientation="Horizontal" 
 					HorizontalAlignment="Right" >
 
 				<!--IsEnabled="{Binding IsSaveButtonEnabled}"-->
 				<Button
-						Command="{Binding SaveDistrictCommand}"
-						HorizontalAlignment="Right"
-						Margin="0,0,20,0"
-						Style="{DynamicResource ImageButtonStyle}"
-						c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Save32x32.png" 
-						ToolTip="Save changes" />
+					Command="{Binding SaveDistrictCommand}"
+					HorizontalAlignment="Right"
+					Margin="0,0,20,0"
+					Visibility="{Binding}"		
+					Style="{DynamicResource ImageButtonStyle}"
+					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Save24x24.png" 
+					ToolTip="Save changes" />
 
 				<!--IsEnabled="{Binding IsCancelButtonEnabled}"-->
 				<Button
-        				Command="{Binding CancelDistrictCommand}"
-						HorizontalAlignment="Right"
-						Margin="0,0,20,0"
-						Style="{DynamicResource ImageButtonStyle}"
-						c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
-						ToolTip="Cancel changes" />
+        			Command="{Binding CancelDistrictCommand}"
+					HorizontalAlignment="Right"
+					Visibility="{Binding}"
+					Margin="0,0,20,0"
+					Style="{DynamicResource ImageButtonStyle}"
+					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
+					ToolTip="Cancel changes" />
 			</StackPanel>
 
 		</Grid>

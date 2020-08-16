@@ -8,6 +8,8 @@ using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using MVIOperationsSystem.Views.DataEditViews;
+using Syncfusion.UI.Xaml.TreeGrid;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -29,6 +31,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		#region Commands
 		public RelayCommand AddDistrictCommand { get; private set; }
+		public RelayCommand EditDistrictCommand { get; private set; }
 		public RelayCommand DeleteDistrictCommand { get; private set; }
 		public RelayCommand SaveDistrictCommand { get; private set; }
 		public RelayCommand	CancelDistrictCommand { get; private set; }
@@ -36,6 +39,39 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		#endregion
 
 		#region Properties
+
+		public const string IsSaveButtonPanelVisibleProperty = "IsSaveButtonPanelVisible";
+		private Visibility _isSaveButtonPanelVisible;
+
+		public Visibility IsSaveButtonPanelVisible
+		{
+			get
+			{
+				return _isSaveButtonPanelVisible;
+			}
+			set
+			{
+				_isSaveButtonPanelVisible = value;
+				this.RaisePropertyChanged(IsSaveButtonPanelVisibleProperty);
+			}
+		}
+
+		public const string IsEditButtonPanelVisibleProperty = "IsEditButtonPanelVisible";
+		private Visibility _isEditButtonPanelVisible;
+
+		public Visibility IsEditButtonPanelVisible
+		{
+			get
+			{
+				return _isEditButtonPanelVisible;
+			}
+			set
+			{
+				_isEditButtonPanelVisible = value;
+				this.RaisePropertyChanged(IsEditButtonPanelVisibleProperty);
+			}
+		}
+
 
 		public const string NotifyLabelTextColorProperty = "NotifyLabelTextColor";
 		private Color _notifyLabelTextColor;
@@ -66,6 +102,38 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 		}
 
+		public const string IsRegionComboEnabledProperty = "IsRegionComboEnabled";
+		private bool _isRegionComboEnabled;
+
+		public bool IsRegionComboEnabled
+		{
+			get
+			{
+				return _isRegionComboEnabled;
+			}
+			set
+			{
+				_isRegionComboEnabled = value;
+				this.RaisePropertyChanged(IsRegionComboEnabledProperty);
+			}
+		}
+
+
+		public const string IsDistrictNameEnabledProperty = "IsDistrictNameEnabled";
+		private bool _isDistrictNameEnabled;
+
+		public bool IsDistrictNameEnabled
+		{
+			get
+			{
+				return _isDistrictNameEnabled;
+			}
+			set
+			{
+				_isDistrictNameEnabled = value;
+				this.RaisePropertyChanged(IsDistrictNameEnabledProperty);
+			}
+		}
 
 
 		public const string IsBusyProperty = "IsBusy";
@@ -197,58 +265,6 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 				this.RaisePropertyChanged(IsDirtyTextProperty);
 			}
 		}
-
-		//public const string IsAddButtonEnabledTextProperty = "IsAddButtonEnabled";
-		//private bool _isAddButtonEnabled;
-
-		//public bool IsAddButtonEnabled
-		//{
-		//	get
-		//	{
-		//		return _isAddButtonEnabled;
-		//	}
-		//	set
-		//	{
-		//		_isAddButtonEnabled = value;
-		//		this.RaisePropertyChanged(IsAddButtonEnabledTextProperty);
-		//	}
-		//}
-
-
-		//public const string IsDeleteButtonEnabledTextProperty = "IsDeleteButtonEnabled";
-		//private bool _isDeleteButtonEnabled;
-
-		//public bool IsDeleteButtonEnabled
-		//{
-		//	get
-		//	{
-		//		return _isDeleteButtonEnabled;
-		//	}
-		//	set
-		//	{
-		//		_isDeleteButtonEnabled = value;
-		//		this.RaisePropertyChanged(IsDeleteButtonEnabledTextProperty);
-		//	}
-		//}
-
-
-
-		//public const string IsSaveButtonEnabledTextProperty = "IsSaveButtonEnabled";
-		//private bool _isSaveButtonEnabled;
-
-		//public bool IsSaveButtonEnabled
-		//{
-		//	get
-		//	{
-		//		return _isSaveButtonEnabled;
-		//	}
-		//	set
-		//	{
-		//		_isSaveButtonEnabled = value;
-		//		this.RaisePropertyChanged(IsSaveButtonEnabledTextProperty);
-		//	}
-		//}
-
 		#endregion
 
 
@@ -263,12 +279,18 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			Messenger.Default.Register<ContentPresenterChangedMessage>(this, this.HandleContentPresenterChangedMessage);
 			Messenger.Default.Register<ListItemChangedMessage>(this, this.HandleListItemChangedMessage);
 			Messenger.Default.Register<RegionComboChangedMessage>(this, this.HandleRegionComboChangedMessage);
+			
 			this.AddDistrictCommand = new RelayCommand(this.ExecuteAddDistrictCommand, this.CanExecuteAddDistrictCommand);
+			this.EditDistrictCommand = new RelayCommand(this.ExecuteEditDistrictCommand, this.CanExecuteEditDistrictCommand);
 			this.DeleteDistrictCommand = new RelayCommand(this.ExecuteDeleteDistrictCommand, this.CanExecuteDeleteDistrictCommand);
 			this.SaveDistrictCommand = new RelayCommand(this.ExecuteSaveDistrictCommand, this.CanExecuteSaveDistrictCommand);
 			this.CancelDistrictCommand = new RelayCommand(this.ExecuteCancelDistrictCommand, this.CanExecuteCancelDistrictCommand);
 			this.NotificationMessageViewedCommand = new RelayCommand(this.ExecuteNotificationMessageViewedCommand, thisCanExecuteNotificationMessageViewedCommand);
-				#region CreateManualLists
+			
+			this.isInitializing = false;
+			this.ShowEditButtons(true);
+
+			#region CreateManualLists
 			//var dist = new District() { PK_District=1, DistrictName = "Gap District", FK_Region = 2 };
 			//this.DistrictList = new ObservableCollection<District>
 			//{
@@ -293,12 +315,49 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			//	}
 			//}
 			#endregion
+		}
 
-			this.isInitializing = false;
-			//this.IsNotifyLabelVisible = Visibility.Hidden;
+		
+		private void EnableEditControls(bool isEnabled = false)
+		{
+			this.IsDistrictNameEnabled = isEnabled;
+			this.IsRegionComboEnabled = isEnabled;
+		}
+
+		private void ShowEditButtons(bool show)
+		{
+			this.IsEditButtonPanelVisible = show ? Visibility.Visible : Visibility.Hidden;
+			this.IsSaveButtonPanelVisible = show ? Visibility.Hidden : Visibility.Visible;
+		}
+
+		private void Notify(NotifyButtonEnum b, List<NotifyButtonLabelEnum> bl, bool isError, string message)
+		{
+			var am = new NotifyViewActionMessage
+			{
+				ButtonMode = b,
+				ButtonLabels = bl,
+				IsError = isError,
+				Message = message
+			};
+
+			Messenger.Default.Send<NotifyViewActionMessage>(am);
+
+		}
+
+		private ObservableCollection<Region> GetRegionListAsync()
+		{
+			var task = _regionDataService.GetTableList(HttpRequestMethods.Get, "api/region/");
+			return task;
+		}
+
+		private ObservableCollection<District> GetDistrictListAsync()
+		{
+			var task = _districtDataService.GetTableList(HttpRequestMethods.Get, "api/district/");
+			return task;
 		}
 
 
+		#region Message handlers
 		private void HandleContentPresenterChangedMessage(ContentPresenterChangedMessage obj)
 		{
 			if (obj.Action.Contains("District"))
@@ -321,21 +380,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void HandleListItemChangedMessage(ListItemChangedMessage obj)
 		{
-			this.SelectedRegionItem = this.RegionList.Where(w=>w.PK_Region == this.SelectedListItem.FK_Region).FirstOrDefault();
+			this.SelectedRegionItem = this.RegionList.Where(w => w.PK_Region == this.SelectedListItem.FK_Region).FirstOrDefault();
 		}
-
-		private ObservableCollection<Region> GetRegionListAsync()
-		{
-			var task = _regionDataService.GetTableList(HttpRequestMethods.Get, "api/region"); 
-			return task;
-		}
-
-		private ObservableCollection<District> GetDistrictListAsync()
-		{
-			var task = _districtDataService.GetTableList(HttpRequestMethods.Get, "api/district");
-			return task;
-		}
-
 
 		private void HandleRegionComboChangedMessage(RegionComboChangedMessage obj)
 		{
@@ -354,6 +400,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.SaveDistrictCommand.RaiseCanExecuteChanged();
 		}
 
+		#endregion
 
 		#region Can/Execute
 
@@ -370,7 +417,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteDeleteDistrictCommand()
 		{
-			//	var resp =_districtDataService.UpdateDistrict(SelectedListItem, HttpRequestMethods.Delete);
+			var resp =_districtDataService.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/district/", null);
+			this.ShowEditButtons(false);
 
 		}
 
@@ -387,27 +435,36 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private bool CanExecuteSaveDistrictCommand()
 		{
+			return true;
 
-			var retVal = this.IsDirty &&   
-				this.SelectedListItem.DistrictName.IsNotNull() && 
-				this.SelectedListItem.DistrictName != "New District" && 
-				this.SelectedRegionItem.RegionName.IsNotNull();
+			//var retVal = this.IsDirty &&   
+			//	this.SelectedListItem.DistrictName.IsNotNull() && 
+			//	this.SelectedListItem.DistrictName != "New District" && 
+			//	this.SelectedRegionItem.RegionName.IsNotNull();
 	
-			return retVal;
+			//return retVal;
 		}
 
 		private void ExecuteSaveDistrictCommand()
 		{
-			//wire to database
-			var resp = _districtDataService.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district", this.SelectedListItem.PK_District);
-			this.isNew = false;
-			var am = new NotifyViewActionMessage();
-			am.ButtonMode = NotifyButtonEnum.OneButton;
-			am.ButtonLabels = new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok };
-			am.IsError = false;
-			am.Message = "Changes successfully sent to database.";
+			var isError = false;
+			var message = "Changes successfully sent to database.";
 
-			Messenger.Default.Send<NotifyViewActionMessage>(am);
+			try
+			{
+				var resp = _districtDataService.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district", this.SelectedListItem.PK_District);
+			}
+			catch(Exception e)
+			{
+				isError = true;
+				message = "There was an error";
+			}
+			this.isNew = false;
+
+			this.Notify(NotifyButtonEnum.OneButton, new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok }, isError, message);
+			this.IsDirty = false;
+			this.ShowEditButtons(true);
+			this.EnableEditControls(false);
 		}
 
 		private bool CanExecuteAddDistrictCommand()
@@ -427,14 +484,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.SelectedRegionItem = null;
 		
 			this.isNew = false;
-			var am = new NotifyViewActionMessage();
-			am.ButtonMode = NotifyButtonEnum.OneButton;
-			am.ButtonLabels = new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok };
-			am.IsError = false;
-			am.Message = "Changes successfully sent to database.";
-
-			Messenger.Default.Send<NotifyViewActionMessage>(am);
-
+			this.ShowEditButtons(false);
 
 		}
 
@@ -445,7 +495,21 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteNotificationMessageViewedCommand()
 		{
-			//this.NotificationStackPanel.Visibility
+			this.ShowEditButtons(false);
+			this.EnableEditControls(false);
+		}
+
+
+		private bool CanExecuteEditDistrictCommand()
+		{
+			return true;
+		}
+
+		private void ExecuteEditDistrictCommand()
+		{
+			this.EnableEditControls(true);
+			this.ShowEditButtons(false);
+
 		}
 
 		#endregion
