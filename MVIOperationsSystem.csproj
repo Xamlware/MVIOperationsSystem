@@ -146,7 +146,9 @@
     <Compile Include="Enums\NotifyButtonEnum.cs" />
     <Compile Include="Enums\NotifyButtonLabelEnum.cs" />
     <Compile Include="Messages\ActionMessage.cs" />
+    <Compile Include="Messages\AdminDataCloseMessage.cs" />
     <Compile Include="Messages\AdminLoginMessage.cs" />
+    <Compile Include="Messages\CleanUpMessage.cs" />
     <Compile Include="Messages\CloseMessage.cs" />
     <Compile Include="Messages\ContentEmptyMessage.cs" />
     <Compile Include="Messages\ContentPresenterChangedMessage.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Messages\NotifyViewActionMessage.cs" />
     <Compile Include="Messages\RemoveAdminLabelMessage.cs" />
     <Compile Include="Messages\MenuMessage.cs" />
+    <Compile Include="Messages\SaveDirtyDataMessage.cs" />
     <Compile Include="Models\AdminManagementTreeModel.cs" />
     <Compile Include="Models\DataRequestObjects\DataRequest.cs" />
     <Compile Include="Models\DataRequestObjects\DistrictResponse.cs" />
@@ -163,8 +166,10 @@
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IDistrictDataService.cs" />
     <Compile Include="Services\DistrictDataService.cs" />
+    <Compile Include="Services\ILocalStorageService.cs" />
     <Compile Include="Services\IRegionDataService.cs" />
     <Compile Include="Services\RegionDataService.cs" />
+    <Compile Include="Helpers\Helpers.cs" />
     <Compile Include="ViewModels\AdminManagementViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\DistrictEditViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\InventoryEditViewModel.cs" />
@@ -172,6 +177,7 @@
     <Compile Include="ViewModels\DataEditViewModels\EmployeeEditViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\GenderEditViewModel.cs" />
     <Compile Include="ViewModels\ListItemChangedMessage.cs" />
+    <Compile Include="ViewModels\MVIViewModelBase.cs" />
     <Compile Include="ViewModels\NotifyViewModel.cs" />
     <Compile Include="ViewModels\SignOutMessage.cs" />
     <Compile Include="Views\DataEditViews\DistrictEditView.xaml.cs">
@@ -194,7 +200,7 @@
       <DependentUpon>NotifyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataServices\LoginDataRequest.cs" />
-    <Compile Include="DataServices\LocalStorageService.cs" />
+    <Compile Include="Services\LocalStorageService.cs" />
     <Compile Include="HttpRequestMethods.cs" />
     <Compile Include="Messages\CancelLoginMessage.cs" />
     <Compile Include="Messages\ClosingMessage.cs" />

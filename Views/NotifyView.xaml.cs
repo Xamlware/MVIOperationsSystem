@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.ComponentModel;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace MVIOperationsSystem.Controls
 {

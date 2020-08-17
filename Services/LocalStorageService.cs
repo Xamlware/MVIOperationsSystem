@@ -1,15 +1,13 @@
 ﻿using MVIOperationsSystem.Data;
 using MVIOperationsSystem.Models;
+using MVIOperationsSystem.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamlware.Framework.Extensions;
 
-namespace MVIOperationsSystem.DataServices
+namespace MVIOperationsSystem.Services
 {
-	public class LocalStorageService
+	public class LocalStorageService :ILocalStorageService
 	{
 		LocalStorageContext db = new LocalStorageContext();
 		public string WriteValue(string key, string value)

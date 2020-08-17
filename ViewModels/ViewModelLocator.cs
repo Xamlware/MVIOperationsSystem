@@ -14,7 +14,9 @@
 
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
+using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using MVIOperationsSystem.ViewModels.DataEditViewModels;
@@ -44,6 +46,7 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<ILoginDataService, LoginDataService>();
             SimpleIoc.Default.Register<IDataService<District>, DataService<District>>();
             SimpleIoc.Default.Register<IDataService<Region>, DataService<Region>>();
+            SimpleIoc.Default.Register<ILocalStorageService, LocalStorageService>();
 
         }
 
@@ -108,7 +111,7 @@ namespace MVIOperationsSystem.ViewModels
 
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+            Messenger.Default.Send<CleanUpMessage>(new CleanUpMessage());
         }
     }
 } 

@@ -6,17 +6,15 @@ using MVIOperationsSystem.Data;
 using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
+using MVIOperationsSystem.Services;
 using System;
 using System.Windows;
 
 namespace MVIOperationsSystem.ViewModels
 {
      public class MainViewModel : ViewModelBase
-    {
-
-        private LocalStorageContext _db = new LocalStorageContext();
-        private LocalStorageService _ls = new LocalStorageService();
-
+     {
+        ILocalStorageService _ls;
 
         #region Commands
         public RelayCommand LoginCommand { get; private set; }
@@ -54,8 +52,9 @@ namespace MVIOperationsSystem.ViewModels
         }
         #endregion
 
-        public MainViewModel()
+        public MainViewModel(ILocalStorageService ls)
         {
+            _ls = ls;
             this.LoginButtonVisibility = Visibility.Visible;
             this.LabelText = "Sign In";
             this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, CanExecuteLoginCommand);
@@ -65,6 +64,7 @@ namespace MVIOperationsSystem.ViewModels
 
         }
 
+		#region MessageHandlers
 		private void HandleContentFilledMessage(ContentFilledMessage obj)
 		{
             this.LoginButtonVisibility = Visibility.Hidden;
@@ -79,7 +79,7 @@ namespace MVIOperationsSystem.ViewModels
         {
             _ls.ClearLocalStorage();
         }
-
+		#endregion
 
 		#region Execute/CanExecute
 

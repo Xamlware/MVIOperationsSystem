@@ -5,15 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:sf="http://schemas.syncfusion.com/wpf"
 			 mc:Ignorable="d" 
+			 d:DesignHeight="120" d:DesignWidth="650"
     		 DataContext="{Binding NotifyViewModel, Source={StaticResource Locator}}">
-	
-	<Border Width="350" 
+
+	<Border 
+		x:Name="NotifyBorder"
+			Width="650" 
 			Height="120"
-			Visibility="{Binding NotifyVisibility}"
+			Visibility= "{Binding NotifyVisibility}"
 			Background="#ffffcc" 
 			BorderBrush="SaddleBrown"
 			BorderThickness="1,1,1,1" 
 			CornerRadius="30,30,30,30">
+		
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="20" />
@@ -25,6 +29,7 @@
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="20" />
+				<ColumnDefinition Width="155" />
 				<ColumnDefinition Width="155" />
 				<ColumnDefinition Width="155" />
 				<ColumnDefinition Width="20" />
@@ -39,11 +44,58 @@
 				Foreground="{Binding TextColor}"/>
 
 			<StackPanel
+				x:Name="ThreeButtonStackPanel"
+				Grid.Row="4" 
+				Grid.Column="1"
+				Grid.ColumnSpan="3"
+				Orientation="Horizontal"
+				Visibility="{Binding ThreeButtonVisibility}"
+				HorizontalAlignment="Center">
+
+				<sf:ButtonAdv 
+					x:Name="YesButton"
+					HorizontalContentAlignment="Center"  
+					Command="{Binding YesCommand}" 
+					Margin="0,5,10,5"
+					Label="{Binding YesButtonLabel}" 
+					Background="#FFF1D05D" 
+					SmallIcon="/MVIOperationsSystem;component/Resources/OK16x16.png" 
+					HorizontalAlignment="Center" 
+					ToolTip="Save Data"
+					Width="75" />
+
+				<sf:ButtonAdv 
+					x:Name="NoButton"
+					HorizontalAlignment="Center" 
+					HorizontalContentAlignment="Center" 
+					Command="{Binding NoCommand}" 
+					Label="{Binding NoButtonLabel}"
+					Margin="0,5,10,5" 
+					Background="#FFF1D05D" 
+					SmallIcon="/MVIOperationsSystem;component/Resources/Cancel16x16.png" 
+					ToolTip="Don't Save Data"
+					Width="75" />
+
+				<sf:ButtonAdv
+					x:Name="Cancel3Button"
+					HorizontalContentAlignment="Center"  
+					Command="{Binding CancelCommand}" 
+					Margin="0,5,10,5"
+					Label="{Binding Cancel3ButtonLabel}" 
+					Background="#FFF1D05D" 
+					SmallIcon="/MVIOperationsSystem;component/Resources/Undo16x16.png" 
+					HorizontalAlignment="Center"
+					ToolTip="Cancel and return to data edit"
+					Width="75" />
+
+			</StackPanel>
+
+			<StackPanel
 				Grid.Row="4" 
 				Grid.Column="1"
 				Grid.ColumnSpan="2"
 				Orientation="Horizontal"
-				Visibility="{Binding TwoButtonVisibility}"
+				Visibility="Hidden"
 				HorizontalAlignment="Center">
 
 				<sf:ButtonAdv 
@@ -51,7 +103,7 @@
 					HorizontalContentAlignment="Center"  
 					Command="{Binding YesCommand}" 
 					Margin="0,5,10,5"
-					Label="{Binding OkButtonLabel}" 
+					Label="{Binding YesButtonLabel}" 
 					Background="#FFF1D05D" 
 					SmallIcon="/MVIOperationsSystem;component/Resources/OK16x16.png" 
 					HorizontalAlignment="Center" 
@@ -62,20 +114,20 @@
 					HorizontalAlignment="Center" 
 					HorizontalContentAlignment="Center" 
 					Command="{Binding NoCommand}" 
-					Label="{Binding CancelButtonLabel}"
+					Label="{Binding NoButtonLabel}"
 					Margin="15,5,5,5" 
 					Background="#FFF1D05D" 
 					SmallIcon="/MVIOperationsSystem;component/Resources/Cancel16x16.png" 
 					Width="100" >
 				</sf:ButtonAdv>
 			</StackPanel>
-			
+
 			<sf:ButtonAdv
 				x:Name="OneButton"
 				Grid.Row="4" 
 				Grid.Column="1"
 				Grid.ColumnSpan="2" 
-					Margin="0,5,10,5"
+				Margin="0,5,10,5"
 				HorizontalAlignment="Center" 
 				HorizontalContentAlignment="Center" 
 				Command="{Binding OneCommand}" 
@@ -84,7 +136,6 @@
 				Background="#FFF1D05D" 
 				SmallIcon="/MVIOperationsSystem;component/Resources/Ok16x16.png" 
 				Width="100" />
-
 		</Grid>
 	</Border>
 </UserControl>

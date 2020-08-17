@@ -99,6 +99,7 @@
 				x:Name="ContentPresenter" />
 
 			<Button
+				x:Name="CloseAdminData"
 				Grid.Row="3"
 				Grid.Column="3"
 				Command="{Binding CloseAdminDataWindowCommand}"

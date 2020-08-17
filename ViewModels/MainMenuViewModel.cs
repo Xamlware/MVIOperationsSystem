@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
+using MVIOperationsSystem.Services;
 using Syncfusion.Windows.Controls;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Xamlware.Framework.Extensions;
 
 namespace MVIOperationsSystem.ViewModels
 {
     public class MainMenuViewModel : ViewModelBase
     {
+        ILocalStorageService _ls;
 
         #region Commands
         public RelayCommand LoginCommand { get; private set; }
@@ -69,14 +72,30 @@ namespace MVIOperationsSystem.ViewModels
                 this.RaisePropertyChanged(MenuVisibilityProperty);
             }
         }
+
+        private string AdminPadVisibilityProperty { get; set; }
+        private Visibility _adminPadVisibility;
+        public Visibility AdminPadVisibility
+        {
+            get { return _adminPadVisibility; }
+
+            set
+            {
+                _adminPadVisibility = value;
+                this.RaisePropertyChanged(AdminPadVisibilityProperty);
+            }
+        }
+
         #endregion
 
-        public MainMenuViewModel()
+        public MainMenuViewModel(ILocalStorageService ls)
         {
+            _ls = ls;
             //this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, CanExecuteLoginCommand);
             Messenger.Default.Register<MenuMessage>(this, this.HandleShowMenuMessage);
-            this.InitialzieMenuItems();
-            this.MenuVisibility = Visibility.Hidden;
+            Messenger.Default.Register<AdminLoginMessage>(this, this.HandleAdminLoginMessage);
+            //this.InitialzieMenuItems();
+
         }
 
         private void HandleShowMenuMessage(MenuMessage m)
@@ -91,7 +110,19 @@ namespace MVIOperationsSystem.ViewModels
 			}
         }
 
-		public void InitialzieMenuItems()
+        private void HandleAdminLoginMessage(AdminLoginMessage m)
+        {
+            this.AdminPadVisibility = Visibility.Visible;
+        }
+
+
+
+        public void SetPadVisibility(string role)
+        { 
+        
+        }
+		
+        public void InitialzieMenuItems()
         {
             this.MenuItems = new ObservableCollection<MainMenuModel>();
             MainMenuModel DataRoot = new MainMenuModel() { Header = "Data" };

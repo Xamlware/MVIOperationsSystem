@@ -3,9 +3,10 @@
 	public enum NotifyButtonLabelEnum
 	{
 		Ok,
-		Cancel,
 		Yes,
 		No,
-		Continue
+		Cancel,
+		Continue,
+		Save
 	}
 }

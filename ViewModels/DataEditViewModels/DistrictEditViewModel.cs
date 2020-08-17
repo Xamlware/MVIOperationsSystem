@@ -8,6 +8,7 @@ using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using MVIOperationsSystem.Views.DataEditViews;
+using MVIOperationsSystem.Helpers;
 using Syncfusion.UI.Xaml.TreeGrid;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
 	public class DistrictEditViewModel : ViewModelBase
 	{
-		private readonly IDataService<District> _districtDataService ;
+		private readonly IDataService<District> _districtDataService;
 		private readonly IDataService<Region> _regionDataService;
 		private readonly LocalStorageService _ls = new LocalStorageService();
 		private bool isInitializing = false;
@@ -34,7 +35,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		public RelayCommand EditDistrictCommand { get; private set; }
 		public RelayCommand DeleteDistrictCommand { get; private set; }
 		public RelayCommand SaveDistrictCommand { get; private set; }
-		public RelayCommand	CancelDistrictCommand { get; private set; }
+		public RelayCommand CancelDistrictCommand { get; private set; }
 		public RelayCommand NotificationMessageViewedCommand { get; private set; }
 		#endregion
 
@@ -141,11 +142,12 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		public bool IsBusy
 		{
-			get { 
-				return _isBusy; 
+			get
+			{
+				return _isBusy;
 			}
-			set 
-			{ 
+			set
+			{
 				_isBusy = value;
 				this.RaisePropertyChanged(IsBusyProperty);
 			}
@@ -164,7 +166,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 			set
 			{
-				_districtList = value; 
+				_districtList = value;
 				this.RaisePropertyChanged(DistrictListProperty);
 			}
 		}
@@ -192,9 +194,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		public District SelectedListItem
 		{
 			get { return _selectedListItem; }
-			set { 
+			set
+			{
 				_selectedListItem = value;
-//				this.SelectedRegionItem.PK_Region = this.SelectedListItem.FK_Region;
+				//				this.SelectedRegionItem.PK_Region = this.SelectedListItem.FK_Region;
 				this.RaisePropertyChanged(SelectedListItemProperty);
 			}
 		}
@@ -229,6 +232,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			{
 				_districtName = value;
 				this.RaisePropertyChanged(DistrictNameProperty);
+				this.IsDirty = true;
 				this.SaveDistrictCommand.RaiseCanExecuteChanged();
 			}
 		}
@@ -245,6 +249,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 				_region = value;
 				this.RaisePropertyChanged(RegionProperty);
 				this.SaveDistrictCommand.RaiseCanExecuteChanged();
+				this.IsDirty = true;
 			}
 		}
 
@@ -279,14 +284,16 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			Messenger.Default.Register<ContentPresenterChangedMessage>(this, this.HandleContentPresenterChangedMessage);
 			Messenger.Default.Register<ListItemChangedMessage>(this, this.HandleListItemChangedMessage);
 			Messenger.Default.Register<RegionComboChangedMessage>(this, this.HandleRegionComboChangedMessage);
-			
+			Messenger.Default.Register<AdminDataCloseMessage>(this, this.HandleAdminDataCloseMessage);
+
+
 			this.AddDistrictCommand = new RelayCommand(this.ExecuteAddDistrictCommand, this.CanExecuteAddDistrictCommand);
 			this.EditDistrictCommand = new RelayCommand(this.ExecuteEditDistrictCommand, this.CanExecuteEditDistrictCommand);
 			this.DeleteDistrictCommand = new RelayCommand(this.ExecuteDeleteDistrictCommand, this.CanExecuteDeleteDistrictCommand);
 			this.SaveDistrictCommand = new RelayCommand(this.ExecuteSaveDistrictCommand, this.CanExecuteSaveDistrictCommand);
 			this.CancelDistrictCommand = new RelayCommand(this.ExecuteCancelDistrictCommand, this.CanExecuteCancelDistrictCommand);
 			this.NotificationMessageViewedCommand = new RelayCommand(this.ExecuteNotificationMessageViewedCommand, thisCanExecuteNotificationMessageViewedCommand);
-			
+
 			this.isInitializing = false;
 			this.ShowEditButtons(true);
 
@@ -317,7 +324,20 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			#endregion
 		}
 
-		
+		private void HandleAdminDataCloseMessage(AdminDataCloseMessage m)
+		{
+			if (this.IsDirty)
+			{
+				Helpers.Helpers.Notify(
+					"District", 
+					NotifyButtonEnum.ThreeButton,
+					new List<NotifyButtonLabelEnum> { { NotifyButtonLabelEnum.Yes }, { NotifyButtonLabelEnum.No }, { NotifyButtonLabelEnum.Cancel } },
+					"You have unsaved changes.  Save now?",
+					false );
+
+			}
+		}
+
 		private void EnableEditControls(bool isEnabled = false)
 		{
 			this.IsDistrictNameEnabled = isEnabled;
@@ -328,20 +348,6 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		{
 			this.IsEditButtonPanelVisible = show ? Visibility.Visible : Visibility.Hidden;
 			this.IsSaveButtonPanelVisible = show ? Visibility.Hidden : Visibility.Visible;
-		}
-
-		private void Notify(NotifyButtonEnum b, List<NotifyButtonLabelEnum> bl, bool isError, string message)
-		{
-			var am = new NotifyViewActionMessage
-			{
-				ButtonMode = b,
-				ButtonLabels = bl,
-				IsError = isError,
-				Message = message
-			};
-
-			Messenger.Default.Send<NotifyViewActionMessage>(am);
-
 		}
 
 		private ObservableCollection<Region> GetRegionListAsync()
@@ -406,7 +412,6 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteCancelDistrictCommand()
 		{
-
 		}
 
 
@@ -417,7 +422,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteDeleteDistrictCommand()
 		{
-			var resp =_districtDataService.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/district/", null);
+			var resp = _districtDataService.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/district/", null);
 			this.ShowEditButtons(false);
 
 		}
@@ -441,36 +446,19 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			//	this.SelectedListItem.DistrictName.IsNotNull() && 
 			//	this.SelectedListItem.DistrictName != "New District" && 
 			//	this.SelectedRegionItem.RegionName.IsNotNull();
-	
+
 			//return retVal;
 		}
 
 		private void ExecuteSaveDistrictCommand()
 		{
-			var isError = false;
-			var message = "Changes successfully sent to database.";
-
-			try
-			{
-				var resp = _districtDataService.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district", this.SelectedListItem.PK_District);
-			}
-			catch(Exception e)
-			{
-				isError = true;
-				message = "There was an error";
-			}
-			this.isNew = false;
-
-			this.Notify(NotifyButtonEnum.OneButton, new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok }, isError, message);
-			this.IsDirty = false;
-			this.ShowEditButtons(true);
-			this.EnableEditControls(false);
+			this.SaveDistrict();
 		}
 
 		private bool CanExecuteAddDistrictCommand()
 		{
 			return !this.isNew;
-		
+
 		}
 
 		private void ExecuteAddDistrictCommand()
@@ -482,7 +470,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.DistrictList.Add(item);
 			this.SelectedListItem = item;
 			this.SelectedRegionItem = null;
-		
+
 			this.isNew = false;
 			this.ShowEditButtons(false);
 
@@ -513,6 +501,33 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		}
 
 		#endregion
+
+		public void SaveDistrict(bool skipNotify = false)
+		{
+			var isError = false;
+			var message = "Changes successfully sent to database.";
+
+			try
+			{
+				var resp = _districtDataService.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district/", this.SelectedListItem.PK_District);
+			}
+			catch (Exception e)
+			{
+				isError = true;
+				message = e.Message;
+			}
+			this.isNew = false;
+
+			if (!skipNotify)
+			{
+				Helpers.Helpers.Notify("District", NotifyButtonEnum.OneButton, new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok }, message, isError);
+			}
+
+			this.IsDirty = false;
+			this.ShowEditButtons(true);
+			this.EnableEditControls(false);
+		}
+
 
 	}
 }

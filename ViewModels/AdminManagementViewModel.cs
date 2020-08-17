@@ -2,15 +2,17 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.DataServices;
+using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace MVIOperationsSystem.ViewModels
 {
-	public class AdminManagementViewModel : ViewModelBase
+	public class AdminManagementViewModel : MVIViewModelBase
 	{
 		private readonly ILoginDataService _dataService;
 		private readonly LocalStorageService _ls = new LocalStorageService();
@@ -22,7 +24,14 @@ namespace MVIOperationsSystem.ViewModels
 		#endregion
 
 
-		#region Properties
+		#region Propertie
+		private bool _isContentPresent = false;
+
+		public bool IsContentPresent
+		{
+			get { return _isContentPresent; }
+			set { _isContentPresent = value; }
+		}
 
 		public const string IsDirtyProperty = "IsDirty";
 		private bool _isDirty;
@@ -125,23 +134,32 @@ namespace MVIOperationsSystem.ViewModels
 			//Messenger.Default.Register<PasswordMessage>(this, HandlePasswordMessage);
 			Messenger.Default.Register<RemoveAdminLabelMessage>(this, this.HandleRemoveAdminLabelMessage);
 			Messenger.Default.Register<SignOutMessage>(this, this.HandleSignOutMessage);
-			
+			Messenger.Default.Register<ContentPresenterChangedMessage>(this, this.HandleContentPresenterChangedMessage);
+
+
 			this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, this.CanExecuteLoginCommand);
 			this.CancelLoginCommand = new RelayCommand(this.ExecuteCancelLoginCommand, this.CanExecuteLoginCancelCommand);
 			this.CloseAdminDataWindowCommand = new RelayCommand(this.ExecuteCloseAdminDataWindowCommand, this.CanExecuteCloseAdminDataWindowCommand);
 			this.InitialzieActionList();
 			this.DataLabel = "Admin Data Management";
-
 		}
+
+		private void HandleContentPresenterChangedMessage(ContentPresenterChangedMessage cm)
+		{
+			this.IsContentPresent = false;
+		}
+
+		//private void Cleanup()
+		//{
+		
+		//}
 
 		private void ExecuteCloseAdminDataWindowCommand()
 		{
-			if (this.IsDirty)
-			{ 
+			if (!this.IsContentPresent)
+			{
+				Messenger.Default.Send<AdminDataCloseMessage>(new AdminDataCloseMessage());
 			}
-
-			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "Close" });
-			
 		}
 
 		private bool CanExecuteCloseAdminDataWindowCommand()
@@ -168,7 +186,6 @@ namespace MVIOperationsSystem.ViewModels
 			AdminManagementTreeModel ReportRoot = new AdminManagementTreeModel() { Header = "Reports" };
 			this.AddReportSubItems(ReportRoot);
 			this.ActionList.Add(ReportRoot);
-
 		}
 
 

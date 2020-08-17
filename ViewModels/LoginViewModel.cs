@@ -14,8 +14,8 @@ namespace MVIOperationsSystem.ViewModels
 {
 	public class LoginViewModel : ViewModelBase
 	{
-		private readonly ILoginDataService _dataService;
-		private readonly LocalStorageService _ls = new LocalStorageService();
+		private readonly ILoginDataService _ds;
+		private readonly ILocalStorageService _ls;
 
 		#region Commands
 		public RelayCommand LoginCommand { get; private set; }
@@ -109,9 +109,10 @@ namespace MVIOperationsSystem.ViewModels
 
 
 
-		public LoginViewModel(ILoginDataService dataService)
+		public LoginViewModel(ILoginDataService ds, ILocalStorageService ls)
 		{
-			_dataService = dataService;
+			_ds = ds;
+			_ls = ls;
 			Messenger.Default.Register<PasswordMessage>(this, HandlePasswordMessage);
 			this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, this.CanExecuteLoginCommand);
 			this.CancelLoginCommand = new RelayCommand(this.ExecuteCancelLoginCommand, this.CanExecuteLoginCancelCommand);
@@ -141,13 +142,11 @@ namespace MVIOperationsSystem.ViewModels
 
 		private async void ExecuteLoginCommand()
 		{
-			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "AdminLogin" });
-			Messenger.Default.Send<MenuMessage>(new MenuMessage { Action = "Show" });
 			//			}
 			//		}
 			//this.IsBusy = true;
 			//var loginRequest = new LoginRequest { Username = this.Username, Password = this.Password };
-			//var lr = await _dataService.Login(loginRequest);
+			//var lr = await _ds.Login(loginRequest);
 
 			//if (lr != null)
 			//{
@@ -165,7 +164,8 @@ namespace MVIOperationsSystem.ViewModels
 			//	else
 			//	{
 			//		//write data to local storage
-			//		var result = _ls.WriteValue("token", lr.Token);
+			var result = _ls.WriteValue("Token", "token is here"); //lr.Token);
+			result = _ls.WriteValue("Role", "Admin");
 			//		if (result == "OK")
 			//		{
 			//			this.IsBusy = false;
@@ -180,6 +180,10 @@ namespace MVIOperationsSystem.ViewModels
 			//		}
 			//	}
 			//}
+
+			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "AdminLogin" });
+			Messenger.Default.Send<MenuMessage>(new MenuMessage { Action = "Show" });
+
 		}
 		#endregion
 

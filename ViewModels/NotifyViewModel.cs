@@ -1,10 +1,14 @@
-﻿using GalaSoft.MvvmLight;
+﻿using CommonServiceLocator;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Services;
+using MVIOperationsSystem.ViewModels.DataEditViewModels;
+using Syncfusion.UI.Xaml.Grid;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 
@@ -18,10 +22,30 @@ namespace MVIOperationsSystem.ViewModels
 		#region Commands
 		public RelayCommand YesCommand { get; private set; }
 		public RelayCommand NoCommand { get; private set; }
+		public RelayCommand CancelCommand { get; private set; }
 		public RelayCommand OneCommand { get; private set; }
 		#endregion
 
 		#region Properties
+		private string _action;
+
+
+		public static bool IsRunningInVisualStudioDesigner
+		{
+			get
+			{
+				// Are we looking at this dialog in the Visual Studio Designer or Blend?
+				string appname = System.Reflection.Assembly.GetEntryAssembly().FullName;
+				return appname.Contains("XDesProc");
+			}
+		}
+		public string Action
+		{
+			get { return _action; }
+			set { _action = value; }
+		}
+
+
 		public const string TextColorProperty = "TextColor";
 		private Color _textColor;
 
@@ -36,43 +60,56 @@ namespace MVIOperationsSystem.ViewModels
 		}
 
 
-		public const string YesLabelProperty = "YesLabel";
-		private string _yesLabel;
+		public const string YesButtonLabelProperty = "YesButtonLabel";
+		private string _yesButtonLabel;
 
-		public string YesLabel
+		public string YesButtonLabel
 		{
-			get { return _yesLabel; }
+			get { return _yesButtonLabel; }
 			set 
 			{
-				_yesLabel = value;
-				this.RaisePropertyChanged(YesLabelProperty);
+				_yesButtonLabel = value;
+				this.RaisePropertyChanged(YesButtonLabelProperty);
 			}
 		}
 
-		public const string NoLabelProperty = "NoLabel";
-		private string _noLabel;
+		public const string NoButtonLabelProperty = "NoButtonLabel";
+		private string _noButtonLabel;
 
-		public string NoLabel
+		public string NoButtonLabel
 		{
-			get { return _noLabel; }
+			get { return _noButtonLabel; }
 			set
 			{
-				_noLabel = value;
-				this.RaisePropertyChanged(NoLabelProperty);
+				_noButtonLabel = value;
+				this.RaisePropertyChanged(NoButtonLabelProperty);
+			}
+		}
+
+		public const string Cancel3ButtonLabelProperty = "Cancel3ButtonLabel";
+		private string _cancel3ButtonLabel;
+
+		public string Cancel3ButtonLabel
+		{
+			get { return _cancel3ButtonLabel; }
+			set
+			{
+				_cancel3ButtonLabel = value;
+				this.RaisePropertyChanged(Cancel3ButtonLabelProperty);
 			}
 		}
 
 
-		public const string OneLabelProperty = "OneLabel";
-		private string _oneLabel;
+		public const string OneButtonLabelProperty = "OneButtonLabel";
+		private string _oneButtonLabel;
 
-		public string OneLabel
+		public string OneButtonLabel
 		{
-			get { return _oneLabel; }
+			get { return _oneButtonLabel; }
 			set
 			{
-				_oneLabel = value;
-				this.RaisePropertyChanged(OneLabelProperty);
+				_oneButtonLabel = value;
+				this.RaisePropertyChanged(OneButtonLabelProperty);
 			}
 		}
 
@@ -99,6 +136,22 @@ namespace MVIOperationsSystem.ViewModels
 			{
 				_notifyVisibility = value;
 				this.RaisePropertyChanged(NotifyVisibilityProperty);
+			}
+		}
+
+		public const string ThreeButtonVisibilityProperty = "ThreeButtonVisibility";
+		private Visibility _ThreeButtonVisibility;
+
+		public Visibility ThreeButtonVisibility
+		{
+			get
+			{
+				return _ThreeButtonVisibility;
+			}
+			set
+			{
+				_ThreeButtonVisibility = value;
+				this.RaisePropertyChanged(ThreeButtonVisibilityProperty);
 			}
 		}
 
@@ -139,17 +192,22 @@ namespace MVIOperationsSystem.ViewModels
 		public NotifyViewModel(ILoginDataService dataService)
 		{
 			_dataService = dataService;
-			this.NotifyVisibility = Visibility.Hidden;
 			Messenger.Default.Register<NotifyViewActionMessage>(this, this.HandleNotifyViewActionMessage);
 			this.YesCommand = new RelayCommand(this.ExecuteYesCommand, this.CanExecuteYesCommand);
 			this.NoCommand = new RelayCommand(this.ExecuteNoCommand, this.CanExecuteNoCommand);
+			this.CancelCommand = new RelayCommand(this.ExecuteCancelCommand, this.CanExecuteCancelCommand);
 			this.OneCommand = new RelayCommand(this.ExecuteOneCommand, this.CanExecuteOneCommand);
+			this.NotifyVisibility = IsRunningInVisualStudioDesigner ? Visibility.Visible : Visibility.Hidden;
 			this.OneButtonVisibility = Visibility.Hidden;
+			this.TwoButtonVisibility = Visibility.Hidden;
+			this.ThreeButtonVisibility = Visibility.Hidden;
+
 		}
 
 		private void HandleNotifyViewActionMessage(NotifyViewActionMessage nam)
 		{
 			this.NotifyVisibility = Visibility.Visible;
+			this.Action = nam.Action;
 			this.SetButtonMode(nam);
 			this.SetText(nam);
 		}
@@ -170,30 +228,43 @@ namespace MVIOperationsSystem.ViewModels
 
 		private void SetButtonMode(NotifyViewActionMessage nam)
 		{
-
 			switch (nam.ButtonMode)
 			{
 				case NotifyButtonEnum.OneButton:
+					this.ThreeButtonVisibility = Visibility.Hidden;
 					this.TwoButtonVisibility = Visibility.Hidden;
 					this.OneButtonVisibility = Visibility.Visible;
 
 					if (nam.ButtonLabels.Count.Equals(1))
 					{
-						this.OneLabel = nam.ButtonLabels[0].ToString();
+						this.OneButtonLabel = nam.ButtonLabels[0].ToString();
 					}
 					break;
 
 				case NotifyButtonEnum.TwoButton:
 					this.TwoButtonVisibility = Visibility.Visible;
 					this.OneButtonVisibility = Visibility.Hidden;
+					this.ThreeButtonVisibility = Visibility.Hidden;
 
 					if (nam.ButtonLabels.Count.Equals(2))
 					{
-						this.YesLabel = nam.ButtonLabels[0].ToString();
-						this.NoLabel = nam.ButtonLabels[1].ToString();
+						this.YesButtonLabel = nam.ButtonLabels[0].ToString();
+						this.NoButtonLabel = nam.ButtonLabels[1].ToString();
 					}
 					break;
 
+				case NotifyButtonEnum.ThreeButton:
+					this.ThreeButtonVisibility = Visibility.Visible;
+					this.TwoButtonVisibility = Visibility.Hidden;
+					this.OneButtonVisibility = Visibility.Hidden;
+
+					if (nam.ButtonLabels.Count.Equals(3))
+					{
+						this.YesButtonLabel = nam.ButtonLabels[0].ToString();
+						this.NoButtonLabel = nam.ButtonLabels[1].ToString();
+						this.Cancel3ButtonLabel = nam.ButtonLabels[2].ToString();
+					}
+					break;
 
 			}
 		}
@@ -208,10 +279,16 @@ namespace MVIOperationsSystem.ViewModels
 			return retVal;
 		}
 
-		private async void ExecuteYesCommand()
+		private void ExecuteYesCommand()
 		{
-			
-			
+			if (this.Action == "District")    
+			{
+				var vm = ServiceLocator.Current.GetInstance<DistrictEditViewModel>();
+				vm.SaveDistrict(true);
+				this.NotifyVisibility = Visibility.Hidden;
+			}
+
+			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "Close" });
 		}
 		#endregion
 
@@ -223,19 +300,35 @@ namespace MVIOperationsSystem.ViewModels
 		
 		private void ExecuteNoCommand()
 		{
-			Messenger.Default.Send<CancelLoginMessage>(new CancelLoginMessage { Action = "CancelLogin" });
+			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "Close" });
 		}
+		#endregion
 
-		private bool CanExecuteOneCommand()
+		#region CancelCommand
+		private bool CanExecuteCancelCommand()
 		{
 			return true;
 		}
 
-		private void ExecuteOneCommand()
+		private void ExecuteCancelCommand()
 		{
 			this.NotifyVisibility = Visibility.Hidden;
 		}
 
+		#endregion
+
+
+		#region OneCommand
+		private bool CanExecuteOneCommand()
+		{
+			var retVal = true;
+
+			return retVal;
+		}
+
+		private async void ExecuteOneCommand()
+		{
+		}
 		#endregion
 
 		#endregion

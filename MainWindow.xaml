@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sf="http://schemas.syncfusion.com/wpf"
-		xmlns:m="clr-namespace:MVIOperationsSystem.Views" xmlns:controls="clr-namespace:MVIOperationsSystem.Controls"
+		xmlns:m="clr-namespace:MVIOperationsSystem.Views" 
+		xmlns:controls="clr-namespace:MVIOperationsSystem.Controls"
 		DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
 
 	

@@ -3,6 +3,7 @@
 	public enum NotifyButtonEnum
 	{
 		OneButton,
-		TwoButton
+		TwoButton,
+		ThreeButton
 	}
 }

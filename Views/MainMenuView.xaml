@@ -15,11 +15,11 @@
             <RowDefinition Height="25"></RowDefinition>
         </Grid.RowDefinitions>
 
-		<!--<sf:MenuAdv Background="SaddleBrown" Foreground="LightGoldenrodYellow">
+		<sf:MenuAdv Background="SaddleBrown" Foreground="LightGoldenrodYellow">
 			<sf:MenuItemAdv 
 				Header="Admin" 
 				Foreground="LightGoldenrodYellow"
-				Visibility="{Binding AdminMenuVisibility}">
+				Visibility="{Binding AdminPadVisibility}">
 
 				<sf:MenuItemAdv
 					Foreground="LightGoldenrodYellow"
@@ -30,7 +30,7 @@
 					Foreground="LightGoldenrodYellow" />
 			</sf:MenuItemAdv>
 
-		</sf:MenuAdv>-->
+		</sf:MenuAdv>
 		
 		<!--<sf:MenuAdv 
 		
