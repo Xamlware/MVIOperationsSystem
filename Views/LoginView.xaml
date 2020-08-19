@@ -9,7 +9,7 @@
 			 mc:Ignorable="d"
 			 DataContext="{Binding LoginViewModel, Source={StaticResource Locator}}">
 
-	<Border Width="250" Height="220" 
+	<Border Width="250" Height="230" 
 			Background="LightGoldenrodYellow" 
 			BorderBrush="SaddleBrown" 
 			BorderThickness="1,1,1,1"
@@ -23,7 +23,7 @@
 				<RowDefinition Height="50"/>
 				<RowDefinition Height="10"/>
 				<RowDefinition Height="50"/>
-				<RowDefinition Height="25"/>
+				<RowDefinition Height="15"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 
@@ -82,10 +82,9 @@
 				Command="{Binding LoginCommand}" 
 				Margin="5,5,10,5"
 				Label="OK" 
-				Background="Tan" 
+				Style="{DynamicResource MVIButtonStyle}"
 				SmallIcon="/MVIOperationsSystem;component/Resources/OK16x16.png" 
-				HorizontalAlignment="Center" 
-				MinWidth="90" />
+				HorizontalAlignment="Center"  />
 
 			<sf:ButtonAdv
 				Grid.Row="7" 
@@ -95,11 +94,10 @@
 				Command="{Binding CancelLoginCommand}" 
 				Margin="10,5,5,5" 
 				Label="Cancel" 
-				Background="Tan"
+				Style="{DynamicResource MVIButtonStyle}"
 				SmallIcon="/MVIOperationsSystem;component/Resources/Cancel16x16.png" 
-				MinWidth="90" >
-			</sf:ButtonAdv>
-
+				/>
+			
 			<Notification:SfBusyIndicator  
 				Grid.Row="6"
 				Grid.ColumnSpan="2"

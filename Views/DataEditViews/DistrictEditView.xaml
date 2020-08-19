@@ -238,7 +238,6 @@
 					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
 					ToolTip="Cancel changes" />
 			</StackPanel>
-
 		</Grid>
 	</Border>
 </UserControl>

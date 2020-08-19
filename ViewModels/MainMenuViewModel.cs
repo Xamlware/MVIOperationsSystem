@@ -21,7 +21,7 @@ namespace MVIOperationsSystem.ViewModels
         ILocalStorageService _ls;
 
         #region Commands
-        public RelayCommand LoginCommand { get; private set; }
+        public RelayCommand OpenAdminDataManagementCommand { get; private set; }
 
         #endregion
 
@@ -91,7 +91,8 @@ namespace MVIOperationsSystem.ViewModels
         public MainMenuViewModel(ILocalStorageService ls)
         {
             _ls = ls;
-            //this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, CanExecuteLoginCommand);
+            this.MenuVisibility = Visibility.Hidden;
+            this.OpenAdminDataManagementCommand = new RelayCommand(this.ExecuteOpenAdminDataManagementCommand, CanExecuteOpenAdminDataManagementCommand);
             Messenger.Default.Register<MenuMessage>(this, this.HandleShowMenuMessage);
             Messenger.Default.Register<AdminLoginMessage>(this, this.HandleAdminLoginMessage);
             //this.InitialzieMenuItems();
@@ -170,13 +171,14 @@ namespace MVIOperationsSystem.ViewModels
 
         #region Execute/CanExecute
 
-        private bool CanExecuteLoginCommand()
+        private bool CanExecuteOpenAdminDataManagementCommand()
         {
             return true; 
         }
 
-        private void ExecuteLoginCommand()
+        private void ExecuteOpenAdminDataManagementCommand()
         {
+            Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "AdminLogin" });
         }
 
         #endregion

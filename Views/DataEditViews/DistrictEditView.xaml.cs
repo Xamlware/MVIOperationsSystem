@@ -35,7 +35,7 @@ namespace MVIOperationsSystem.Views.DataEditViews
 
 		private void DistrictNameChanged(object sender, TextChangedEventArgs e)
 		{
-			Messenger.Default.Send<DistrictNameChangedMessage>(new DistrictNameChangedMessage { Action = "TextChanged" });
+			Messenger.Default.Send<DistrictNameChangedMessage>(new DistrictNameChangedMessage { Action = this.DistrictName.ToString() });
 		}
 
 		private void RegionComboSelectionChanged(object sender, SelectionChangedEventArgs e)

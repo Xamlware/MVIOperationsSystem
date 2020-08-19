@@ -386,7 +386,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void HandleListItemChangedMessage(ListItemChangedMessage obj)
 		{
-			this.SelectedRegionItem = this.RegionList.Where(w => w.PK_Region == this.SelectedListItem.FK_Region).FirstOrDefault();
+			if (this.SelectedListItem != null)
+			{
+				this.SelectedRegionItem = this.RegionList.Where(w => w.PK_Region == this.SelectedListItem.FK_Region).FirstOrDefault();
+			}
 		}
 
 		private void HandleRegionComboChangedMessage(RegionComboChangedMessage obj)
@@ -400,10 +403,13 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.SaveDistrictCommand.RaiseCanExecuteChanged();
 		}
 
-		private void HandleDistrictNameChangedMessage(DistrictNameChangedMessage obj)
+		private void HandleDistrictNameChangedMessage(DistrictNameChangedMessage dm)
 		{
-			this.IsDirty = true;
-			this.SaveDistrictCommand.RaiseCanExecuteChanged();
+			if ((dm.Action.Trim()).IsNullOrEmpty())
+			{
+				this.IsDirty = true;
+				this.SaveDistrictCommand.RaiseCanExecuteChanged();
+			}
 		}
 
 		#endregion

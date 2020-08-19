@@ -22,7 +22,7 @@ namespace MVIOperationsSystem.Views
 
 		private void HandleCloseMessage(CloseMessage obj)
 		{
-			
+			Messenger.Default.Send<CleanUpMessage>(new CleanUpMessage());
 		}
 
 		private void HandleNavigationMessage(NavigationMessage obj)
@@ -33,27 +33,29 @@ namespace MVIOperationsSystem.Views
 
 		private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
-
-			var item = ((AdminManagementTreeModel)e.NewValue).Header.Trim();
-
-			switch (item)
+			if (e.NewValue != null)
 			{
+				var item = ((AdminManagementTreeModel)e.NewValue).Header.Trim();
 
-				case "District":
-					this.ContentPresenter.Content = new DistrictEditView();
-					break;
-				case "Employee":
-					this.ContentPresenter.Content = new EmployeeEditView();
-					break;
-				case "Gender":
-					this.ContentPresenter.Content = new GenderEditView();
-					break;
-				case "Inventory":
-					this.ContentPresenter.Content = new InventoryEditView();
-					break;
-				case "Region":
-					this.ContentPresenter.Content = new RegionEditView();
-					break;
+				switch (item)
+				{
+
+					case "District":
+						this.ContentPresenter.Content = new DistrictEditView();
+						break;
+					case "Employee":
+						this.ContentPresenter.Content = new EmployeeEditView();
+						break;
+					case "Gender":
+						this.ContentPresenter.Content = new GenderEditView();
+						break;
+					case "Inventory":
+						this.ContentPresenter.Content = new InventoryEditView();
+						break;
+					case "Region":
+						this.ContentPresenter.Content = new RegionEditView();
+						break;
+				}
 			}
 
 		}

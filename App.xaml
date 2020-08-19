@@ -6,10 +6,12 @@
              xmlns:vm="clr-namespace:MVIOperationsSystem.ViewModels"
 			 d1p1:Ignorable="d"   
              StartupUri="MainWindow.xaml">
-  <Application.Resources>
+ 
+	<Application.Resources>
     <ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Controls\ButtonStyles.xaml" />
+				<ResourceDictionary Source="Styles\ButtonStyles.xaml" />
+				<ResourceDictionary Source="Styles\MenuStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
             <vm:ViewModelLocator x:Key="Locator" />
         </ResourceDictionary>

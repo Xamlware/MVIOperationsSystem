@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace MVIOperationsSystem.Messages
 {
-	public class AdminDataCloseMessage
+	public class OpenAdminDataManagementMessage
 	{
-		public string Action { get; set; }
 	}
 }

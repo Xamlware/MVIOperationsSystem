@@ -15,19 +15,16 @@
             <RowDefinition Height="25"></RowDefinition>
         </Grid.RowDefinitions>
 
-		<sf:MenuAdv Background="SaddleBrown" Foreground="LightGoldenrodYellow">
-			<sf:MenuItemAdv 
-				Header="Admin" 
-				Foreground="LightGoldenrodYellow"
-				Visibility="{Binding AdminPadVisibility}">
+		<sf:MenuAdv Style="{DynamicResource MenuStyle}">
+			<sf:MenuItemAdv
+				Header="Admin" >
 
 				<sf:MenuItemAdv
-					Foreground="LightGoldenrodYellow"
 					Header="Data Management"
+					Command="{Binding OpenAdminDataManagementCommand}"
 				/>
 				<sf:MenuItemAdv 
-					Header="Reports" 
-					Foreground="LightGoldenrodYellow" />
+					Header="Reports" />
 			</sf:MenuItemAdv>
 
 		</sf:MenuAdv>

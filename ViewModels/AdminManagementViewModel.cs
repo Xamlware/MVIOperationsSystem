@@ -158,7 +158,8 @@ namespace MVIOperationsSystem.ViewModels
 		{
 			if (!this.IsContentPresent)
 			{
-				Messenger.Default.Send<AdminDataCloseMessage>(new AdminDataCloseMessage());
+				this.Cleanup();
+				Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "Close" });
 			}
 		}
 
@@ -233,7 +234,7 @@ namespace MVIOperationsSystem.ViewModels
 			return retVal;
 		}
 
-		private async void ExecuteLoginCommand()
+		private void ExecuteLoginCommand()
 		{
 		}
 		#endregion

@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:MVIOperationsSystem.Controls">
+    xmlns:controls="clr-namespace:MVIOperationsSystem.Controls"
+	xmlns:sf="http://schemas.syncfusion.com/wpf">
 
 	<!--  A button style that displays an attached image -->
 	<Style x:Key="ImageButtonStyle" TargetType="{x:Type Button}">
@@ -16,6 +17,30 @@
 					<Grid>
 						<Image
                             Source="{Binding Path=(controls:xwImageButton.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                            Stretch="UniformToFill"/>
+						<TextBlock
+                            Text="{TemplateBinding Content}"
+                            HorizontalAlignment="Center" />
+					</Grid>
+				</DataTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="MVIButtonStyle" TargetType="{x:Type sf:ButtonAdv}">
+		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+		<Setter Property="Height" Value="25" />
+		<Setter Property="Width" Value="90" />
+		<Setter Property="BorderBrush" Value="SaddleBrown" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Background" Value="Tan" />
+		<Setter Property="Foreground" Value="LightGoldenrodYellow"/>
+		<Setter Property="ContentTemplate">
+			<Setter.Value>
+				<DataTemplate>
+					<Grid>
+						<Image
+                            Source="{Binding Path=(controls:xwImageButton.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type sf:ButtonAdv}}}"
                             Stretch="UniformToFill"/>
 						<TextBlock
                             Text="{TemplateBinding Content}"
