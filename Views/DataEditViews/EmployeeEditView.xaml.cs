@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GalaSoft.MvvmLight.Messaging;
+using MVIOperationsSystem.Messages;
+using MVIOperationsSystem.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 namespace MVIOperationsSystem.Views.DataEditViews
 {
 	/// <summary>
@@ -24,5 +14,24 @@ namespace MVIOperationsSystem.Views.DataEditViews
 		{
 			InitializeComponent();
 		}
+
+		private void ListItemSelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			Messenger.Default.Send<ListItemChangedMessage>(new ListItemChangedMessage { Action = "TextChanged" });
+		}
+
+		private void EmployeeNameChanged(object sender, TextChangedEventArgs e)
+		{
+			//Messenger.Default.Send<EmployeeNameChangedMessage>(new EmployeeNameChangedMessage { Action = this.FirstName.ToString() });
+		}
+
+
+		private void NotifyView_Loaded(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }
+
+
+

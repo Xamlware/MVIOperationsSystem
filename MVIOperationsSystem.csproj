@@ -141,6 +141,12 @@
     <Compile Include="ContentFilledMessage.cs" />
     <Compile Include="Controls\MVIContentPresenter.cs" />
     <Compile Include="Controls\MVINotifyBox.cs" />
+    <Compile Include="Views\CustomViews\NameView.xaml.cs">
+      <DependentUpon>NameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomViews\USAddressView.xaml.cs">
+      <DependentUpon>USAddressView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\xwImageButton.cs" />
     <Compile Include="DataServices\DistrictDataRequest.cs" />
     <Compile Include="DataServices\RegionDataRequest.cs" />
@@ -154,8 +160,13 @@
     <Compile Include="Messages\ContentEmptyMessage.cs" />
     <Compile Include="Messages\ContentPresenterChangedMessage.cs" />
     <Compile Include="Messages\DistrictNameChangedMessage.cs" />
+    <Compile Include="Messages\EmployeeNameChangedMessage.cs" />
+    <Compile Include="Messages\GenderNameChangedMessage.cs" />
+    <Compile Include="Messages\ContentPresenterControlChangedMessage.cs" />
+    <Compile Include="Messages\InventoryNameChangedMessage.cs" />
     <Compile Include="Messages\NotifyViewActionMessage.cs" />
     <Compile Include="Messages\OpenAdminDataManagementMessage.cs" />
+    <Compile Include="Messages\RegionNameChangedMessage.cs" />
     <Compile Include="Messages\RemoveAdminLabelMessage.cs" />
     <Compile Include="Messages\MenuMessage.cs" />
     <Compile Include="Messages\SaveDirtyDataMessage.cs" />
@@ -166,17 +177,13 @@
     <Compile Include="Models\MainMenuModel.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\IDataService.cs" />
-    <Compile Include="Services\IDistrictDataService.cs" />
-    <Compile Include="Services\DistrictDataService.cs" />
     <Compile Include="Services\ILocalStorageService.cs" />
-    <Compile Include="Services\IRegionDataService.cs" />
-    <Compile Include="Services\RegionDataService.cs" />
     <Compile Include="Helpers\Helpers.cs" />
     <Compile Include="ViewModels\AdminManagementViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\DistrictEditViewModel.cs" />
+    <Compile Include="ViewModels\DataEditViewModels\EmployeeEditViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\InventoryEditViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\RegionEditViewModel.cs" />
-    <Compile Include="ViewModels\DataEditViewModels\EmployeeEditViewModel.cs" />
     <Compile Include="ViewModels\DataEditViewModels\GenderEditViewModel.cs" />
     <Compile Include="ViewModels\ListItemChangedMessage.cs" />
     <Compile Include="ViewModels\MVIViewModelBase.cs" />
@@ -194,11 +201,11 @@
     <Compile Include="Views\DataEditViews\InventoryEditView.xaml.cs">
       <DependentUpon>InventoryEditView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DataEditViews\RegionComboChangedMessage.cs" />
+    <Compile Include="Messages\RegionComboChangedMessage.cs" />
     <Compile Include="Views\DataEditViews\RegionEditView.xaml.cs">
       <DependentUpon>RegionEditView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NotifyView.xaml.cs">
+    <Compile Include="Views\CustomViews\NotifyView.xaml.cs">
       <DependentUpon>NotifyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataServices\LoginDataRequest.cs" />
@@ -257,7 +264,27 @@
     <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Page Include="Views\CustomViews\NameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomViews\USAddressView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\BorderStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\ComboBoxStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\GroupBoxStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -285,7 +312,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NotifyView.xaml">
+    <Page Include="Views\CustomViews\NotifyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

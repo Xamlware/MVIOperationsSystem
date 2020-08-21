@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="MVIOperationsSystem.Views.CustomViews.NameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sf="http://schemas.syncfusion.com/wpf"
+			 mc:Ignorable="d" 
+             d:DesignHeight="90" d:DesignWidth="550"
+			DataContext="{Binding EmployeeEditViewModel, Source={StaticResource Locator}}">
+
+
+	<Border 
+		CornerRadius="20"
+		BorderBrush="SaddleBrown"
+		BorderThickness="1"
+		Background="LightGoldenrodYellow">
+		<Grid> 						
+
+			<Grid.RowDefinitions>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="10"/>
+				<RowDefinition Height="30"/>
+			</Grid.RowDefinitions>
+			<!--<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>-->
+
+			<Label 
+				Grid.Row="0"
+				Grid.Column="0"
+				Content="Name:"
+				Margin="10,0,0,0"
+				Foreground="SaddleBrown"
+				FontSize="16"
+				FontWeight="Bold"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Left"/>
+
+			<StackPanel
+				IsEnabled="{Binding IsFormEnabled}"
+				Orientation="Horizontal"
+				Grid.Row="2" >
+
+				<StackPanel
+					Orientation="Horizontal" >
+			
+					<Label 
+						Content="First:"
+						Foreground="SaddleBrown"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Left"/>
+
+					<sf:SfTextBoxExt 
+						x:Name="FirstName"
+						Background="White"
+						Padding="10,5,0,0"
+						Height="30"
+						Width="90"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Left"
+						HorizontalContentAlignment="Left"
+						VerticalContentAlignment="Center"
+						Text="{Binding SelectedListItem.FirstName, Mode=TwoWay}" 
+						TextChanged="EmployeeNameChanged" />
+						
+				</StackPanel>
+
+				<StackPanel 
+					Orientation="Horizontal">
+					
+					<Label 
+						Content="Middle:"
+						Foreground="SaddleBrown"
+						VerticalAlignment="Center" />
+
+					<sf:SfTextBoxExt 
+						x:Name="MiddleName"
+						Background="White"
+						Padding="10,5,0,0"
+						Height="30"
+						Width="90"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Left"
+						HorizontalContentAlignment="Left"
+						VerticalContentAlignment="Center"
+						Text="{Binding SelectedListItem.MiddleName, Mode=TwoWay}" 
+						TextChanged="EmployeeNameChanged"
+						/>
+				</StackPanel>
+
+				<StackPanel Orientation="Horizontal">
+					<Label 
+						Content="Last:"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Left"/>
+
+					<sf:SfTextBoxExt 
+						x:Name="LastName"
+						Background="White"
+						Padding="10,5,0,0"
+						Height="30"
+						Width="90"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Left"
+						HorizontalContentAlignment="Left"
+						VerticalContentAlignment="Center"
+						Text="{Binding SelectedListItem.LastName, Mode=TwoWay}" 
+						TextChanged="EmployeeNameChanged"
+						/>
+
+				</StackPanel>
+
+				<StackPanel Orientation="Horizontal">
+					<Label 
+						Content="Suffix:"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Left"/>
+
+					<sf:SfTextBoxExt 
+						x:Name="NameSuffix"
+						Background="White"
+						Padding="10,5,0,0"
+						Height="30"
+						Width="90"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Left"
+						HorizontalContentAlignment="Left"
+						VerticalContentAlignment="Center"
+						Text="{Binding SelectedListItem.NameSuffix, Mode=TwoWay}" 
+						TextChanged="EmployeeNameChanged"
+						/>
+				</StackPanel>
+			</StackPanel>
+		</Grid>
+	</Border> 
+</UserControl>

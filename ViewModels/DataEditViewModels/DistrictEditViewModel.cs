@@ -1,32 +1,25 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
-using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
-using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
-using MVIOperationsSystem.Views.DataEditViews;
-using MVIOperationsSystem.Helpers;
-using Syncfusion.UI.Xaml.TreeGrid;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using Xamlware.Framework.Extensions;
 using Region = MVIOperationsSystem.Models.Region;
 
 namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
-	public class DistrictEditViewModel : ViewModelBase
+	public class DistrictEditViewModel : MVIViewModelBase
 	{
-		private readonly IDataService<District> _districtDataService;
-		private readonly IDataService<Region> _regionDataService;
-		private readonly LocalStorageService _ls = new LocalStorageService();
+		private readonly IDataService<District> _ds;
+		private readonly IDataService<Region> _rs;
+		private readonly ILocalStorageService _ls;
 		private bool isInitializing = false;
 		private bool isNew = false;
 
@@ -274,10 +267,11 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 
 		//
-		public DistrictEditViewModel(IDataService<District> districtDataService, IDataService<Region> regionDataService)
+		public DistrictEditViewModel(IDataService<District> ds, IDataService<Region> rs, ILocalStorageService ls)
 		{
-			_districtDataService = districtDataService;
-			_regionDataService = regionDataService;
+			_ds = ds;
+			_rs = rs;
+			_ls = ls;
 			this.isInitializing = true;
 
 			Messenger.Default.Register<DistrictNameChangedMessage>(this, this.HandleDistrictNameChangedMessage);
@@ -352,13 +346,13 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private ObservableCollection<Region> GetRegionListAsync()
 		{
-			var task = _regionDataService.GetTableList(HttpRequestMethods.Get, "api/region/");
+			var task = _rs.GetTableList(HttpRequestMethods.Get, "api/region/");
 			return task;
 		}
 
 		private ObservableCollection<District> GetDistrictListAsync()
 		{
-			var task = _districtDataService.GetTableList(HttpRequestMethods.Get, "api/district/");
+			var task = _ds.GetTableList(HttpRequestMethods.Get, "api/district/");
 			return task;
 		}
 
@@ -391,7 +385,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 				this.SelectedRegionItem = this.RegionList.Where(w => w.PK_Region == this.SelectedListItem.FK_Region).FirstOrDefault();
 			}
 		}
-
+	
 		private void HandleRegionComboChangedMessage(RegionComboChangedMessage obj)
 		{
 			if (!this.isInitializing && this.SelectedRegionItem != null)
@@ -428,7 +422,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteDeleteDistrictCommand()
 		{
-			var resp = _districtDataService.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/district/", null);
+			var resp = _ds.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/district/", null);
 			this.ShowEditButtons(false);
 
 		}
@@ -515,7 +509,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 			try
 			{
-				var resp = _districtDataService.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district/", this.SelectedListItem.PK_District);
+				var resp = _ds.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district/", this.SelectedListItem.PK_District);
 			}
 			catch (Exception e)
 			{

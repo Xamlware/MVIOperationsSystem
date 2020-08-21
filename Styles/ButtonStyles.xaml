@@ -39,9 +39,6 @@
 			<Setter.Value>
 				<DataTemplate>
 					<Grid>
-						<Image
-                            Source="{Binding Path=(controls:xwImageButton.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type sf:ButtonAdv}}}"
-                            Stretch="UniformToFill"/>
 						<TextBlock
                             Text="{TemplateBinding Content}"
                             HorizontalAlignment="Center" />

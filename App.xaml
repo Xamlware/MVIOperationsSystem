@@ -8,12 +8,16 @@
              StartupUri="MainWindow.xaml">
  
 	<Application.Resources>
-    <ResourceDictionary>
+        <ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Styles\ButtonStyles.xaml" />
 				<ResourceDictionary Source="Styles\MenuStyles.xaml" />
+				<ResourceDictionary Source="Styles\BorderStyles.xaml" />
+				<ResourceDictionary Source="Styles\GroupBoxStyles.xaml" />
+				<ResourceDictionary Source="Styles\ComboBoxStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-            <vm:ViewModelLocator x:Key="Locator" />
+            
+			<vm:ViewModelLocator x:Key="Locator" />
         </ResourceDictionary>
   </Application.Resources>
 </Application>

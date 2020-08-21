@@ -281,13 +281,34 @@ namespace MVIOperationsSystem.ViewModels
 
 		private void ExecuteYesCommand()
 		{
-			if (this.Action == "District")    
+			switch(this.Action)
 			{
-				var vm = ServiceLocator.Current.GetInstance<DistrictEditViewModel>();
-				vm.SaveDistrict(true);
-				this.NotifyVisibility = Visibility.Hidden;
+				case "District":
+					var d = ServiceLocator.Current.GetInstance<DistrictEditViewModel>();
+					d.SaveDistrict(true);
+					break;
+				case "Region":
+					var r = ServiceLocator.Current.GetInstance<RegionEditViewModel>();
+					r.SaveRegion(true);
+					break;
+				case "Employee":
+					var se = ServiceLocator.Current.GetInstance<EmployeeEditViewModel>();
+					se.SaveEmployee(true);
+					break;
+
+					//case "Gender":
+					//	var g = ServiceLocator.Current.GetInstance<GenderEditViewModel>();
+					//	g.SaveGender(true);
+					//	break;
+					//case "Inventory":
+					//	var inv = ServiceLocator.Current.GetInstance<InventoryEditViewModel>();
+					//	inv.SaveInventory(true);
+					//	break;
+
 			}
 
+
+			this.NotifyVisibility = Visibility.Hidden;
 			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "Close" });
 		}
 		#endregion
@@ -328,6 +349,7 @@ namespace MVIOperationsSystem.ViewModels
 
 		private async void ExecuteOneCommand()
 		{
+			this.NotifyVisibility = Visibility.Hidden;
 		}
 		#endregion
 

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="MVIOperationsSystem.Controls.NotifyView"
+﻿<UserControl x:Class="MVIOperationsSystem.Views.CustomViews.NotifyView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,7 +10,7 @@
 
 	<Border 
 		x:Name="NotifyBorder"
-			Width="650" 
+			Width="450" 
 			Height="120"
 			Visibility= "{Binding NotifyVisibility}"
 			Background="#ffffcc" 

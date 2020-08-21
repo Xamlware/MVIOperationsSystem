@@ -15,8 +15,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
 	public class InventoryEditViewModel : ViewModelBase
 	{
-		private readonly ILoginDataService _dataService;
-		private readonly LocalStorageService _ls = new LocalStorageService();
+		private readonly IDataService<Inventory> _ins;
+		private readonly ILocalStorageService _ls;
 
 		#region Commands
 		public RelayCommand AddCommand { get; private set; }
@@ -149,10 +149,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 
 
-		public InventoryEditViewModel(ILoginDataService dataService)
+		public InventoryEditViewModel(IDataService<Inventory> ins, ILocalStorageService ls)
 		{
-
-			_dataService = dataService;
+			_ls = ls;
+			_ins = ins;
 			//Messenger.Default.Register<PasswordMessage>(this, HandlePasswordMessage);
 			this.AddCommand = new RelayCommand(this.ExecuteAddInventoryCommand, this.CanExecuteAddInventoryCommand);
 			this.DeleteCommand = new RelayCommand(this.ExecuteDeleteInventoryCommand, this.CanExecuteDeleteInventoryCommand);

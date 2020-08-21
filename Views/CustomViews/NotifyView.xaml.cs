@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows;
 
-namespace MVIOperationsSystem.Controls
+namespace MVIOperationsSystem.Views.CustomViews
 {
 	/// <summary>
 	/// Interaction logic for Notify.xaml

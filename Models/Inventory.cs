@@ -11,6 +11,9 @@ namespace MVIOperations.Models
 
 		[Key]
 		public int PK_Inventory { get; set; }
+
+		[StringLength(50, ErrorMessage = "The Inventory Name value cannot exceed 50 characters. ")]
+		[Required]
 		public string ItemName { get; set; }
 
 	

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVIOperationsSystem.Views.DataEditViews
+namespace MVIOperationsSystem.Messages
 {
-	public class RegionComboChangedMessage
+	public class GenderNameChangedMessage
 	{
 		public string Action { get; set; }
 	}

@@ -1,17 +1,3 @@
-/*
-  In App.xaml:
-  <Application.Resources>
-      <vm:ViewModelLocator xmlns:vm="clr-namespace:MVIOperationsSystem"
-                           x:Key="Locator" />
-  </Application.Resources>
-  
-  In the View:
-  DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
-
-  You can also use Blend to do all this with the tool's support.
-  See http://www.galasoft.ch/mvvm
-*/
-
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
@@ -41,11 +27,15 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<AdminManagementViewModel>();
             SimpleIoc.Default.Register<DistrictEditViewModel>(); 
             SimpleIoc.Default.Register<RegionEditViewModel>();
+            SimpleIoc.Default.Register<EmployeeEditViewModel>();
+            SimpleIoc.Default.Register<InventoryEditViewModel>();
             SimpleIoc.Default.Register<NotifyViewModel>();
 
             SimpleIoc.Default.Register<ILoginDataService, LoginDataService>();
             SimpleIoc.Default.Register<IDataService<District>, DataService<District>>();
             SimpleIoc.Default.Register<IDataService<Region>, DataService<Region>>();
+            SimpleIoc.Default.Register<IDataService<Employee>, DataService<Employee>>();
+            SimpleIoc.Default.Register<IDataService<Inventory>, DataService<Inventory>>();
             SimpleIoc.Default.Register<ILocalStorageService, LocalStorageService>();
 
         }
@@ -96,6 +86,22 @@ namespace MVIOperationsSystem.ViewModels
             get
             {
                 return ServiceLocator.Current.GetInstance<RegionEditViewModel>();
+            }
+        }
+
+        public EmployeeEditViewModel EmployeeEditViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<EmployeeEditViewModel>();
+            }
+        }
+
+        public InventoryEditViewModel InventoryEditViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<InventoryEditViewModel>();
             }
         }
 

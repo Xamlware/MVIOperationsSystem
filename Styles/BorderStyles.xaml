@@ -1,0 +1,11 @@
+﻿	<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Style x:Key="MVIBorderStyle" TargetType="{x:Type Border}">
+		<Setter Property="BorderBrush" Value="SaddleBrown"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="CornerRadius" Value="30" />
+		<Setter Property="Background" Value="LightGoldenrodYellow"/>
+	</Style>
+
+</ResourceDictionary>

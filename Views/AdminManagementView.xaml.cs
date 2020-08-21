@@ -66,6 +66,7 @@ namespace MVIOperationsSystem.Views
 			var t = item.GetType();
 			Messenger.Default.Send<RemoveAdminLabelMessage>(new RemoveAdminLabelMessage { Action = "" });
 			Messenger.Default.Send<ContentPresenterChangedMessage>(new ContentPresenterChangedMessage { Action = t.Name });
+			Messenger.Default.Send<ContentPresenterControlChangedMessage>(new ContentPresenterControlChangedMessage { Action = t.Name });
 		}
 	}
 }
