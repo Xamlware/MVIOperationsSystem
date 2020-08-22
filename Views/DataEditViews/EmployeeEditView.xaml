@@ -60,6 +60,9 @@
 				BorderBrush="SaddleBrown"
 				BorderThickness="1" >
 
+
+
+
 				<Grid 
 					Grid.Row="1"
 					Grid.RowSpan="2"
@@ -72,8 +75,9 @@
 					</Grid.RowDefinitions>
 
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="4*" />
+						<ColumnDefinition Width="151*" />
+						<ColumnDefinition Width="497*" />
+						<ColumnDefinition Width="108*"/>
 					</Grid.ColumnDefinitions>
 
 
@@ -88,9 +92,94 @@
 						BorderThickness="0,0,1,1" 
 						SelectionChanged="ListItemSelectionChanged" />
 
+					<sf:TabControlExt 
+						Name="EployeeTab"
+						Grid.Row="0"
+						Grid.Column="1"
+						CloseButtonType="Hide"
+						CollapseDefaultTabListContextMenuItems="False" Grid.ColumnSpan="2"
+						>
+						<sf:TabItemExt 
+							Header="Name/Address">
+
+							<Border
+				Grid.Row="1"
+				Grid.Column="2"
+				BorderBrush="SaddleBrown"
+				BorderThickness="0,1,1,1">
+
+
+								<Grid Margin="10,0,0,0">
+
+									<Grid.RowDefinitions>
+										<RowDefinition Height="90"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="30"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="30"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="30"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="30"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="30"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="30"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="*"/>
+										<RowDefinition Height="10"/>
+									</Grid.RowDefinitions>
+
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="5" />
+										<ColumnDefinition Width="100" />
+										<ColumnDefinition Width="5" />
+										<ColumnDefinition Width="*" />
+
+									</Grid.ColumnDefinitions>
+
+									<c:NameView
+										x:Name="Name"
+										Grid.Row="0" 
+										Grid.Column="0"
+										Grid.ColumnSpan="4"
+										Margin="0,10,10,0">
+									</c:NameView>
+
+									<c:USAddressView
+										x:Name="Address"
+										Grid.Row="2"
+										Grid.Column="0"
+										Grid.ColumnSpan="4">
+									</c:USAddressView>
+
+
+
+									<!--{Binding NotifyVisibility }"-->
+
+									<c:NotifyView
+						x:Name="NotifyView"
+						Grid.Column="1"
+						Grid.ColumnSpan="4"
+						Grid.RowSpan="16" 
+						HorizontalContentAlignment="Center" 
+						Visibility="Collapsed" 
+						Loaded="NotifyView_Loaded" />
+								</Grid>
+							</Border>
+
+						</sf:TabItemExt>
+						<sf:TabItemExt 
+							Header="Personal">
+							<TextBlock Name="textBlock1" Text="This is the second tab item." />
+						</sf:TabItemExt>
+
+					</sf:TabControlExt>
 
 					<StackPanel
-						Grid.Row="2"
+						Grid.Row="1"
 						Grid.Column="0"
 						Visibility="{Binding IsEditButtonPanelVisible}"
 						Orientation="Horizontal" 
@@ -129,72 +218,6 @@
 				</Grid>
 			</Border>
 
-			<Border
-				Grid.Row="1"
-				Grid.Column="2"
-				BorderBrush="SaddleBrown"
-				BorderThickness="0,1,1,1">
-
-				<Grid Margin="10,0,0,0">
-
-					<Grid.RowDefinitions>
-						<RowDefinition Height="90"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="*"/>
-						<RowDefinition Height="10"/>
-					</Grid.RowDefinitions>
-
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="5" />
-						<ColumnDefinition Width="100" />
-						<ColumnDefinition Width="5" />
-						<ColumnDefinition Width="*" />
-
-					</Grid.ColumnDefinitions>
-
-					<c:NameView
-						x:Name="Name"
-						Grid.Row="0" 
-						Grid.Column="0"
-						Grid.ColumnSpan="4"
-						Margin="0,10,10,0">
-					</c:NameView>
-
-					<c:USAddressView
-						x:Name="Address"
-						Grid.Row="2"
-						Grid.Column="0"
-						Grid.ColumnSpan="4">
-					</c:USAddressView>
-
-
-
-					<!--{Binding NotifyVisibility }"-->
-
-					<c:NotifyView
-						x:Name="NotifyView"
-						Grid.Column="1"
-						Grid.ColumnSpan="4"
-						Grid.RowSpan="16" 
-						HorizontalContentAlignment="Center" 
-						Visibility="Collapsed" 
-						Loaded="NotifyView_Loaded" />
-				</Grid>
-			</Border>
 
 			<StackPanel 
 					Grid.Row="2" 

@@ -11,9 +11,9 @@
 
 
 	<Grid Background="SaddleBrown">
-        <Grid.RowDefinitions >
-            <RowDefinition Height="25"></RowDefinition>
-        </Grid.RowDefinitions>
+		<Grid.RowDefinitions >
+			<RowDefinition Height="25"></RowDefinition>
+		</Grid.RowDefinitions>
 
 		<sf:MenuAdv Style="{DynamicResource MenuStyle}">
 			<sf:MenuItemAdv
@@ -28,7 +28,6 @@
 			</sf:MenuItemAdv>
 
 		</sf:MenuAdv>
-		
 		<!--<sf:MenuAdv 
 		
 			ItemsSource="{Binding MenuItems, Mode=TwoWay}" 
@@ -46,7 +45,7 @@
 		</sf:MenuAdv>-->
 	</Grid>
 </UserControl>
-	
+
 <!--<sf:MenuAdv Items Background="Black" Foreground="White">
 	<sf:MenuItemAdv Header="File" Command="{Binding FileCommand}" Background="Black" Foreground="White"/>
 	<sf:MenuItemAdv Header="Edit" Background="Black" Foreground="White"/>
