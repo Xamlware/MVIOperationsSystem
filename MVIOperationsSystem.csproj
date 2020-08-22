@@ -141,6 +141,7 @@
     <Compile Include="ContentFilledMessage.cs" />
     <Compile Include="Controls\MVIContentPresenter.cs" />
     <Compile Include="Controls\MVINotifyBox.cs" />
+    <Compile Include="Models\Country.cs" />
     <Compile Include="Views\CustomViews\NameView.xaml.cs">
       <DependentUpon>NameView.xaml</DependentUpon>
     </Compile>

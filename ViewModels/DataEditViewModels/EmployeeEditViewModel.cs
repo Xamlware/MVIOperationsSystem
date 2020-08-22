@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
 using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
+using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 	public class EmployeeEditViewModel : MVIViewModelBase
 	{
 		private readonly IDataService<Employee> _es;
+		private readonly IDataService<State> _ss;
+		private readonly IDataService<Country> _cs;
+		private readonly IDataService<Gender> _gs;
+		private readonly IDataService<Race> _rs;
 		private readonly ILocalStorageService _ls;
 		private bool isInitializing = false;
 		private bool isNew = false;
@@ -31,6 +36,31 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		#endregion
 
 		#region Properties
+
+		public const string StateListProperty = "StateList";
+		private ObservableCollection<State> _stateList;
+
+		public ObservableCollection<State> StateList
+		{
+			get { return _stateList; }
+			set { 
+				_stateList = value;
+				this.RaisePropertyChanged(StateListProperty);
+			}
+		}
+
+		public const string CountryListProperty = "CountryList";
+		private ObservableCollection<Country> _countryList;
+
+		public ObservableCollection<Country> CountryList
+		{
+			get { return _countryList; }
+			set
+			{
+				_countryList = value;
+				this.RaisePropertyChanged(CountryListProperty);
+			}
+		}
 
 		public const string IsFormEnabledProperty = "IsFormEnabled";
 		private bool _isFormEnabled;
@@ -212,6 +242,87 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		}
 
 
+		public const string EmployeeIdProperty = "EmployeeId";
+		private ObservableCollection<Employee> _EmployeeId;
+
+		public ObservableCollection<Employee> EmployeeId
+		{
+			get
+			{
+				return _EmployeeId;
+			}
+			set
+			{
+				_EmployeeId = value;
+				this.RaisePropertyChanged(EmployeeIdProperty);
+			}
+		}
+
+		public const string AspUserIdProperty = "AspUserId";
+		private ObservableCollection<Employee> _aspUserId;
+
+		public ObservableCollection<Employee> AspUserId
+		{
+			get
+			{
+				return _aspUserId;
+			}
+			set
+			{
+				_aspUserId = value;
+				this.RaisePropertyChanged(AspUserIdProperty);
+			}
+		}
+
+		public const string StoreProperty = "Store";
+		private Store _store;
+
+		public Store Store
+		{
+			get
+			{
+				return _store;
+			}
+			set
+			{
+				_store = value;
+				this.RaisePropertyChanged(StoreProperty);
+			}
+		}
+
+		public const string GenderProperty = "Gender";
+		private Gender _gender;
+
+		public Gender Gender
+		{
+			get
+			{
+				return _gender;
+			}
+			set
+			{
+				_gender = value;
+				this.RaisePropertyChanged(GenderProperty);
+			}
+		}
+
+		public const string RaceProperty = "Race";
+		private Race _race;
+
+		public Race Race
+		{
+			get
+			{
+				return _race;
+			}
+			set
+			{
+				_race = value;
+				this.RaisePropertyChanged(RaceProperty);
+			}
+		}
+
+
 		public const string SelectedListItemProperty = "SelectedListItem";
 		private Employee _selectedListItem;
 
@@ -263,14 +374,58 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 				this.RaisePropertyChanged(IsDirtyTextProperty);
 			}
 		}
+
+		public const string RaceListProperty = "RaceList";
+		private ObservableCollection<Race> _raceList;
+
+		public ObservableCollection<Race> RaceList
+		{
+			get
+			{
+				return _raceList;
+			}
+			set
+			{
+				_raceList = value;
+				this.RaisePropertyChanged(RaceListProperty);
+			}
+		}
+
+
+
+		public const string GenderListProperty = "GenderList";
+		private ObservableCollection<Gender> _genderList;
+
+		public ObservableCollection<Gender> GenderList
+		{
+			get
+			{
+				return _genderList;
+			}
+			set
+			{
+				_genderList = value;
+				this.RaisePropertyChanged(GenderListProperty);
+			}
+		}
+
 		#endregion
 
 
-		//
-		public EmployeeEditViewModel(IDataService<Employee> es, ILocalStorageService ls)
+			//
+		public EmployeeEditViewModel(IDataService<Employee> es, 
+			IDataService<State> ss,
+			IDataService<Country> cs,
+			IDataService<Gender> gs,
+			IDataService<Race> rs,
+			ILocalStorageService ls)
 		{
 			_es = es;
 			_ls = ls;
+			_ss = ss;
+			_cs = cs;
+			_gs = gs;
+			_rs = rs;
 
 			this.isInitializing = true;
 
@@ -317,10 +472,16 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		}
 
 
-		private ObservableCollection<Employee> GetEmployeeListAsync()
+		private void GetEmployeeListAsync()
 		{
 			var task = _es.GetTableList(HttpRequestMethods.Get, "api/Employee/");
-			return task;
+			this.EmployeeList = task;
+
+			if (this.EmployeeList.IsNotNull() && this.EmployeeList.Count > 0)
+			{
+				this.SelectedListItem = this.EmployeeList[0];
+			}
+
 		}
 
 
@@ -330,17 +491,45 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			if (obj.Action.Contains("Employee"))
 			{
 				this.IsBusy = true;
+				this.GetRaceListAsync();
+				this.GetGenderListAsync();
+				this.GetStateListAsync();
+				this.CountryListAsync();
+				this.GetEmployeeListAsync();
+			
+				this.IsBusy = false;
+			}
+		}
 
-				ObservableCollection<Employee> disTask = this.GetEmployeeListAsync();
-				this.EmployeeList = disTask;
+		private void GetGenderListAsync()
+		{
+			var task = _gs.GetTableList(HttpRequestMethods.Get, "api/Gender/");
+			this.GenderList = task;
+
+		}
+
+		private void GetRaceListAsync()
+		{
+			var task = _rs.GetTableList(HttpRequestMethods.Get, "api/Race/");
+			this.RaceList = task;
+		}
+
+		private void CountryListAsync()
+		{
+				var task = _cs.GetTableList(HttpRequestMethods.Get, "api/Country/");
+				this.CountryList = task;
 
 				if (this.EmployeeList.IsNotNull() && this.EmployeeList.Count > 0)
 				{
 					this.SelectedListItem = this.EmployeeList[0];
 				}
 
-				this.IsBusy = false;
 			}
+
+		private void GetStateListAsync()
+		{
+				var task = _ss.GetTableList(HttpRequestMethods.Get, "api/State/");
+				this.StateList = task;
 		}
 
 		private void HandleListItemChangedMessage(ListItemChangedMessage obj)

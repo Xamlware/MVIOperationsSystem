@@ -11,11 +11,15 @@ namespace MVIOperations.Models
 
 		[Key]
 		public int PK_Employee { get; set; }
+
 		[Required(ErrorMessage = "Store Id Required")]
 		public int FK_Store { get; set; }
 
 		[Required(ErrorMessage = "State Id Required")]
 		public int FK_State { get; set; }
+
+		[Required(ErrorMessage = "Country Id Required")]
+		public int FK_Country { get; set; }
 
 		[Required(ErrorMessage = "RaceRequired")]
 		public int FK_Race { get; set; }
@@ -29,15 +33,16 @@ namespace MVIOperations.Models
 		[Required(ErrorMessage = "Asp User id Required")]
 		public string AspUserId { get; set; }
 
-		[Required(ErrorMessage = "Employee Name Required")]
+		[Required(ErrorMessage = "First Name Required")]
 		public string FirstName { get; set; }
 
-		[Required(ErrorMessage = "Employee Name Required")]
 		public string MiddleName { get; set; }
 
 
-		[Required(ErrorMessage = "Employee Name Required")]
+		[Required(ErrorMessage = "Last Name Required")]
 		public string LastName { get; set; }
+
+		public string NameSuffix { get; set; }
 
 		[Required(ErrorMessage = "Email Required")]
 		public string Email { get; set; }
@@ -51,5 +56,9 @@ namespace MVIOperations.Models
 		[Required(ErrorMessage = "City required")]
 		public string City { get; set; }
 
+		[Required(ErrorMessage = "State is Required")] 
+		public string State { get; set; }
+
+		
 	}
 }
