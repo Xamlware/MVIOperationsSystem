@@ -111,10 +111,10 @@
         					Command="{Binding EditEmployeeCommand}"
 							Visibility="{Binding}"
 							HorizontalAlignment="Right"
-							Margin="0,0,20,0"
+							Margin="0,4,20,0"
 							Style="{DynamicResource ImageButtonStyle}"
 							con:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemEdit16x16.png" 
-							ToolTip="Edit selected Employee" />
+							ToolTip="Edit selected Employee" VerticalAlignment="Top" />
 
 						<!--IsEnabled="{Binding IsDeleteButtonEnabled}"-->
 						<Button
@@ -173,16 +173,16 @@
 						Grid.ColumnSpan="4"
 						Margin="0,10,10,0">
 					</c:NameView>
-					
+
 					<c:USAddressView
 						x:Name="Address"
 						Grid.Row="2"
 						Grid.Column="0"
 						Grid.ColumnSpan="4">
 					</c:USAddressView>
-					
-					
-					
+
+
+
 					<!--{Binding NotifyVisibility }"-->
 
 					<c:NotifyView
