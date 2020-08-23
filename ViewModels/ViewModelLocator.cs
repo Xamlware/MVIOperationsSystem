@@ -36,6 +36,11 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<IDataService<Region>, DataService<Region>>();
             SimpleIoc.Default.Register<IDataService<Employee>, DataService<Employee>>();
             SimpleIoc.Default.Register<IDataService<Inventory>, DataService<Inventory>>();
+            SimpleIoc.Default.Register<IDataService<State>, DataService<State>>();
+            SimpleIoc.Default.Register<IDataService<Country>, DataService<Country>>();
+            SimpleIoc.Default.Register<IDataService<Gender>, DataService<Gender>>();
+            SimpleIoc.Default.Register<IDataService<Race>, DataService<Race>>();
+
             SimpleIoc.Default.Register<ILocalStorageService, LocalStorageService>();
 
         }

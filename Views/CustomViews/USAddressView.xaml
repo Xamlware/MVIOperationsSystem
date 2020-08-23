@@ -35,9 +35,9 @@
 			</Grid.ColumnDefinitions>
 
 			<Label
+				x:Name="AddressHeader"
 				Grid.Row="0"
 				Grid.Column="0"
-				x:Name="AddressHeader"
 				Content="Address"
 				FontSize="16"
 				FontWeight="Bold"
@@ -49,52 +49,52 @@
                 x:Name="lblAddress"
                 Grid.Row="1"
                 Grid.Column="0"
-                HorizontalAlignment="Right"
+                Style="{StaticResource MVILabelStyle}"
 	    	    Margin="0,10,0,0"
                 Content="Address:" />
 
 			<sf:SfTextBoxExt
-            x:Name="txtAddress"
-            Grid.Row="1"
-            Grid.Column="1"
-            Grid.ColumnSpan="6"
-            Text="{Binding SelectedEmployee.Address.Address1}"
-			Margin="0,10,0,0"
-            HorizontalAlignment="Stretch"/>
+                x:Name="txtAddress"
+                Grid.Row="1"
+                Grid.Column="1"
+                Grid.ColumnSpan="6"
+                Text="{Binding SelectedEmployee.Address.Address1}"
+			    Margin="0,10,0,0"
+                HorizontalAlignment="Stretch"/>
 
 			<Label
-            x:Name="lblAddress2"
-            Grid.Row="3"
-            Grid.Column="0"
-            HorizontalAlignment="Right"
-            Content="Address2:" />
+                x:Name="lblAddress2"
+                Grid.Row="3"
+                Grid.Column="0"
+                HorizontalAlignment="Right"
+                Content="Address2:" />
 
 			<sf:SfTextBoxExt
-            Grid.Row="3"
-            Grid.Column="1"
-            Grid.ColumnSpan="6"
-            Text="{Binding SelectedEmployee.Address.Address2, Mode=TwoWay}"
-            HorizontalAlignment="Stretch"/>
+                Grid.Row="3"
+                Grid.Column="1"
+                Grid.ColumnSpan="6"
+                Text="{Binding SelectedEmployee.Address.Address2, Mode=TwoWay}"
+                HorizontalAlignment="Stretch"/>
 
 			<Label
-            x:Name="lblCity"
-            Grid.Row="5"
-            Grid.Column="0"
-            HorizontalAlignment="Right"
-            Content="City:" />
+                x:Name="lblCity"
+                Grid.Row="5"
+                Grid.Column="0"
+                Style="{StaticResource MVILabelStyle}"
+				Content="City:" />
 
 			<sf:SfTextBoxExt
-            Grid.Row="5"
-            Grid.Column="1"
-            Grid.ColumnSpan="3"
-            Text="{Binding SelectedEmployee.Address.City, Mode=TwoWay}"
-            HorizontalAlignment="Stretch"/>
+                Grid.Row="5"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+				Text="{Binding SelectedEmployee.Address.City, Mode=TwoWay}"
+                HorizontalAlignment="Stretch"/>
 
 			<Label
                 x:Name="lblState"
                 Grid.Row="5"
                 Grid.Column="4"
-                HorizontalAlignment="Right"
+				Style="{StaticResource MVILabelStyle}"
                 Content="State:" />
 
 			<sf:ComboBoxAdv
@@ -110,6 +110,7 @@
 
 			<Label
                 x:Name="lblZip"
+				Style="{StaticResource MVILabelStyle}"
                 Grid.Row="7"
                 Grid.Column="0"
                 HorizontalAlignment="Right"
