@@ -20,10 +20,10 @@ namespace MVIOperationsSystem.Views.CustomViews
 			this.DataContext = this.vm;
 		}
 
-		private void EmployeeNameChanged(object sender, TextChangedEventArgs e)
-		{
-			var name = ((Syncfusion.Windows.Controls.Input.SfTextBoxExt)sender).Name;
-			Messenger.Default.Send(new EmployeeNameChangedMessage { Action = name });
-		}
+	//	private void EmployeeNameChanged(object sender, TextChangedEventArgs e)
+	//	{
+	//		var name = ((Syncfusion.Windows.Controls.Input.SfTextBoxExt)sender).Name;
+	//		Messenger.Default.Send(new EmployeeNameChangedMessage { Action = name });
+	//	}
 	}
 }

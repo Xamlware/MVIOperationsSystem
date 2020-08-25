@@ -38,7 +38,6 @@ namespace MVIOperations.Models
 
 		public string MiddleName { get; set; }
 
-
 		[Required(ErrorMessage = "Last Name Required")]
 		public string LastName { get; set; }
 
@@ -59,6 +58,9 @@ namespace MVIOperations.Models
 		[Required(ErrorMessage = "State is Required")] 
 		public string State { get; set; }
 
-		
+		[Required(ErrorMessage = "Zip Code is Required")]
+		public string ZipCode { get; set; }
+
+		public string EmployeeName { get; set; }
 	}
 }

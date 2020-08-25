@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVIOperations.Models
 {
-	public class Sales
+	public class Sale
 	{
-		public Sales()
+		public Sale()
 		{
 		}
 
 		[Key]
-		public int PK_Sales { get; set; }
+		public int PK_Sale { get; set; }
 
 		[Required(ErrorMessage = "Store id is required")]
 		public int FK_Store { get; set; }

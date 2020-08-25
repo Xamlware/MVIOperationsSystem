@@ -22,14 +22,10 @@ namespace MVIOperationsSystem.Views.DataEditViews
 
 		private void EmployeeNameChanged(object sender, TextChangedEventArgs e)
 		{
-			//Messenger.Default.Send<EmployeeNameChangedMessage>(new EmployeeNameChangedMessage { Action = this.FirstName.ToString() });
+			Messenger.Default.Send(new EmployeeNameChangedMessage { Action = this.FirstName.ToString() });
 		}
 
-
-		private void NotifyView_Loaded(object sender, RoutedEventArgs e)
-		{
-
-		}
+		
 	}
 }
 

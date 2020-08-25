@@ -3,7 +3,7 @@
 					xmlns:sf="http://schemas.syncfusion.com/wpf">
 
 	<Style x:Key="MVIComboBoxStyle" TargetType="{x:Type sf:ComboBoxAdv}">
-		<Setter Property="Background" Value="#DEC28A"/>
+		<Setter Property="Background" Value="{StaticResource LightBackgroundColorBrush}"/>
 	</Style>
 
 </ResourceDictionary>

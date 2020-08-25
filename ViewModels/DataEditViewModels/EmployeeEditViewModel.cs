@@ -74,57 +74,61 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 		}
 
-		public const string FirstNameProperty = "FirstName";
+		//public const string FirstNameProperty = "FirstName";
+		//private string _firstName;
 
-		private string _firstName;
+		//public string FirstName
+		//{
+		//	get { return _firstName; }
+		//	set { 
+		//		_firstName = value;
+		//		this.RaisePropertyChanged(FirstNameProperty);
+		//		this.BuildEmployeeName();
+		//	}
+		//}
 
-		public string FirstName
-		{
-			get { return _firstName; }
-			set { 
-				_firstName = value;
-				this.RaisePropertyChanged(FirstNameProperty);
-			}
-		}
+		//public const string MiddleNameProperty = "MiddleName";
+		//private string _middleName;
 
-		public const string MiddleNameProperty = "MiddleName";
-		private string _middleName;
+		//public string MiddleName
+		//{
+		//	get { return _middleName; }
+		//	set
+		//	{
+		//		_middleName = value;
+		//		this.RaisePropertyChanged(MiddleNameProperty);
+		//		this.BuildEmployeeName();
 
-		public string MiddleName
-		{
-			get { return _middleName; }
-			set
-			{
-				_middleName = value;
-				this.RaisePropertyChanged(MiddleNameProperty);
-			}
-		}
+		//	}
+		//}
 
-		public const string LastNameProperty = "LastName";
-		private string _lastName;
+		//public const string LastNameProperty = "LastName";
+		//private string _lastName;
 
-		public string LastName
-		{
-			get { return _lastName; }
-			set
-			{
-				_lastName = value;
-				this.RaisePropertyChanged(LastNameProperty);
-			}
-		}
+		//public string LastName
+		//{
+		//	get { return _lastName; }
+		//	set
+		//	{
+		//		_lastName = value;
+		//		this.RaisePropertyChanged(LastNameProperty);
+		//		this.BuildEmployeeName();
+		//	}
+		//}
 
-		public const string NameSuffixProperty = "NameSuffix";
-		private string _nameSuffix;
+		//public const string NameSuffixProperty = "NameSuffix";
+		//private string _nameSuffix;
 
-		public string NameSuffix
-		{
-			get { return _nameSuffix; }
-			set
-			{
-				_nameSuffix = value;
-				this.RaisePropertyChanged(NameSuffixProperty);
-			}
-		}
+		//public string NameSuffix
+		//{
+		//	get { return _nameSuffix; }
+		//	set
+		//	{
+		//		_nameSuffix = value;
+		//		this.RaisePropertyChanged(NameSuffixProperty);
+		//		this.BuildEmployeeName();
+		//	}
+		//}
 
 
 
@@ -323,17 +327,79 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		}
 
 
-		public const string SelectedListItemProperty = "SelectedListItem";
-		private Employee _selectedListItem;
+		public const string SelectedEmployeeProperty = "SelectedEmployee";
+		private Employee _selectedEmployee;
 
-		public Employee SelectedListItem
+		public Employee SelectedEmployee
 		{
-			get { return _selectedListItem; }
+			get { return _selectedEmployee; }
 			set
 			{
-				_selectedListItem = value;
-				//				this.SelectedRegionItem.PK_Region = this.SelectedListItem.FK_Region;
-				this.RaisePropertyChanged(SelectedListItemProperty);
+				_selectedEmployee = value;
+				//				SelectedRegionItem.PK_Region = SelectedEmployee.FK_Region;
+				RaisePropertyChanged(SelectedEmployeeProperty);
+			}
+		}
+
+
+		public const string SelectedGenderProperty = "SelectedGender";
+		private Gender _selectedGender;
+
+		public Gender SelectedGender
+		{
+			get { return _selectedGender; }
+			set
+			{
+				_selectedGender = value;
+				//				SelectedRegionItem.PK_Region = SelectedGender.FK_Region;
+				RaisePropertyChanged(SelectedGenderProperty);
+			}
+		}
+
+
+		public const string SelectedRaceProperty = "SelectedRace";
+		private Race _selectedRace;
+
+		public Race SelectedRace
+		{
+			get { return _selectedRace; }
+			set
+			{
+				_selectedRace = value;
+				//				SelectedRegionItem.PK_Region = SelectedRace.FK_Region;
+				RaisePropertyChanged(SelectedRaceProperty);
+			}
+		}
+
+
+
+		public const string SelectedStateProperty = "SelectedState";
+		private State _selectedState;
+
+		public State SelectedState
+		{
+			get { return _selectedState; }
+			set
+			{
+				_selectedState = value;
+				//				SelectedRegionItem.PK_Region = SelectedState.FK_Region;
+				RaisePropertyChanged(SelectedStateProperty);
+			}
+		}
+
+
+
+		public const string SelectedCountryProperty = "SelectedCountry";
+		private Country _selectedCountry;
+
+		public Country SelectedCountry
+		{
+			get { return _selectedCountry; }
+			set
+			{
+				_selectedCountry = value;
+				//				SelectedRegionItem.PK_Region = SelectedCountry.FK_Region;
+				RaisePropertyChanged(SelectedCountryProperty);
 			}
 		}
 
@@ -391,7 +457,89 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 		}
 
+		public const string AddressProperty = "Address";
+		private string _address;
 
+		public string Address
+		{
+			get { return _address; }
+			set { 
+				_address = value;
+				this.RaisePropertyChanged(AddressProperty);
+			
+			}
+		}
+
+		public const string Address1Property = "Address1";
+		private string _address1;
+
+		public string Address1
+		{
+			get { return _address1; }
+			set
+			{
+				_address1 = value;
+				this.RaisePropertyChanged(Address1Property);
+
+			}
+		}
+
+		public const string CityProperty = "City";
+		private string _city;
+
+		public string City
+		{
+			get { return _city; }
+			set
+			{
+				_city = value;
+				this.RaisePropertyChanged(CityProperty);
+
+			}
+		}
+
+		
+		public const string StateProperty = "FK_State";
+		private int _fk_state;
+
+		public int FK_State
+		{
+			get { return _fk_state; }
+			set
+			{
+				_fk_state = value;
+				this.RaisePropertyChanged(StateProperty);
+
+			}
+		}
+
+
+		public const string CountryProperty = "FK_Country";
+		private int _fk_Country;
+
+		public int FK_Country
+		{
+			get { return _fk_Country; }
+			set
+			{
+				_fk_Country = value;
+				this.RaisePropertyChanged(CountryProperty);
+
+			}
+		}
+
+		public const string ZipCodeProperty = "Zipcode";
+		private string _zipCode;
+
+		public string ZipCode
+		{
+			get { return _zipCode; }
+			set 
+			{ 
+				_zipCode = value;
+				this.RaisePropertyChanged(ZipCodeProperty);
+			}
+		}
 
 		public const string GenderListProperty = "GenderList";
 		private ObservableCollection<Gender> _genderList;
@@ -444,6 +592,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.isInitializing = false;
 			this.ShowEditButtons(true);
 			this.IsFormEnabled = true;
+			
 		}
 
 		private void HandleAdminDataCloseMessage(AdminDataCloseMessage m)
@@ -460,6 +609,16 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 		}
 
+
+		private void BuildEmployeeName()
+		{
+			var first = this.SelectedEmployee.FirstName.IsNotNullOrEmpty() ? this.SelectedEmployee.FirstName.Trim() + " " : "";
+			var middle = this.SelectedEmployee.MiddleName.IsNotNullOrEmpty() ? this.SelectedEmployee.MiddleName.Trim() + " " : "";
+			var last = this.SelectedEmployee.LastName.IsNotNullOrEmpty() ? this.SelectedEmployee.LastName.Trim() + " ": " ";
+			var suff = this.SelectedEmployee.NameSuffix.IsNotNullOrEmpty() ? this.SelectedEmployee.NameSuffix.Trim() : "";
+			var name = first + middle + last + suff;
+			this.EmployeeName = name;
+		}
 		private void EnableEditControls(bool isEnabled = false)
 		{
 			this.IsEmployeeNameEnabled = isEnabled;
@@ -479,7 +638,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 			if (this.EmployeeList.IsNotNull() && this.EmployeeList.Count > 0)
 			{
-				this.SelectedListItem = this.EmployeeList[0];
+				this.SelectedEmployee = this.EmployeeList[0];
 			}
 
 		}
@@ -506,12 +665,24 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			var task = _gs.GetTableList(HttpRequestMethods.Get, "api/Gender/");
 			this.GenderList = task;
 
+			if (this.GenderList.IsNotNull() && this.GenderList.Count > 0)
+			{
+				this.SelectedGender = this.GenderList[0];
+			}
+
+
 		}
 
 		private void GetRaceListAsync()
 		{
 			var task = _rs.GetTableList(HttpRequestMethods.Get, "api/Race/");
 			this.RaceList = task;
+
+			if (this.RaceList.IsNotNull() && this.RaceList.Count > 0)
+			{
+				this.SelectedRace = this.RaceList[0];
+			}
+
 		}
 
 		private void CountryListAsync()
@@ -519,9 +690,9 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 				var task = _cs.GetTableList(HttpRequestMethods.Get, "api/Country/");
 				this.CountryList = task;
 
-				if (this.EmployeeList.IsNotNull() && this.EmployeeList.Count > 0)
+				if (this.CountryList.IsNotNull() && this.CountryList.Count > 0)
 				{
-					this.SelectedListItem = this.EmployeeList[0];
+					this.SelectedCountry = this.CountryList[0];
 				}
 
 			}
@@ -534,7 +705,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void HandleListItemChangedMessage(ListItemChangedMessage obj)
 		{
-			if (this.SelectedListItem != null)
+			if (this.SelectedEmployee != null)
 			{
 			}
 		}
@@ -545,8 +716,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			{
 				this.IsDirty = true;
 				this.SaveEmployeeCommand.RaiseCanExecuteChanged();
-				this.ValidateName();
 			}
+			this.BuildEmployeeName();
 		}
 
 		private void ValidateName()
@@ -571,7 +742,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteDeleteEmployeeCommand()
 		{
-			var resp = _es.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/Employee/", null);
+			var resp = _es.UpdateTable(this.SelectedEmployee, HttpRequestMethods.Delete, "api/Employee/", null);
 			this.ShowEditButtons(false);
 
 		}
@@ -592,8 +763,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			return true;
 
 			//var retVal = this.IsDirty &&   
-			//	this.SelectedListItem.EmployeeName.IsNotNull() && 
-			//	this.SelectedListItem.EmployeeName != "New Employee" && 
+			//	this.SelectedEmployee.EmployeeName.IsNotNull() && 
+			//	this.SelectedEmployee.EmployeeName != "New Employee" && 
 			//	this.SelectedRegionItem.RegionName.IsNotNull();
 
 			//return retVal;
@@ -617,7 +788,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 			var item = new Employee();
 			this.EmployeeList.Add(item);
-			this.SelectedListItem = item;
+			this.SelectedEmployee = item;
 
 			this.isNew = false;
 			this.ShowEditButtons(false);
@@ -657,7 +828,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 			try
 			{
-				var resp = _es.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/Employee/", this.SelectedListItem.PK_Employee);
+				var resp = _es.UpdateTable(this.SelectedEmployee, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/Employee/", this.SelectedEmployee.PK_Employee);
 			}
 			catch (Exception e)
 			{

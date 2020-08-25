@@ -59,9 +59,6 @@
 				BorderBrush="SaddleBrown"
 				BorderThickness="1" >
 
-
-
-
 				<Grid 
 					Grid.Row="1"
 					Grid.RowSpan="2"
@@ -85,37 +82,52 @@
 						Grid.Column="0"
 						ItemsSource="{Binding EmployeeList, Mode=TwoWay}"
 						DisplayMemberPath="EmployeeName"
-						SelectedItem="{Binding SelectedListItem, Mode=TwoWay}"
+						SelectedItem="{Binding SelectedEmployee, Mode=TwoWay}"
 						Background="LightGoldenrodYellow"
 						BorderBrush="SaddleBrown"
 						BorderThickness="0,0,1,1" 
 						SelectionChanged="ListItemSelectionChanged" />
 
 					<sf:TabControlExt 
-						Name="EployeeTab"
+						Name="EmployeeTab"
 						Grid.Row="0"
+						Grid.ColumnSpan="2"
 						Grid.Column="1"
 						CloseButtonType="Hide"
 						Background="LightGoldenrodYellow"
-						CollapseDefaultTabListContextMenuItems="False" Grid.ColumnSpan="2"
-						>
+						ShowTabItemContextMenu="False"
+						CollapseDefaultTabListContextMenuItems="True" 
+						ShowTabListContextMenu="False"
+						
+						TabItemSelectedForeground="LightGoldenrodYellow"
+						TabItemSelectedBackground="{StaticResource DarkBackgroundColorBrush}">
+
 						<sf:TabItemExt 
-							Header="Name/Address">
+							Background="{StaticResource LightBackgroundColorBrush}"
+							Foreground="{StaticResource DarkestForegroundColorBrush}"
+							Header="Employee Data">
 
 							<Border
 								Grid.Row="1"
 								Grid.Column="2"
 								CornerRadius="0"
 								Style="{StaticResource MVIBorderStyle}"
-								BorderThickness="0,1,1,1">
+								BorderThickness="0,1,1,1"
+								>
 
 
-								<Grid Margin="10,0,0,0">
+								<Grid Margin="00,10,0,0">
 
 									<Grid.RowDefinitions>
-										<RowDefinition Height="90"/>
+										<RowDefinition Height="30"/>
 										<RowDefinition Height="10"/>
-										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="30"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="30"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="30"/>
+										<RowDefinition Height="10"/>
+										<RowDefinition Height="30"/>
 										<RowDefinition Height="10"/>
 										<RowDefinition Height="30"/>
 										<RowDefinition Height="10"/>
@@ -123,131 +135,232 @@
 									</Grid.RowDefinitions>
 
 									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="10" />
+										<ColumnDefinition Width="50" />
 										<ColumnDefinition Width="5" />
-										<ColumnDefinition Width="100" />
-										<ColumnDefinition Width="5" />
-										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="90"/>
+										<ColumnDefinition Width="40"/>
+										<ColumnDefinition Width="15"/>
+										<ColumnDefinition Width="90"/>
+										<ColumnDefinition Width="5"/>
+										<ColumnDefinition Width="150"/>
+										<ColumnDefinition Width="5"/>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="5"/>
 
 									</Grid.ColumnDefinitions>
 
-									<c:NameView
+									<!--<c:NameView
 										x:Name="Name"
 										Grid.Row="0" 
-										Grid.Column="0"
-										Grid.ColumnSpan="4"
-										Margin="0,10,10,0">
-									</c:NameView>
+										Grid.Column="1"
+										Grid.ColumnSpan="10"
+										Width="540"
+										HorizontalAlignment="Center">
+									</c:NameView>-->
 
-									<c:USAddressView
-										x:Name="Address"
+									<Label
+										Grid.Row="0"
+										Grid.Column="1"
+										Content="Store:"
+										Style="{StaticResource MVILabelStyle}"
+										HorizontalAlignment="Right" Margin="0,2,0,3"
+										/>
+
+
+									<sf:ComboBoxAdv
+										Grid.Row="0"
+										Grid.Column="3"
+										DisplayMemberPath="StoreName"
+										Style="{StaticResource MVIComboBoxStyle}"
+										ItemsSource="{Binding StoreList, Mode=TwoWay}"
+										SelectedItem="{Binding SelectedStore, Mode=TwoWay}" Grid.ColumnSpan="2"/>
+
+
+									<Label
+										Grid.Row="0"
+										Grid.Column="6"
+										Style="{StaticResource MVILabelStyle}"
+										Content="Employee Id:"
+										HorizontalAlignment="Right" Margin="0,2,0,3"
+										/>
+
+									<sf:SfTextBoxExt 
+										x:Name="EmployeeId"
+										Grid.Row="0"
+										Grid.Column="8"
+										Style="{StaticResource MVITextBoxStyle}"
+										Width="150"
+										Height="30"
+										VerticalAlignment="Top"
+										HorizontalAlignment="Left"
+										HorizontalContentAlignment="Left"
+										VerticalContentAlignment="Center"
+										IsEnabled="{Binding IsDistrictNameEnabled}"
+										Text="{Binding SelectedEmployee.EmployeeId, Mode=TwoWay}" 
+										/>
+
+									<Label 
 										Grid.Row="2"
-										Grid.Column="0"
-										Grid.ColumnSpan="4">
-									</c:USAddressView>
+										Grid.Column="1"
+										Content="First:"
+										Style="{StaticResource MVILabelStyle}" />
 
+									<sf:SfTextBoxExt 
+										x:Name="FirstName"
+										Grid.Row="2"
+										Grid.Column="3"
+										Grid.ColumnSpan="2"
+										Style="{StaticResource MVITextBoxStyle}"						
+										Padding="10,5,0,0"
+										Height="30"
+										Text="{Binding SelectedEmployee.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></sf:SfTextBoxExt>
+
+									<Label 
+										Grid.Row="4"
+										Grid.Column="1" 
+										Content="Middle:"
+										Style="{StaticResource MVILabelStyle}"
+										 />
+
+									<sf:SfTextBoxExt 
+										x:Name="MiddleName"
+										Grid.Row="4"
+										Grid.Column="3" 
+										Grid.ColumnSpan="2"
+										Height="30"
+										Style="{StaticResource MVITextBoxStyle}"
+										Text="{Binding SelectedEmployee.MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+										TextChanged="EmployeeNameChanged"
+										/>
+
+
+									<Label 
+										Content="Last:"
+										Style="{StaticResource MVILabelStyle}"
+										Grid.Row="2"
+										Grid.Column="6" />
+
+									<sf:SfTextBoxExt 
+										x:Name="LastName"
+										Grid.Row="2"
+										Grid.Column="8" 
+										Height="30"
+										Style="{StaticResource MVITextBoxStyle}"						
+										Text="{Binding SelectedEmployee.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+										TextChanged="EmployeeNameChanged"
+										/>
+
+									<Label 
+										Grid.Row="4"
+										Grid.Column="6" 
+										Content="Suffix:"
+										Style="{StaticResource MVILabelStyle}"
+										 />
+
+									<sf:SfTextBoxExt 
+										x:Name="NameSuffix"
+										Grid.Row="4"
+										Grid.Column="8" 
+										Height="30"
+										Style="{StaticResource MVITextBoxStyle}"
+										Text="{Binding NameSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+										TextChanged="EmployeeNameChanged"
+										/>
+
+									<Label
+										Grid.Row="6"
+										Grid.Column="1"
+										Style="{StaticResource MVILabelStyle}"
+										Content="Gender"
+										HorizontalAlignment="Right" Margin="0,2,0,3"
+										/>
+
+									<sf:ComboBoxAdv
+										Grid.Row="6"
+										Grid.Column="3" 
+										DisplayMemberPath="GenderName"
+										Style="{StaticResource MVIComboBoxStyle}"
+										ItemsSource="{Binding GenderList, Mode=TwoWay}"
+										SelectedItem="{Binding SelectedGender, Mode=TwoWay}" Grid.ColumnSpan="2"/>
+
+									<Label
+										Grid.Row="6"
+										Grid.Column="6"
+										Style="{StaticResource MVILabelStyle}"
+										Content="Race"
+										/>
+
+									<sf:ComboBoxAdv
+										Grid.Row="6"
+										Grid.Column="8" 
+										Style="{StaticResource MVIComboBoxStyle}"
+										DisplayMemberPath="RaceName"
+										ItemsSource="{Binding RaceList, Mode=TwoWay}"
+										SelectedItem="{Binding SelectedRace, Mode=TwoWay}"/>
+
+									<Label 
+										Grid.Row="10"
+										Grid.Column="1" 
+										Grid.ColumnSpan="8"
+													HorizontalAlignment="Center"
+										Content="{Binding EmployeeName, Mode=TwoWay}"
+										Width="200"
+										Style="{StaticResource MVILabelStyle}"
+											/>
 
 
 									<!--{Binding NotifyVisibility }"-->
-
 									<c:NotifyView
 										x:Name="NotifyView"
 										Grid.Column="1"
-										Grid.ColumnSpan="4"
-										Grid.RowSpan="16" 
+										Grid.ColumnSpan="5"
+										Grid.RowSpan="6" 
 										HorizontalContentAlignment="Center" 
-										Visibility="Collapsed" 
-										Loaded="NotifyView_Loaded" />
+										Visibility="Collapsed" />
 								</Grid>
 							</Border>
-
 						</sf:TabItemExt>
+						
 						<sf:TabItemExt 
-							Header="Personal">
-							<Grid>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="10"/>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="10"/>
-								<RowDefinition Height="30"/>
-								<RowDefinition Height="10"/>
-								<RowDefinition Height="30"/>
-								<RowDefinition Height="10"/>
-							</Grid.RowDefinitions>
+							Background="{StaticResource LightBackgroundColorBrush}"
+							Foreground="{StaticResource DarkestForegroundColorBrush}"
+							Header="Address">
 
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="5" />
-								<ColumnDefinition Width="100" />
-								<ColumnDefinition Width="5" />
-								<ColumnDefinition Width="160" />
-								<ColumnDefinition Width="*" />
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="10"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="10"/>
+									<RowDefinition Height="10"/>
+								</Grid.RowDefinitions>
+
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="5" />
+									<ColumnDefinition Width="100" />
+									<ColumnDefinition Width="5" />
+									<ColumnDefinition Width="100" />
+									<ColumnDefinition Width="5" />
+									<ColumnDefinition Width="100" />
+									<ColumnDefinition Width="5" />
+									<ColumnDefinition Width="100" />
+									<ColumnDefinition Width="20" />
+									<ColumnDefinition Width="*" />
 								</Grid.ColumnDefinitions>
 
-								<Label
-									Grid.Row="0"
-									Grid.Column="1"
-									Content="Store:"
-									HorizontalAlignment="Right"
-									></Label>
-
-								<sf:ComboBoxAdv
-									Grid.Row="0"
-									Grid.Column="3"
-									ItemsSource="{Binding StoreList, Mode=TwoWay}"
-									SelectedItem="{Binding SelectedStore, Mode=TwoWay}"/>
-
-								<Label
-									Grid.Row="2"
-									Grid.Column="1"
-									Content="Employee Id:"
-									HorizontalAlignment="Right"
-									/>
-
-								<sf:SfTextBoxExt 
-									x:Name="EmployeeId"
-									Grid.Row="2"
-									Grid.Column="3"
-									Grid.RowSpan="2"
-									Background="White"
-									Padding="10,5,0,0"
-									Height="30"
-									Width="200"
-									VerticalAlignment="Top"
-									HorizontalAlignment="Left"
-									HorizontalContentAlignment="Left"
-									VerticalContentAlignment="Center"
-									IsEnabled="{Binding IsDistrictNameEnabled}"
-									Text="{Binding EmployeeId, Mode=TwoWay}" 
-									TextChanged="EmployeeNameChanged" 
-									/>
-
-								<Label
-									Grid.Row="4"
-									Grid.Column="1"
-									Content="Gender"
-									HorizontalAlignment="Right"
-									/>
-
-								<sf:ComboBoxAdv
-									Grid.Row="4"
-									Grid.Column="3" 
-									ItemsSource="{Binding GenderList, Mode=TwoWay}"
-									SelectedItem="{Binding SelectedGender, Mode=TwoWay}"/>
-								
 
 
-								<Label
-									Grid.Row="6"
-									Grid.Column="1"
-									Content="Race"
-									HorizontalAlignment="Right"
-									/>
+								<c:AddressView
+										x:Name="Address"
+										Grid.Row="1"
+										Grid.Column="1"
+										Grid.ColumnSpan="8"
+									Height="200" Loaded="Address_Loaded"
+										>
+								</c:AddressView>
 
-								<sf:ComboBoxAdv
-									Grid.Row="6"
-									Grid.Column="3" 
-									ItemsSource="{Binding RaceList, Mode=TwoWay}"
-									SelectedItem="{Binding SelectedRace, Mode=TwoWay}"/>
+
+
 							</Grid>
 						</sf:TabItemExt>
 

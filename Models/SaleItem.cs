@@ -3,16 +3,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVIOperations.Models
 {
-	public class SalesItem
+	public class SaleItem
 	{
-		public SalesItem()
+		public SaleItem()
 		{
 		}
 
 		[Key]
-		public int PK_SalesItem { get; set; }
+		public int PK_SaleItem { get; set; }
 
-		public int FK_Sales { get; set; }
+		[Required(ErrorMessage = "Sale id is required")]
+		public int FK_Sale { get; set; }
+	
 		[Required(ErrorMessage = "Inventory id is required")]
 		public int FK_Inventory { get; set; }
 

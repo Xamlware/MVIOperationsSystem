@@ -11,12 +11,13 @@
         <ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Styles\Brushes.xaml" />
-				<ResourceDictionary Source="Styles\LabelStyles.xaml" />
 				<ResourceDictionary Source="Styles\ButtonStyles.xaml" />
 				<ResourceDictionary Source="Styles\MenuStyles.xaml" />
 				<ResourceDictionary Source="Styles\BorderStyles.xaml" />
 				<ResourceDictionary Source="Styles\GroupBoxStyles.xaml" />
 				<ResourceDictionary Source="Styles\ComboBoxStyles.xaml" />
+				<ResourceDictionary Source="Styles\TextBoxStyles.xaml" />
+				<ResourceDictionary Source="Styles\LabelStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
             
 			<vm:ViewModelLocator x:Key="Locator" />

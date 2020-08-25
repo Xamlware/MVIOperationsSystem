@@ -4,6 +4,8 @@
 	<Style x:Key="MVILabelStyle" TargetType="{x:Type Label}">
 		<Setter Property="HorizontalAlignment" Value="Right" />
 		<Setter Property="VerticalAlignment" Value="Center" />
-		<Setter Property="Foreground" Value="{StaticResource TextForegroundColorBrush}" />
+		<Setter Property="FontWeight" Value="Bold" />
+		<Setter Property="Foreground" Value="{StaticResource DarkestForegroundColorBrush}" />
 	</Style>
 </ResourceDictionary>
+	

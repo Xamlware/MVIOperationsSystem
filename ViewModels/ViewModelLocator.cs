@@ -5,6 +5,7 @@ using MVIOperations.Models;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
+using MVIOperationsSystem.ViewModels.CustomViewModels;
 using MVIOperationsSystem.ViewModels.DataEditViewModels;
 
 namespace MVIOperationsSystem.ViewModels
@@ -29,6 +30,9 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<RegionEditViewModel>();
             SimpleIoc.Default.Register<EmployeeEditViewModel>();
             SimpleIoc.Default.Register<InventoryEditViewModel>();
+            SimpleIoc.Default.Register<NameViewModel>();
+            SimpleIoc.Default.Register<AddressViewModel>();
+
             SimpleIoc.Default.Register<NotifyViewModel>();
 
             SimpleIoc.Default.Register<ILoginDataService, LoginDataService>();
@@ -110,6 +114,23 @@ namespace MVIOperationsSystem.ViewModels
             }
         }
 
+
+        //public NameViewModel NameViewModel
+        //{
+        //    get
+        //    {
+        //        return ServiceLocator.Current.GetInstance<NameViewModel>();
+        //    }
+        //}
+
+
+        //public AddressViewModel AddressViewModel
+        //{
+        //    get
+        //    {
+        //        return ServiceLocator.Current.GetInstance<AddressViewModel>();
+        //    }
+        //}
 
         public NotifyViewModel NotifyViewModel
         {

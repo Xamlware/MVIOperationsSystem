@@ -142,11 +142,13 @@
     <Compile Include="Controls\MVIContentPresenter.cs" />
     <Compile Include="Controls\MVINotifyBox.cs" />
     <Compile Include="Models\Country.cs" />
+    <Compile Include="ViewModels\CustomViewModels\AddressViewModel.cs" />
+    <Compile Include="ViewModels\CustomViewModels\NameViewModel.cs" />
+    <Compile Include="Views\CustomViews\AddressView.xaml.cs">
+      <DependentUpon>AddressView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomViews\NameView.xaml.cs">
       <DependentUpon>NameView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CustomViews\USAddressView.xaml.cs">
-      <DependentUpon>USAddressView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\xwImageButton.cs" />
     <Compile Include="DataServices\DistrictDataRequest.cs" />
@@ -244,7 +246,7 @@
       <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\LocalStorageContext.cs" />
-    <Compile Include="Data\MVIOperationsModel.cs" />
+    <Compile Include="Data\MVIOperationsContext.cs" />
     <Compile Include="Messages\NavigationMessage.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -258,8 +260,8 @@
     <Compile Include="Models\Race.cs" />
     <Compile Include="Models\Region.cs" />
     <Compile Include="Models\Register.cs" />
-    <Compile Include="Models\Sales.cs" />
-    <Compile Include="Models\SalesItem.cs" />
+    <Compile Include="Models\Sale.cs" />
+    <Compile Include="Models\SaleItem.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\Store.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />
@@ -277,11 +279,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CustomViews\NameView.xaml">
+    <Page Include="Styles\TextBoxStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CustomViews\USAddressView.xaml">
+    <Page Include="Views\CustomViews\AddressView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomViews\NameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
