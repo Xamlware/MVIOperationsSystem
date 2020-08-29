@@ -290,6 +290,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 			this.isInitializing = false;
 			this.ShowEditButtons(true);
+			this.GetDataListsAsync();
 
 			#region CreateManualLists
 			//var dist = new District() { PK_District=1, DistrictName = "Gap District", FK_Region = 2 };
@@ -322,14 +323,21 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		{
 			if (this.IsDirty)
 			{
-				Helpers.Helpers.Notify(
-					"District", 
+				this.NotifyUserIsDirty();
+			}
+
+		}
+
+		private void NotifyUserIsDirty()
+		{
+			Helpers.Helpers.Notify(
+					"District",
 					NotifyButtonEnum.ThreeButton,
 					new List<NotifyButtonLabelEnum> { { NotifyButtonLabelEnum.Yes }, { NotifyButtonLabelEnum.No }, { NotifyButtonLabelEnum.Cancel } },
 					"You have unsaved changes.  Save now?",
-					false );
+					false);
 
-			}
+
 		}
 
 		private void EnableEditControls(bool isEnabled = false)
@@ -355,6 +363,25 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			var task = _ds.GetTableList(HttpRequestMethods.Get, "api/district/");
 			return task;
 		}
+
+		private void GetDataListsAsync()
+		{
+			this.IsBusy = true;
+			ObservableCollection<Region> regTask = this.GetRegionListAsync();
+			this.RegionList = regTask;
+
+			ObservableCollection<District> disTask = this.GetDistrictListAsync();
+			this.DistrictList = disTask;
+
+			if (this.DistrictList.IsNotNull() && this.DistrictList.Count > 0)
+			{
+				this.SelectedListItem = this.DistrictList[0];
+			}
+
+			this.IsBusy = false;
+		}
+
+
 
 
 		#region Message handlers
@@ -412,6 +439,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteCancelDistrictCommand()
 		{
+			if (this.IsDirty) {
+				this.NotifyUserIsDirty();
+			}
+			//Messenger.Default.Send(new CloseAdminManagementContentMessage { Action = "District" });
 		}
 
 

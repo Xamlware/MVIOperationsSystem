@@ -59,7 +59,7 @@ namespace MVIOperationsSystem
 					this.ContentPresenter.Content = new LoginView();
 					break;
 				case "AdminLogin":
-					this.ContentPresenter.Content = new AdminManagementView();
+					this.ContentPresenter.Content = new AdminDataView();
 					break;
 				case "Close":
 					this.ContentPresenter.Content = "";

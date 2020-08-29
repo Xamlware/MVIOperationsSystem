@@ -2,9 +2,11 @@
 using MVIOperationsSystem.Controls;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
+using MVIOperationsSystem.ViewModels.DataEditViewModels;
 using MVIOperationsSystem.Views.DataEditViews;
 using System.Windows;
 using System.Windows.Controls;
+using Xamlware.Framework.Extensions;
 
 namespace MVIOperationsSystem.Views
 {
@@ -18,6 +20,12 @@ namespace MVIOperationsSystem.Views
 			InitializeComponent();
 			Messenger.Default.Register<NavigationMessage>(this, HandleNavigationMessage);
 			Messenger.Default.Register<CloseMessage>(this, HandleCloseMessage);
+			Messenger.Default.Register<CloseAdminManagementContentMessage>(this, HandleCloseAdminManagementContentMessage);
+		}
+
+		private void HandleCloseAdminManagementContentMessage(CloseAdminManagementContentMessage obj)
+		{
+			this.ContentPresenter.Content = "";
 		}
 
 		private void HandleCloseMessage(CloseMessage obj)
@@ -35,6 +43,10 @@ namespace MVIOperationsSystem.Views
 		{
 			if (e.NewValue != null)
 			{
+				if (((AdminManagementTreeModel)e.OldValue).Header.IsNotNullOrEmpty())
+				{
+					Messenger.Default.Send(new CleanUpMessage());
+				}
 				var item = ((AdminManagementTreeModel)e.NewValue).Header.Trim();
 
 				switch (item)

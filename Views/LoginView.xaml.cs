@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MVIOperationsSystem.Controls
+namespace MVIOperationsSystem.Views
 {
 	/// <summary>
 	/// Interaction logic for LoginView.xaml

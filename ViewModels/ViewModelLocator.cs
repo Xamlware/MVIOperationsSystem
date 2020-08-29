@@ -26,6 +26,7 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<MainMenuViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
             SimpleIoc.Default.Register<AdminManagementViewModel>();
+            SimpleIoc.Default.Register<AdminDataViewModel>();
             SimpleIoc.Default.Register<DistrictEditViewModel>(); 
             SimpleIoc.Default.Register<RegionEditViewModel>();
             SimpleIoc.Default.Register<EmployeeEditViewModel>();
@@ -81,6 +82,13 @@ namespace MVIOperationsSystem.ViewModels
             }
         }
 
+        public AdminDataViewModel AdminDataViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AdminDataViewModel>();
+            }
+        }
 
         public DistrictEditViewModel DistrictEditViewModel
         {

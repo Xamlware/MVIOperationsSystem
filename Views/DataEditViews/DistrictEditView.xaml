@@ -7,14 +7,12 @@
  	xmlns:sf="http://schemas.syncfusion.com/wpf"
 	xmlns:c="clr-namespace:MVIOperationsSystem.Controls" xmlns:c1="clr-namespace:MVIOperationsSystem.Views.CustomViews"
 	mc:Ignorable="d" 
-	d:DesignHeight="450" d:DesignWidth="800"
+	d:DesignHeight="800" d:DesignWidth="1200"
 	FocusManager.FocusedElement="{Binding ElementName=DistrictName}"
 	DataContext="{Binding DistrictEditViewModel, Source={StaticResource Locator}}">
 
 	<Border
-		BorderBrush="SaddleBrown" 
-		BorderThickness="1"
-		CornerRadius="30"
+		Style="{StaticResource MVIBorderStyle}"
 		Width="Auto">
 
 		<Grid>
@@ -27,8 +25,8 @@
 
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="20" />
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="4*" />
+				<ColumnDefinition Width="250" />
+				<ColumnDefinition Width="3*" />
 				<ColumnDefinition Width="20" />
 
 			</Grid.ColumnDefinitions>
@@ -55,10 +53,7 @@
 				Grid.Row="1"
 				Grid.RowSpan="2"
 				Grid.Column="1"
-				Grid.ColumnSpan="2"
-				Margin="0,0,10,0"
-				BorderBrush="SaddleBrown"
-				BorderThickness="1" >
+				Grid.ColumnSpan="2">
 
 				<Grid 
 					Grid.Row="1"
@@ -72,29 +67,47 @@
 					</Grid.RowDefinitions>
 
 					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="250" />
 						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="4*" />
 					</Grid.ColumnDefinitions>
 
+					<Border 
+						Style="{StaticResource MVIBorderStyle}"
+						CornerRadius="20">
 
-					<ListBox
-						Grid.Row="0"
-						Grid.Column="0"
-						ItemsSource="{Binding DistrictList, Mode=TwoWay}"
-						DisplayMemberPath="DistrictName"
-						SelectedItem="{Binding SelectedListItem, Mode=TwoWay}"
-						Background="LightGoldenrodYellow"
-						BorderBrush="SaddleBrown"
-						BorderThickness="0,0,1,1" 
-						SelectionChanged="ListItemSelectionChanged" />
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="30"/>
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
 
+							<Label
+								Grid.Row="0"
+								Style="{StaticResource MVILabelStyle}"
+								HorizontalAlignment="Stretch"
+								HorizontalContentAlignment="Left"
+								Margin="20,0,0,0"
+								Content="Districts"
+								
+								/>
+
+							<ListBox
+								Grid.Row="1"
+								ItemsSource="{Binding DistrictList, Mode=TwoWay}"
+								DisplayMemberPath="DistrictName"
+								SelectedItem="{Binding SelectedListItem, Mode=TwoWay}"
+								SelectionChanged="ListItemSelectionChanged"
+								Margin="10,0,10,10"
+								/>
+						</Grid>
+					</Border>
 
 					<StackPanel
 						Grid.Row="2"
 						Grid.Column="0"
 						Visibility="{Binding IsEditButtonPanelVisible}"
 						Orientation="Horizontal" 
-						HorizontalAlignment="Left" >
+						HorizontalAlignment="Right" >
 
 
 						<!--IsEnabled="{Binding IsAddButtonEnabled}"-->
@@ -102,7 +115,7 @@
 							Command="{Binding AddDistrictCommand}"
 							Visibility="{Binding}"
 							HorizontalAlignment="Left"
-							Margin="0,0,20,0"
+							Margin="20,0,20,0"
 							Style="{DynamicResource ImageButtonStyle}"
 							c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemAdd32x32.png" 
 							ToolTip="Add new district" />
@@ -115,8 +128,8 @@
 							Style="{DynamicResource ImageButtonStyle}"
 							c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/ItemEdit16x16.png" 
 							ToolTip="Edit selected district" />
-					
-					<!--IsEnabled="{Binding IsDeleteButtonEnabled}"-->
+
+						<!--IsEnabled="{Binding IsDeleteButtonEnabled}"-->
 						<Button
 							Command="{Binding DeleteDistrictCommand}"
 							Visibility="{Binding}"
@@ -132,85 +145,102 @@
 			<Border
 				Grid.Row="1"
 				Grid.Column="2"
-				BorderBrush="SaddleBrown"
-				BorderThickness="0,1,1,1">
+				Margin="20,0,0,0"
+				Style="{StaticResource MVIBorderStyle}"
+				>
 
 				<Grid>
-
 					<Grid.RowDefinitions>
-						<RowDefinition Height="30"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="35"/>
-						<RowDefinition Height="10"/>
-						<RowDefinition Height="*"/>
-						<RowDefinition Height="10"/>
+						<RowDefinition Height="4"/>
+						<RowDefinition Height="26"/>
+						<RowDefinition Height="47*"/>
+						<RowDefinition Height="286*"/>
 					</Grid.RowDefinitions>
 
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="5" />
-						<ColumnDefinition Width="100" />
-						<ColumnDefinition Width="5" />
-						<ColumnDefinition Width="*" />
+					<Label
+						Grid.Row="0"
+						Style="{StaticResource MVILabelStyle}"
+						HorizontalAlignment="Stretch"
+						HorizontalContentAlignment="Left"
+						Margin="30,2,0,2"
+						Content="District Details" Grid.RowSpan="2"
+								/>
 
-					</Grid.ColumnDefinitions>
-					<Label 
-							Grid.Row="0"
+					<Border
+						Grid.Row="2"
+						Margin="20,0,20,20"
+						Style="{StaticResource MVIBorderStyle}" Grid.RowSpan="2"
+						>
+
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="10"/>
+								<RowDefinition Height="30"/>
+								<RowDefinition Height="10"/>
+								<RowDefinition Height="35"/>
+								<RowDefinition Height="10"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="10"/>
+							</Grid.RowDefinitions>
+
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5" />
+								<ColumnDefinition Width="100" />
+								<ColumnDefinition Width="5" />
+								<ColumnDefinition Width="200" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+
+							<Label 
+								Grid.Row="1"
+								Grid.Column="1"
+								Content="District Name:"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Right"/>
+
+							<sf:SfTextBoxExt 
+								x:Name="DistrictName"
+								Grid.Row="1"
+								Grid.Column="3"
+								Grid.RowSpan="2"
+								Height="30"
+								IsEnabled="{Binding IsDistrictNameEnabled}"
+								Text="{Binding SelectedListItem.DistrictName, Mode=TwoWay}" 
+								TextChanged="DistrictNameChanged" 
+								Style="{StaticResource MVITextBoxStyle }"
+								/>
+
+							<Label 
+							Grid.Row="3"
 							Grid.Column="1"
-							Content="District Name:"
+							Content="Region Name:" 
 							VerticalAlignment="Center"
-							HorizontalAlignment="Right"/>
+							HorizontalAlignment="Right" />
 
-					<sf:SfTextBoxExt 
-							x:Name="DistrictName"
-							Grid.Row="0"
+							<sf:ComboBoxAdv
+							x:Name="RegionCombo"
+							Grid.Row="3"
 							Grid.Column="3"
-							Grid.RowSpan="2"
-							Background="White"
-							Padding="10,5,0,0"
-							Height="30"
-							Width="200"
-							VerticalAlignment="Top"
-							HorizontalAlignment="Left"
-							HorizontalContentAlignment="Left"
-							VerticalContentAlignment="Center"
-							IsEnabled="{Binding IsDistrictNameEnabled}"
-							Text="{Binding SelectedListItem.DistrictName, Mode=TwoWay}" 
-							TextChanged="DistrictNameChanged" 
+							ItemsSource="{Binding RegionList}"
+							DisplayMemberPath="RegionName"
+							SelectedItem="{Binding SelectedRegionItem}"
+							IsEnabled="{Binding IsRegionComboEnabled}"
+							SelectionChanged="RegionComboSelectionChanged"
+							Style="{StaticResource MVIComboBoxStyle}"
 							/>
-
-					<Label 
-						Grid.Row="2"
-						Grid.Column="1"
-						Content="Region Name:" 
-						VerticalAlignment="Center"
-						HorizontalAlignment="Right" />
-
-					<sf:ComboBoxAdv
-						x:Name="RegionCombo"
-						Grid.Row="2"
-						Grid.Column="3"
-						MaxHeight="30"
-						Background="White"
-						ItemsSource="{Binding RegionList}"
-						DisplayMemberPath="RegionName"
-						SelectedItem="{Binding SelectedRegionItem}"
-						IsEnabled="{Binding IsRegionComboEnabled}"
-						SelectionChanged="RegionComboSelectionChanged"
-						MinHeight="35"
-						Width="200"
-						HorizontalContentAlignment="Left" 
-						VerticalContentAlignment="Center"
-						VerticalAlignment="Top" 
-						HorizontalAlignment="Left"  />
+						</Grid>
+					</Border>
 
 					<c1:NotifyView
 						x:Name="NotifyView"
-						Grid.Column="3"
-						Grid.ColumnSpan="2"
+						Grid.Column="1"
+						Grid.ColumnSpan="3"
 						Grid.RowSpan="5" 
 						HorizontalContentAlignment="Center" 
 						Visibility="{Binding NotifyVisibility }"					
-						Loaded="NotifyView_Loaded" />
+						 />
+
+
 				</Grid>
 			</Border>
 
@@ -236,10 +266,10 @@
         			Command="{Binding CancelDistrictCommand}"
 					HorizontalAlignment="Right"
 					Visibility="{Binding}"
-					Margin="0,0,20,0"
+					Margin="0,4,20,0"
 					Style="{DynamicResource ImageButtonStyle}"
 					c:xwImageButton.Image="/MVIOperationsSystem;component/Resources/Cancel32x32.png" 
-					ToolTip="Cancel changes" />
+					ToolTip="Cancel changes" VerticalAlignment="Top" />
 			</StackPanel>
 
 		</Grid>

@@ -29,11 +29,6 @@ namespace MVIOperationsSystem.Views.DataEditViews
 		{
 			Messenger.Default.Send<RegionComboChangedMessage>(new RegionComboChangedMessage { Action = "RegionChanged" });
 		}
-
-		private void NotifyView_Loaded(object sender, RoutedEventArgs e)
-		{
-
-		}
 	}
 }
 

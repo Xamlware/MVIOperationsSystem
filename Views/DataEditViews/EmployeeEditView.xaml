@@ -355,7 +355,7 @@
 										Grid.Row="1"
 										Grid.Column="1"
 										Grid.ColumnSpan="8"
-									Height="200" Loaded="Address_Loaded"
+										Height="200" 
 										>
 								</c:AddressView>
 

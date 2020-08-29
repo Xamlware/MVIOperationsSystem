@@ -142,8 +142,14 @@
     <Compile Include="Controls\MVIContentPresenter.cs" />
     <Compile Include="Controls\MVINotifyBox.cs" />
     <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\TabItem.cs" />
+    <Compile Include="ViewModels\AdminDataViewModel.cs" />
     <Compile Include="ViewModels\CustomViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\CustomViewModels\NameViewModel.cs" />
+    <Compile Include="Messages\CloseAdminManagementContentMessage.cs" />
+    <Compile Include="Views\AdminDataView.xaml.cs">
+      <DependentUpon>AdminDataView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomViews\AddressView.xaml.cs">
       <DependentUpon>AddressView.xaml</DependentUpon>
     </Compile>
@@ -279,7 +285,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\ListBoxStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\TextBoxStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdminDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

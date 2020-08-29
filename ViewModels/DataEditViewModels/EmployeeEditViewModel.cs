@@ -612,12 +612,15 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void BuildEmployeeName()
 		{
-			var first = this.SelectedEmployee.FirstName.IsNotNullOrEmpty() ? this.SelectedEmployee.FirstName.Trim() + " " : "";
-			var middle = this.SelectedEmployee.MiddleName.IsNotNullOrEmpty() ? this.SelectedEmployee.MiddleName.Trim() + " " : "";
-			var last = this.SelectedEmployee.LastName.IsNotNullOrEmpty() ? this.SelectedEmployee.LastName.Trim() + " ": " ";
-			var suff = this.SelectedEmployee.NameSuffix.IsNotNullOrEmpty() ? this.SelectedEmployee.NameSuffix.Trim() : "";
-			var name = first + middle + last + suff;
-			this.EmployeeName = name;
+			if (this.SelectedEmployee != null)
+			{
+				var first = this.SelectedEmployee.FirstName.IsNotNullOrEmpty() ? this.SelectedEmployee.FirstName.Trim() + " " : "";
+				var middle = this.SelectedEmployee.MiddleName.IsNotNullOrEmpty() ? this.SelectedEmployee.MiddleName.Trim() + " " : "";
+				var last = this.SelectedEmployee.LastName.IsNotNullOrEmpty() ? this.SelectedEmployee.LastName.Trim() + " " : " ";
+				var suff = this.SelectedEmployee.NameSuffix.IsNotNullOrEmpty() ? this.SelectedEmployee.NameSuffix.Trim() : "";
+				var name = first + middle + last + suff;
+				this.EmployeeName = name;
+			}
 		}
 		private void EnableEditControls(bool isEnabled = false)
 		{
