@@ -1,4 +1,8 @@
-﻿using MVIOperationsSystem.Models;
+﻿using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using MVIOperationsSystem.Messages;
+using MVIOperationsSystem.Models;
+using MVIOperationsSystem.ViewModels.DataEditViewModels;
 using MVIOperationsSystem.Views.DataEditViews;
 using Syncfusion.Windows.Tools.Controls;
 using System;
@@ -14,6 +18,9 @@ namespace MVIOperationsSystem.ViewModels
 	public class AdminDataViewModel : MVIViewModelBase
 	{
 
+		#region Commands
+		public RelayCommand CloseAdminDataWindowCommand { get; private set; }
+	#endregion
 
 		#region Properties
 
@@ -79,8 +86,20 @@ namespace MVIOperationsSystem.ViewModels
 
 		public AdminDataViewModel()
 		{
+			this.CloseAdminDataWindowCommand = new RelayCommand(this.ExecuteCloseAdminDataWindowCommand, this.CanCloseAdminDataWindowCommand);
+
 			this.InitializeActionList();
 			this.TabItems = new ObservableCollection<TabItem>();
+		}
+
+		private bool CanCloseAdminDataWindowCommand()
+		{
+			return true;
+		}
+
+		private void ExecuteCloseAdminDataWindowCommand()
+		{
+			Messenger.Default.Send(new NavigationMessage { Action = "Close" });
 		}
 
 		public void AddTabItem(RoutedPropertyChangedEventArgs<object> e, string tabName)

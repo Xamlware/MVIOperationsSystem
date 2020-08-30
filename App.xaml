@@ -15,8 +15,9 @@
 				<ResourceDictionary Source="Styles\MenuStyles.xaml" />
 				<ResourceDictionary Source="Styles\BorderStyles.xaml" />
 				<ResourceDictionary Source="Styles\GroupBoxStyles.xaml" />
-				<ResourceDictionary Source="Styles\ComboBoxStyles.xaml" />
 				<ResourceDictionary Source="Styles\TextBoxStyles.xaml" />
+				<ResourceDictionary Source="Styles\TabControlStyles.xaml" />
+				<ResourceDictionary Source="Styles\ComboBoxStyles.xaml" />				<ResourceDictionary Source="Styles\TextBoxStyles.xaml" />
 				<ResourceDictionary Source="Styles\LabelStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
             

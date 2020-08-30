@@ -10,8 +10,9 @@
 	<Color x:Key="DarkBackgroundColor">#8B4513</Color>
 	<Color x:Key="MediumBackgroundColor">#D2B48C</Color>
 	<Color x:Key="LightBackgroundColor">#f0ddb2</Color>
-	
-	
+	<Color x:Key="LightestBackgroundColor">#fafad2</Color>
+
+
 	<!-- Brushes -->
 	<SolidColorBrush 
 		x:Key="DarkBackgroundColorBrush"
@@ -22,6 +23,10 @@
 		x:Key="MediumBackgroundColorBrush"
 		Color="{StaticResource MediumBackgroundColor}"/>
 
+	<SolidColorBrush 
+		x:Key="LightestBackgroundColorBrush"
+		Color="{StaticResource LightestBackgroundColor}"/>
+	
 	<SolidColorBrush 
 		x:Key="LightBackgroundColorBrush"
 		Color="{StaticResource LightBackgroundColor}"/>

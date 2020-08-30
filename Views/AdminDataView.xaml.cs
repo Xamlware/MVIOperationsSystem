@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.ViewModels;
+using MVIOperationsSystem.ViewModels.DataEditViewModels;
 using MVIOperationsSystem.Views.DataEditViews;
 using Syncfusion.Windows.Tools.Controls;
 using System;
@@ -97,9 +98,7 @@ namespace MVIOperationsSystem.Views
 				//}
 
 				
-		}
-
-
+			}
 		}
 
 		private void ActionTree_Loaded(object sender, RoutedEventArgs e)
