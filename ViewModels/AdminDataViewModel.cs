@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
@@ -20,9 +21,28 @@ namespace MVIOperationsSystem.ViewModels
 
 		#region Commands
 		public RelayCommand CloseAdminDataWindowCommand { get; private set; }
-	#endregion
+		#endregion
 
 		#region Properties
+		private Dictionary<int, string> TabsUsed = new Dictionary<int, string>();
+
+
+		public const string IsTreePanelEnabledProperty = "IsTreePanelEnabled";
+		private bool _isTreePanelEnabled;
+
+		public bool IsTreePanelEnabled
+		{
+			get
+			{
+				return _isTreePanelEnabled;
+			}
+			set
+			{
+				_isTreePanelEnabled = value;
+				this.RaisePropertyChanged(IsTreePanelEnabledProperty);
+			}
+		}
+
 
 		public const string ActionListProperty = "ActionList";
 		private ObservableCollection<AdminManagementTreeModel> _actionList;
@@ -74,35 +94,47 @@ namespace MVIOperationsSystem.ViewModels
 		public string SelectedTab
 		{
 			get { return _selectedTab; }
-			set { 
+			set {
 				_selectedTab = value;
 				this.RaisePropertyChanged(SelectedTabProperty);
 			}
 		}
 
+		public const string SelectedItemProperty = "SelectedItem";
+		private TabItem _selectedItem;
+		public TabItem SelectedItem
+		{
+			get { return _selectedItem; }
+			set
+			{
+				_selectedItem = value;
+				this.RaisePropertyChanged(SelectedItemProperty);
+			}
+		}
+
+		public const string SelectedIndexProperty = "SelectedIndex";
+		private int _selectedIndex;
+		public int SelectedIndex
+		{
+			get { return _selectedIndex; }
+			set
+			{
+				_selectedIndex = value;
+				this.RaisePropertyChanged(SelectedIndexProperty);
+			}
+		}
 		#endregion
-
-
 
 		public AdminDataViewModel()
 		{
 			this.CloseAdminDataWindowCommand = new RelayCommand(this.ExecuteCloseAdminDataWindowCommand, this.CanCloseAdminDataWindowCommand);
-
+			Messenger.Default.Register<EnableAdminTreePanelMessage>(this, HandleEnableAdminTreePanelMessage);
 			this.InitializeActionList();
 			this.TabItems = new ObservableCollection<TabItem>();
+			this.IsTreePanelEnabled = true;
 		}
 
-		private bool CanCloseAdminDataWindowCommand()
-		{
-			return true;
-		}
-
-		private void ExecuteCloseAdminDataWindowCommand()
-		{
-			Messenger.Default.Send(new NavigationMessage { Action = "Close" });
-		}
-
-		public void AddTabItem(RoutedPropertyChangedEventArgs<object> e, string tabName)
+		public void AddTabItem(string tabName)
 		{
 			var found = false;
 			var index = -1;
@@ -125,10 +157,11 @@ namespace MVIOperationsSystem.ViewModels
 						districtTab.Header = tabName;
 						districtTab.Content = new DistrictEditView();
 						this.TabItems.Add(districtTab);
+						TabsUsed.Add(this.TabItems.Count() - 1, tabName);
 					}
 					else
 					{
-						this.SelectedTab = tabName;
+						SetSelectedTab();
 					}
 					break;
 
@@ -137,18 +170,17 @@ namespace MVIOperationsSystem.ViewModels
 					employeeTab.Header = tabName;
 					employeeTab.Content = new EmployeeEditView();
 					this.TabItems.Add(employeeTab);
+					TabsUsed.Add(this.TabItems.Count() - 1, tabName);
+
 					break;
-				//case "Gender":
-				//	this.ContentPresenter.Content = new GenderEditView();
-				//	break;
-				//case "Inventory":
-				//	this.ContentPresenter.Content = new InventoryEditView();
-				//	break;
+
 				case "Region":
 					var regionTab = new TabItem();
 					regionTab.Header = tabName;
 					regionTab.Content = new RegionEditView();
 					this.TabItems.Add(regionTab);
+					TabsUsed.Add(this.TabItems.Count() - 1, tabName);
+
 					break;
 
 					// Creating an instances of TabControl and adding the tabitems into the TabControl
@@ -164,11 +196,80 @@ namespace MVIOperationsSystem.ViewModels
 
 		}
 
+		private void SetSelectedTab()
+		{
+			var i = this.TabsUsed.First(f => f.Value == "District");
+			this.SelectedItem = this.TabItems[i.Key];
+		}
 
+		public bool CheckForDirtyViews()
+		{
+			var dirtyView = false;
+			foreach (var t in this.TabItems)
+			{
+				if (t.Header.Equals("District"))
+				{
+					var vm = SimpleIoc.Default.GetInstance<DistrictEditViewModel>();
 
-	#region CreateTree
+					if (vm.IsDirty)
+					{
+						dirtyView = true;
+						break;
+					}
+				}
+				else if (t.Header.Equals("Employee"))
+				{
+					var vm = SimpleIoc.Default.GetInstance<EmployeeEditViewModel>();
 
-	public void InitializeActionList()
+					if (vm.IsDirty)
+					{
+						dirtyView = true;
+						break;
+					}
+				}
+				else if (t.Header.Equals("Region"))
+				{
+					var vm = SimpleIoc.Default.GetInstance<RegionEditViewModel>();
+
+					if (vm.IsDirty)
+					{
+						dirtyView = true;
+						break;
+					}
+				};
+			}
+			return dirtyView;
+		}
+
+		private bool CanCloseAdminDataWindowCommand()
+		{
+			//return CheckForDirtyViews();
+			return true;
+		}
+
+		private void ExecuteCloseAdminDataWindowCommand()
+		{
+			Messenger.Default.Send(new AdminDataCloseMessage { Action = "Close" });
+		}
+
+		public override void Cleanup()
+		{
+			SimpleIoc.Default.Unregister<AdminDataViewModel>();
+            SimpleIoc.Default.Register<AdminDataViewModel>();
+			base.Cleanup();
+		}
+
+		#region Message Handlers
+		private void HandleEnableAdminTreePanelMessage(EnableAdminTreePanelMessage m)
+		{
+			this.IsTreePanelEnabled = m.Action;
+		}
+
+		#endregion
+
+		#region CreateTree
+
+		public void InitializeActionList()
 		{
 			this.ActionList = new ObservableCollection<AdminManagementTreeModel>();
 			AdminManagementTreeModel DataRoot = new AdminManagementTreeModel() { Header = "Data Maintenance" };

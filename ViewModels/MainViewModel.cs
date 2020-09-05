@@ -1,19 +1,15 @@
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using MVIOperationsSystem.Controls;
-using MVIOperationsSystem.Data;
-using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Messages;
-using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace MVIOperationsSystem.ViewModels
 {
-     public class MainViewModel : ViewModelBase
-     {
+    public class MainViewModel : MVIViewModelBase
+    {
         ILocalStorageService _ls;
 
         #region Commands
@@ -22,6 +18,9 @@ namespace MVIOperationsSystem.ViewModels
         #endregion
 
         #region Properties
+        public IDictionary<Type, string> ActiveViewModels { get; private set; }
+
+
         public const string LabelTextProperty = "LabelText";
         private string _labelText;
 
@@ -55,6 +54,7 @@ namespace MVIOperationsSystem.ViewModels
         public MainViewModel(ILocalStorageService ls)
         {
             _ls = ls;
+            this.ActiveViewModels = new Dictionary<Type, string>();
             this.LoginButtonVisibility = Visibility.Visible;
             this.LabelText = "Sign In";
             this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, CanExecuteLoginCommand);

@@ -32,7 +32,7 @@ namespace MVIOperationsSystem
 
 		private void HandleAdminDataCloseMessage(AdminDataCloseMessage obj)
 		{
-			
+			//this.ContentPresenter.Content = "";
 		}
 
 		private void HandleCancelLoginMessage(CancelLoginMessage obj)

@@ -43,10 +43,10 @@ namespace MVIOperationsSystem.Views
 		{
 			if (e.NewValue != null)
 			{
-				if (((AdminManagementTreeModel)e.OldValue).Header.IsNotNullOrEmpty())
-				{
-					Messenger.Default.Send(new CleanUpMessage());
-				}
+				//if (((AdminManagementTreeModel)e.OldValue).Header.IsNotNullOrEmpty())
+				//{
+				//	Messenger.Default.Send(new CleanUpMessage());
+				//}
 				var item = ((AdminManagementTreeModel)e.NewValue).Header.Trim();
 
 				switch (item)

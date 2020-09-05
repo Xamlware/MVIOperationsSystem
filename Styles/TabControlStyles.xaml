@@ -4,6 +4,8 @@
 
 	<Style x:Key="MVITabControlStyle" TargetType="{x:Type sf:TabControlExt}">
 		<Setter Property="Background" Value="{StaticResource LightestBackgroundColorBrush }"/>
+		<Setter Property="BorderBrush" Value="{StaticResource DarkBackgroundColorBrush }"/>
+		<Setter Property="BorderThickness" Value="0"/>
 		<Setter Property="ShowTabItemContextMenu" Value="False"/>
 		<Setter Property="CloseButtonType" Value="Individual"/>
 		<Setter Property="CollapseDefaultTabListContextMenuItems" Value="True"/>

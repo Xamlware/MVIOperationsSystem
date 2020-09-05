@@ -205,29 +205,29 @@
 								Grid.RowSpan="2"
 								Height="30"
 								IsEnabled="{Binding IsDistrictNameEnabled}"
-								Text="{Binding SelectedListItem.DistrictName, Mode=TwoWay}" 
+								Text="{Binding SelectedListItem.DistrictName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
 								TextChanged="DistrictNameChanged" 
 								Style="{StaticResource MVITextBoxStyle }"
 								/>
 
 							<Label 
-							Grid.Row="3"
-							Grid.Column="1"
-							Content="Region Name:" 
-							VerticalAlignment="Center"
-							HorizontalAlignment="Right" />
+								Grid.Row="3"
+								Grid.Column="1"
+								Content="Region Name:" 
+								VerticalAlignment="Center"
+								HorizontalAlignment="Right" />
 
 							<sf:ComboBoxAdv
-							x:Name="RegionCombo"
-							Grid.Row="3"
-							Grid.Column="3"
-							ItemsSource="{Binding RegionList}"
-							DisplayMemberPath="RegionName"
-							SelectedItem="{Binding SelectedRegionItem}"
-							IsEnabled="{Binding IsRegionComboEnabled}"
-							SelectionChanged="RegionComboSelectionChanged"
-							Style="{StaticResource MVIComboBoxStyle}"
-							/>
+								x:Name="RegionCombo"
+								Grid.Row="3"
+								Grid.Column="3"
+								ItemsSource="{Binding RegionList, Mode=TwoWay}"
+								DisplayMemberPath="RegionName"
+								SelectedItem="{Binding SelectedRegionItem}"
+								IsEnabled="{Binding IsRegionComboEnabled}"
+								SelectionChanged="RegionComboSelectionChanged"
+								Style="{StaticResource MVIComboBoxStyle}"
+								/>
 						</Grid>
 					</Border>
 

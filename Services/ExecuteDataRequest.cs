@@ -39,6 +39,7 @@ namespace MVIOperationsSystem.Services
 							response = client.PutAsync(route + id.ToString(), pContent).GetAwaiter().GetResult();
 							break;
 						case HttpRequestMethods.Delete:
+							response = client.DeleteAsync(route + id.ToString()).GetAwaiter().GetResult();
 							break;
 						case HttpRequestMethods.Get:
 							response = client.GetAsync(route).GetAwaiter().GetResult();

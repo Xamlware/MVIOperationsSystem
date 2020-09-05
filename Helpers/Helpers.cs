@@ -8,10 +8,11 @@ namespace MVIOperationsSystem.Helpers
 {
 	public static class Helpers
 	{
-		public static void Notify(string action, NotifyButtonEnum b, List<NotifyButtonLabelEnum> bl, string message, bool isError=false)
+		public static void Notify(string action, NotifyButtonEnum b, List<NotifyButtonLabelEnum> bl, string message, bool isError=false, string origin=null)
 		{
 			var am = new NotifyViewActionMessage
 			{
+				Origin=origin,
 				Action = action,
 				ButtonMode = b,
 				ButtonLabels = bl,

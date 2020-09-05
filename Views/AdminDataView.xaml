@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:sf="http://schemas.syncfusion.com/wpf" 
-			 xmlns:c="clr-namespace:MVIOperationsSystem.Controls"
-             mc:Ignorable="d" 
+			 xmlns:c="clr-namespace:MVIOperationsSystem.Controls" 
+			 xmlns:sf="http://schemas.syncfusion.com/wpf"
+			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
 			 DataContext="{Binding AdminDataViewModel, Source={StaticResource Locator}}">
 	
@@ -59,6 +59,7 @@
 							 SelectedTreeItem= "{Binding SelectedActionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 							 SelectedItemChanged= "OnSelectedActionChanged"
 							 Loaded= "ActionTree_Loaded"
+							 IsEnabled="{Binding IsTreePanelEnabled, Mode=TwoWay}"
 							 BorderBrush= "SaddleBrown"
 							 BorderThickness= "1,1,1,1"
 							 CornerRadius= "20"
@@ -88,10 +89,13 @@
 				Grid.Row = "1"
 				Grid.Column = "2"
 				Grid.ColumnSpan = "4"
-				Margin = "10,10,0,40"
+				Margin = "10,10,10,40"
 				Style = "{StaticResource MVIBorderStyle}" Grid.RowSpan="2" >
 
-				<Grid>
+				<Grid
+					Grid.Row = "1"
+					Grid.Column = "2"
+					Grid.ColumnSpan = "4">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="30" />
 						<RowDefinition Height="*" />
@@ -105,12 +109,32 @@
 					<sf:TabControlExt
 						Name = "AdminTabControl"
 						Style="{StaticResource MVITabControlStyle}"
+						ItemsSource="{Binding TabItems,Mode=TwoWay}"
+						SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+						SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
 						Grid.Row="0"
 						Grid.RowSpan="2"
 						Grid.Column="0"
 						Grid.ColumnSpan="2"
-						Margin="10" />
+						Margin="10">
 
+						<sf:TabControlExt.ItemContainerStyle>
+							<Style TargetType="sf:TabItemExt">
+								<Setter Property="HeaderTemplate">
+									<Setter.Value>
+										<DataTemplate>
+											<TextBlock Text="{Binding Header, Mode=TwoWay}" />
+										</DataTemplate>
+									</Setter.Value>
+								</Setter>
+							</Style>
+						</sf:TabControlExt.ItemContainerStyle>
+						<sf:TabControlExt.ContentTemplate>
+							<DataTemplate>
+								<ContentPresenter Content="{Binding Content}" />
+							</DataTemplate>
+						</sf:TabControlExt.ContentTemplate>
+						</sf:TabControlExt>
 				</Grid>
 			</Border>
 			

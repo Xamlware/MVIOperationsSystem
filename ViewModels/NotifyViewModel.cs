@@ -27,9 +27,6 @@ namespace MVIOperationsSystem.ViewModels
 		#endregion
 
 		#region Properties
-		private string _action;
-
-
 		public static bool IsRunningInVisualStudioDesigner
 		{
 			get
@@ -39,10 +36,19 @@ namespace MVIOperationsSystem.ViewModels
 				return appname.Contains("XDesProc");
 			}
 		}
+
+		private string _action;
 		public string Action
 		{
 			get { return _action; }
 			set { _action = value; }
+		}
+
+		private string _origin;
+		public string Origin
+		{
+			get { return _origin; }
+			set { _origin = value; }
 		}
 
 
@@ -208,6 +214,7 @@ namespace MVIOperationsSystem.ViewModels
 		{
 			this.NotifyVisibility = Visibility.Visible;
 			this.Action = nam.Action;
+			this.Origin = nam.Origin;
 			this.SetButtonMode(nam);
 			this.SetText(nam);
 		}
@@ -269,6 +276,11 @@ namespace MVIOperationsSystem.ViewModels
 			}
 		}
 
+		public void FinishAndReturn(NotifyButtonLabelEnum button, string action, string origin)
+		{
+			Messenger.Default.Send(new NotifyResultMessage { ButtonSelected = button, Action = action, Origin = origin });
+		}
+			
 		#region Can/Execute
 		#region YesCommand
 
@@ -309,7 +321,7 @@ namespace MVIOperationsSystem.ViewModels
 
 
 			this.NotifyVisibility = Visibility.Hidden;
-			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "Close" });
+			FinishAndReturn(NotifyButtonLabelEnum.Yes, this.Action, this.Origin);
 		}
 		#endregion
 
@@ -321,7 +333,8 @@ namespace MVIOperationsSystem.ViewModels
 		
 		private void ExecuteNoCommand()
 		{
-			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "Close" });
+			this.NotifyVisibility = Visibility.Hidden;
+			FinishAndReturn(NotifyButtonLabelEnum.No, this.Action, this.Origin);
 		}
 		#endregion
 
@@ -334,6 +347,7 @@ namespace MVIOperationsSystem.ViewModels
 		private void ExecuteCancelCommand()
 		{
 			this.NotifyVisibility = Visibility.Hidden;
+			FinishAndReturn(NotifyButtonLabelEnum.Cancel, this.Action, this.Origin);
 		}
 
 		#endregion

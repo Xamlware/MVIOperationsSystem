@@ -14,5 +14,6 @@ namespace MVIOperationsSystem.Messages
 		public  List<NotifyButtonLabelEnum> ButtonLabels { get; set; }
 		public bool IsError { get; set; }
 		public string Action  { get; set; }
+		public string Origin { get; set; }
 	}
 }

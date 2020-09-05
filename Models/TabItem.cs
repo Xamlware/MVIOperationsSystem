@@ -4,10 +4,21 @@ namespace MVIOperationsSystem.Models
 {
 	public class TabItem
 	{
-        public string Header { get; set; }
-        public Object Content { get; set; }
+        private string header;
 
-        public TabItem()
-        { }
+        public string Header
+        {
+            get { return header; }
+            set { header = value; }
+        }
+
+        private object content;
+
+        public object Content
+        {
+            get { return content; }
+            set { content = value; }
+        }
+
     }
 }

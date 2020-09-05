@@ -1,4 +1,4 @@
-using CommonServiceLocator;
+//using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
@@ -7,6 +7,8 @@ using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using MVIOperationsSystem.ViewModels.CustomViewModels;
 using MVIOperationsSystem.ViewModels.DataEditViewModels;
+using Microsoft.Practices.ServiceLocation;
+using System.Runtime.CompilerServices;
 
 namespace MVIOperationsSystem.ViewModels
 {
@@ -21,7 +23,7 @@ namespace MVIOperationsSystem.ViewModels
         /// </summary>
         public ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+            ServiceLocator.SetLocatorProvider(() => (IServiceLocator)SimpleIoc.Default);
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<MainMenuViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
