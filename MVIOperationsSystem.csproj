@@ -147,6 +147,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Messages\ClosedMessage.cs" />
     <Compile Include="Messages\ContentFilledMessage.cs" />
     <Compile Include="Controls\MVIContentPresenter.cs" />
     <Compile Include="Controls\MVINotifyBox.cs" />

@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
+using MVIOperationsSystem.Services;
 using MVIOperationsSystem.ViewModels.DataEditViewModels;
 using MVIOperationsSystem.Views.DataEditViews;
 using Syncfusion.Windows.Tools.Controls;
@@ -18,6 +19,8 @@ namespace MVIOperationsSystem.ViewModels
 {
 	public class AdminDataViewModel : MVIViewModelBase
 	{
+		MainViewModel _vm;
+		ILocalStorageService _ls;
 
 		#region Commands
 		public RelayCommand CloseAdminDataWindowCommand { get; private set; }
@@ -125,13 +128,23 @@ namespace MVIOperationsSystem.ViewModels
 		}
 		#endregion
 
-		public AdminDataViewModel()
+		public AdminDataViewModel(ILocalStorageService ls, MainViewModel vm)
 		{
+			_ls = ls;
+			_vm = vm;
+			//_vm.ActiveViewModels.Add(this.GetType(), "Admin");
+
 			this.CloseAdminDataWindowCommand = new RelayCommand(this.ExecuteCloseAdminDataWindowCommand, this.CanCloseAdminDataWindowCommand);
 			Messenger.Default.Register<EnableAdminTreePanelMessage>(this, HandleEnableAdminTreePanelMessage);
+			Messenger.Default.Register<ClosedMessage>(this, HandleClosedMessage);
 			this.InitializeActionList();
 			this.TabItems = new ObservableCollection<TabItem>();
 			this.IsTreePanelEnabled = true;
+		}
+
+		private void HandleClosedMessage(ClosedMessage obj)
+		{
+			_ls.ClearLocalStorage();
 		}
 
 		public void AddTabItem(string tabName)
@@ -162,6 +175,7 @@ namespace MVIOperationsSystem.ViewModels
 					else
 					{
 						SetSelectedTab();
+
 					}
 					break;
 
@@ -196,7 +210,7 @@ namespace MVIOperationsSystem.ViewModels
 
 		}
 
-		private void SetSelectedTab()
+		public void SetSelectedTab()
 		{
 			var i = this.TabsUsed.First(f => f.Value == "District");
 			this.SelectedItem = this.TabItems[i.Key];

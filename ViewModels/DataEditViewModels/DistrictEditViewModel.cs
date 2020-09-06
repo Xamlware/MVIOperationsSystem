@@ -273,6 +273,18 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			set
 			{
 				_isDirty = value;
+				if (this.IsDirty)
+				{
+					var d = _vm.DirtyViews.FirstOrDefault(f => f.Key == "District").Key=="District";
+					if (d.IsFalse())
+					{
+						_vm.DirtyViews.Add("District", "");
+					}
+				}
+				else
+				{
+					_vm.DirtyViews.Remove("District");
+				}
 				SaveDistrictCommand.RaiseCanExecuteChanged();
 				this.RaisePropertyChanged(IsDirtyTextProperty);
 			}
@@ -305,7 +317,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			_rs = rs;
 			_ls = ls;
 			this.isInitializing = true;
-			_vm.ActiveViewModels.Add(this.GetType(), "DistrictEditViewModel");
+			_vm.ActiveViewModels.Add(this.GetType(), "District");
 
 			Messenger.Default.Register<DistrictNameChangedMessage>(this, this.HandleDistrictNameChangedMessage);
 			Messenger.Default.Register<ContentPresenterChangedMessage>(this, this.HandleContentPresenterChangedMessage);
@@ -390,7 +402,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.EnableEditControls(false);
 		}
 
-		private void NotifyUserIsDirty(string origin=null)
+		public void NotifyUserIsDirty(string origin=null)
 		{
 			Helpers.Helpers.Notify(
 					"District",
@@ -456,7 +468,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 					this.IsDirty = false;
 
-					if (nrm.Origin == "Admin")
+					if (nrm.Origin == "Main")
+					{
+					}
+					else if (nrm.Origin == "Admin")
 					{
 						Messenger.Default.Send(new CleanUpMessage());
 						Messenger.Default.Send(new NavigationMessage { Action = "Close" });

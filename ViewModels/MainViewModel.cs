@@ -1,7 +1,9 @@
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Services;
+using MVIOperationsSystem.ViewModels.DataEditViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -11,6 +13,7 @@ namespace MVIOperationsSystem.ViewModels
     public class MainViewModel : MVIViewModelBase
     {
         ILocalStorageService _ls;
+        public Dictionary<string, string> DirtyViews { get; set; }
 
         #region Commands
         public RelayCommand LoginCommand { get; private set; }
@@ -54,15 +57,22 @@ namespace MVIOperationsSystem.ViewModels
         public MainViewModel(ILocalStorageService ls)
         {
             _ls = ls;
+            this.DirtyViews = new Dictionary<string, string>();
             this.ActiveViewModels = new Dictionary<Type, string>();
             this.LoginButtonVisibility = Visibility.Visible;
             this.LabelText = "Sign In";
             this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, CanExecuteLoginCommand);
             Messenger.Default.Register<ClosingMessage>(this, HandleClosingMessage);
+            Messenger.Default.Register<ClosedMessage>(this, HandleClosedMessage);
             Messenger.Default.Register<ContentEmptyMessage>(this, HandleContentEmptyMessage);
             Messenger.Default.Register<ContentFilledMessage>(this, HandleContentFilledMessage);
 
         }
+
+		private void HandleClosedMessage(ClosedMessage obj)
+		{
+			
+		}
 
 		#region MessageHandlers
 		private void HandleContentFilledMessage(ContentFilledMessage obj)
@@ -77,7 +87,21 @@ namespace MVIOperationsSystem.ViewModels
 
 		public void HandleClosingMessage(ClosingMessage cm)
         {
-            _ls.ClearLocalStorage();
+            var avm = SimpleIoc.Default.GetInstance<AdminDataViewModel>();
+            foreach(var v in this.ActiveViewModels)
+			{
+                if (v.Value == "District")
+                {
+                    var vm = SimpleIoc.Default.GetInstance(v.Key) as DistrictEditViewModel;
+                    if(vm.IsDirty)
+                    {
+                        //_dirtyViews.Add(v.Value);
+                        avm.SetSelectedTab();
+                        vm.NotifyUserIsDirty("Main");
+                    }
+                }
+
+			}
         }
 		#endregion
 
