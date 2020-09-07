@@ -96,12 +96,32 @@ namespace MVIOperationsSystem.ViewModels
                     if(vm.IsDirty)
                     {
                         //_dirtyViews.Add(v.Value);
-                        avm.SetSelectedTab();
+                        avm.SetSelectedTab("District");
+                        vm.NotifyUserIsDirty("Main");
+                    }
+                }
+                else if (v.Value == "Region")
+                {
+                    var vm = SimpleIoc.Default.GetInstance(v.Key) as RegionEditViewModel;
+                    if (vm.IsDirty)
+                    {
+                        //_dirtyViews.Add(v.Value);
+                        avm.SetSelectedTab("Region");
+                        vm.NotifyUserIsDirty("Main");
+                    }
+                }
+                else if (v.Value == "Employee")
+                {
+                    var vm = SimpleIoc.Default.GetInstance(v.Key) as EmployeeEditViewModel;
+                    if (vm.IsDirty)
+                    {
+                        //_dirtyViews.Add(v.Value);
+                        avm.SetSelectedTab("Employee");
                         vm.NotifyUserIsDirty("Main");
                     }
                 }
 
-			}
+            }
         }
 		#endregion
 

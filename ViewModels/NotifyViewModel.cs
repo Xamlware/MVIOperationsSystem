@@ -1,6 +1,7 @@
 ﻿using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Enums;
@@ -296,15 +297,15 @@ namespace MVIOperationsSystem.ViewModels
 			switch(this.Action)
 			{
 				case "District":
-					var d = ServiceLocator.Current.GetInstance<DistrictEditViewModel>();
+					var d = SimpleIoc.Default.GetInstance<DistrictEditViewModel>();
 					d.SaveDistrict(true);
 					break;
 				case "Region":
-					var r = ServiceLocator.Current.GetInstance<RegionEditViewModel>();
+					var r = SimpleIoc.Default.GetInstance<RegionEditViewModel>();
 					r.SaveRegion(true);
 					break;
 				case "Employee":
-					var se = ServiceLocator.Current.GetInstance<EmployeeEditViewModel>();
+					var se = SimpleIoc.Default.GetInstance<EmployeeEditViewModel>();
 					se.SaveEmployee(true);
 					break;
 

@@ -26,8 +26,8 @@ namespace MVIOperationsSystem.Views.DataEditViews
 			BindingExpression bd = DistrictName.GetBindingExpression(SfTextBoxExt.TextProperty);
 			bd.UpdateSource();
 			
-			BindingExpression br = RegionCombo.GetBindingExpression(ComboBoxAdv.DisplayMemberPathProperty);
-			br.UpdateSource();
+			//BindingExpression br = RegionCombo.GetBindingExpression(ComboBoxAdv.DisplayMemberPathProperty);
+			//br.UpdateSource();
 
 		}
 

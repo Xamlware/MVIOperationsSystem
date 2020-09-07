@@ -1,9 +1,9 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
 using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
-using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using System;
 using System.Collections.Generic;
@@ -12,17 +12,16 @@ using System.Drawing;
 using System.Linq;
 using System.Windows;
 using Xamlware.Framework.Extensions;
+using Region = MVIOperationsSystem.Models.Region;
 
 namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
 	public class EmployeeEditViewModel : MVIViewModelBase
 	{
-		private readonly IDataService<Employee> _es;
-		private readonly IDataService<State> _ss;
-		private readonly IDataService<Country> _cs;
-		private readonly IDataService<Gender> _gs;
-		private readonly IDataService<Race> _rs;
+		private readonly IDataService<Employee> _ds;
+		private readonly IDataService<Region> _rs;
 		private readonly ILocalStorageService _ls;
+		private MainViewModel _vm;
 		private bool isInitializing = false;
 		private bool isNew = false;
 
@@ -37,101 +36,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		#region Properties
 
-		public const string StateListProperty = "StateList";
-		private ObservableCollection<State> _stateList;
-
-		public ObservableCollection<State> StateList
-		{
-			get { return _stateList; }
-			set { 
-				_stateList = value;
-				this.RaisePropertyChanged(StateListProperty);
-			}
-		}
-
-		public const string CountryListProperty = "CountryList";
-		private ObservableCollection<Country> _countryList;
-
-		public ObservableCollection<Country> CountryList
-		{
-			get { return _countryList; }
-			set
-			{
-				_countryList = value;
-				this.RaisePropertyChanged(CountryListProperty);
-			}
-		}
-
-		public const string IsFormEnabledProperty = "IsFormEnabled";
-		private bool _isFormEnabled;
-
-		public bool IsFormEnabled
-		{
-			get { return _isFormEnabled; }
-			set {
-				_isFormEnabled = value;
-				this.RaisePropertyChanged(IsFormEnabledProperty);
-			}
-		}
-
-		//public const string FirstNameProperty = "FirstName";
-		//private string _firstName;
-
-		//public string FirstName
-		//{
-		//	get { return _firstName; }
-		//	set { 
-		//		_firstName = value;
-		//		this.RaisePropertyChanged(FirstNameProperty);
-		//		this.BuildEmployeeName();
-		//	}
-		//}
-
-		//public const string MiddleNameProperty = "MiddleName";
-		//private string _middleName;
-
-		//public string MiddleName
-		//{
-		//	get { return _middleName; }
-		//	set
-		//	{
-		//		_middleName = value;
-		//		this.RaisePropertyChanged(MiddleNameProperty);
-		//		this.BuildEmployeeName();
-
-		//	}
-		//}
-
-		//public const string LastNameProperty = "LastName";
-		//private string _lastName;
-
-		//public string LastName
-		//{
-		//	get { return _lastName; }
-		//	set
-		//	{
-		//		_lastName = value;
-		//		this.RaisePropertyChanged(LastNameProperty);
-		//		this.BuildEmployeeName();
-		//	}
-		//}
-
-		//public const string NameSuffixProperty = "NameSuffix";
-		//private string _nameSuffix;
-
-		//public string NameSuffix
-		//{
-		//	get { return _nameSuffix; }
-		//	set
-		//	{
-		//		_nameSuffix = value;
-		//		this.RaisePropertyChanged(NameSuffixProperty);
-		//		this.BuildEmployeeName();
-		//	}
-		//}
-
-
-
+		private Employee PreEditValues = new Employee();
 		public const string IsSaveButtonPanelVisibleProperty = "IsSaveButtonPanelVisible";
 		private Visibility _isSaveButtonPanelVisible;
 
@@ -194,6 +99,23 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 		}
 
+		public const string IsRegionComboEnabledProperty = "IsRegionComboEnabled";
+		private bool _isRegionComboEnabled;
+
+		public bool IsRegionComboEnabled
+		{
+			get
+			{
+				return _isRegionComboEnabled;
+			}
+			set
+			{
+				_isRegionComboEnabled = value;
+				this.RaisePropertyChanged(IsRegionComboEnabledProperty);
+			}
+		}
+
+
 		public const string IsEmployeeNameEnabledProperty = "IsEmployeeNameEnabled";
 		private bool _isEmployeeNameEnabled;
 
@@ -245,164 +167,50 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 		}
 
+		public const string RegionListProperty = "RegionList";
+		private ObservableCollection<Region> _RegionList;
 
-		public const string EmployeeIdProperty = "EmployeeId";
-		private ObservableCollection<Employee> _EmployeeId;
-
-		public ObservableCollection<Employee> EmployeeId
+		public ObservableCollection<Region> RegionList
 		{
 			get
 			{
-				return _EmployeeId;
+				return _RegionList;
 			}
 			set
 			{
-				_EmployeeId = value;
-				this.RaisePropertyChanged(EmployeeIdProperty);
+				_RegionList = value;
+				this.RaisePropertyChanged(RegionListProperty);
 			}
 		}
 
-		public const string AspUserIdProperty = "AspUserId";
-		private ObservableCollection<Employee> _aspUserId;
 
-		public ObservableCollection<Employee> AspUserId
+		public const string SelectedListItemProperty = "SelectedListItem";
+		private Employee _selectedListItem;
+
+		public Employee SelectedListItem
 		{
-			get
-			{
-				return _aspUserId;
-			}
+			get { return _selectedListItem; }
 			set
 			{
-				_aspUserId = value;
-				this.RaisePropertyChanged(AspUserIdProperty);
+				_selectedListItem = value;
+				this.RaisePropertyChanged(SelectedListItemProperty);
 			}
 		}
 
-		public const string StoreProperty = "Store";
-		private Store _store;
 
-		public Store Store
+
+		public const string SelectedRegionItemProperty = "SelectedRegionItem";
+		private Region _selectedRegionItem;
+
+		public Region SelectedRegionItem
 		{
-			get
-			{
-				return _store;
-			}
+			get { return _selectedRegionItem; }
 			set
 			{
-				_store = value;
-				this.RaisePropertyChanged(StoreProperty);
+				_selectedRegionItem = value;
+				this.RaisePropertyChanged(SelectedRegionItemProperty);
 			}
 		}
-
-		public const string GenderProperty = "Gender";
-		private Gender _gender;
-
-		public Gender Gender
-		{
-			get
-			{
-				return _gender;
-			}
-			set
-			{
-				_gender = value;
-				this.RaisePropertyChanged(GenderProperty);
-			}
-		}
-
-		public const string RaceProperty = "Race";
-		private Race _race;
-
-		public Race Race
-		{
-			get
-			{
-				return _race;
-			}
-			set
-			{
-				_race = value;
-				this.RaisePropertyChanged(RaceProperty);
-			}
-		}
-
-
-		public const string SelectedEmployeeProperty = "SelectedEmployee";
-		private Employee _selectedEmployee;
-
-		public Employee SelectedEmployee
-		{
-			get { return _selectedEmployee; }
-			set
-			{
-				_selectedEmployee = value;
-				//				SelectedRegionItem.PK_Region = SelectedEmployee.FK_Region;
-				RaisePropertyChanged(SelectedEmployeeProperty);
-			}
-		}
-
-
-		public const string SelectedGenderProperty = "SelectedGender";
-		private Gender _selectedGender;
-
-		public Gender SelectedGender
-		{
-			get { return _selectedGender; }
-			set
-			{
-				_selectedGender = value;
-				//				SelectedRegionItem.PK_Region = SelectedGender.FK_Region;
-				RaisePropertyChanged(SelectedGenderProperty);
-			}
-		}
-
-
-		public const string SelectedRaceProperty = "SelectedRace";
-		private Race _selectedRace;
-
-		public Race SelectedRace
-		{
-			get { return _selectedRace; }
-			set
-			{
-				_selectedRace = value;
-				//				SelectedRegionItem.PK_Region = SelectedRace.FK_Region;
-				RaisePropertyChanged(SelectedRaceProperty);
-			}
-		}
-
-
-
-		public const string SelectedStateProperty = "SelectedState";
-		private State _selectedState;
-
-		public State SelectedState
-		{
-			get { return _selectedState; }
-			set
-			{
-				_selectedState = value;
-				//				SelectedRegionItem.PK_Region = SelectedState.FK_Region;
-				RaisePropertyChanged(SelectedStateProperty);
-			}
-		}
-
-
-
-		public const string SelectedCountryProperty = "SelectedCountry";
-		private Country _selectedCountry;
-
-		public Country SelectedCountry
-		{
-			get { return _selectedCountry; }
-			set
-			{
-				_selectedCountry = value;
-				//				SelectedRegionItem.PK_Region = SelectedCountry.FK_Region;
-				RaisePropertyChanged(SelectedCountryProperty);
-			}
-		}
-
 
 
 
@@ -417,12 +225,38 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 			set
 			{
+				var oldName = _EmployeeName;
 				_EmployeeName = value;
+				//if (!this.isInitializing && oldName != _EmployeeName)
+				//{
+				//	//this.IsDirty = true;
+				//}
 				this.RaisePropertyChanged(EmployeeNameProperty);
-				this.IsDirty = true;
 				this.SaveEmployeeCommand.RaiseCanExecuteChanged();
 			}
 		}
+
+
+		public const string RegionProperty = "Region";
+		private string _region;
+
+		public string Region
+		{
+			get { return _region; }
+			set
+			{
+				var oldName = _region;
+				_region = value;
+				//if (!this.isInitializing && oldName != _region)
+				//{
+				//	//this.IsDirty = true;
+				//}
+
+				this.RaisePropertyChanged(RegionProperty);
+				this.SaveEmployeeCommand.RaiseCanExecuteChanged();
+			}
+		}
+
 
 		public const string IsDirtyTextProperty = "IsDirty";
 		private bool _isDirty;
@@ -436,151 +270,57 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			set
 			{
 				_isDirty = value;
+				if (this.IsDirty)
+				{
+					var d = _vm.DirtyViews.FirstOrDefault(f => f.Key == "Employee").Key == "Employee";
+					if (d.IsFalse())
+					{
+						_vm.DirtyViews.Add("Employee", "");
+					}
+				}
+				else
+				{
+					_vm.DirtyViews.Remove("Employee");
+				}
 				SaveEmployeeCommand.RaiseCanExecuteChanged();
 				this.RaisePropertyChanged(IsDirtyTextProperty);
 			}
 		}
 
-		public const string RaceListProperty = "RaceList";
-		private ObservableCollection<Race> _raceList;
+		public const string IsEditingTextProperty = "IsEditing";
+		private bool _isEditing;
 
-		public ObservableCollection<Race> RaceList
+		public bool IsEditing
 		{
 			get
 			{
-				return _raceList;
+				return _isEditing;
 			}
 			set
 			{
-				_raceList = value;
-				this.RaisePropertyChanged(RaceListProperty);
+				_isEditing = value;
+				SaveEmployeeCommand.RaiseCanExecuteChanged();
+				this.RaisePropertyChanged(IsEditingTextProperty);
 			}
 		}
-
-		public const string AddressProperty = "Address";
-		private string _address;
-
-		public string Address
-		{
-			get { return _address; }
-			set { 
-				_address = value;
-				this.RaisePropertyChanged(AddressProperty);
-			
-			}
-		}
-
-		public const string Address1Property = "Address1";
-		private string _address1;
-
-		public string Address1
-		{
-			get { return _address1; }
-			set
-			{
-				_address1 = value;
-				this.RaisePropertyChanged(Address1Property);
-
-			}
-		}
-
-		public const string CityProperty = "City";
-		private string _city;
-
-		public string City
-		{
-			get { return _city; }
-			set
-			{
-				_city = value;
-				this.RaisePropertyChanged(CityProperty);
-
-			}
-		}
-
-		
-		public const string StateProperty = "FK_State";
-		private int _fk_state;
-
-		public int FK_State
-		{
-			get { return _fk_state; }
-			set
-			{
-				_fk_state = value;
-				this.RaisePropertyChanged(StateProperty);
-
-			}
-		}
-
-
-		public const string CountryProperty = "FK_Country";
-		private int _fk_Country;
-
-		public int FK_Country
-		{
-			get { return _fk_Country; }
-			set
-			{
-				_fk_Country = value;
-				this.RaisePropertyChanged(CountryProperty);
-
-			}
-		}
-
-		public const string ZipCodeProperty = "Zipcode";
-		private string _zipCode;
-
-		public string ZipCode
-		{
-			get { return _zipCode; }
-			set 
-			{ 
-				_zipCode = value;
-				this.RaisePropertyChanged(ZipCodeProperty);
-			}
-		}
-
-		public const string GenderListProperty = "GenderList";
-		private ObservableCollection<Gender> _genderList;
-
-		public ObservableCollection<Gender> GenderList
-		{
-			get
-			{
-				return _genderList;
-			}
-			set
-			{
-				_genderList = value;
-				this.RaisePropertyChanged(GenderListProperty);
-			}
-		}
-
 		#endregion
 
 
-			//
-		public EmployeeEditViewModel(IDataService<Employee> es, 
-			IDataService<State> ss,
-			IDataService<Country> cs,
-			IDataService<Gender> gs,
-			IDataService<Race> rs,
-			ILocalStorageService ls)
+		//
+		public EmployeeEditViewModel(IDataService<Employee> ds, IDataService<Region> rs, ILocalStorageService ls, MainViewModel vm)
 		{
-			_es = es;
-			_ls = ls;
-			_ss = ss;
-			_cs = cs;
-			_gs = gs;
+			_vm = vm;
+			_ds = ds;
 			_rs = rs;
-
+			_ls = ls;
 			this.isInitializing = true;
+			_vm.ActiveViewModels.Add(this.GetType(), "Employee");
 
 			Messenger.Default.Register<EmployeeNameChangedMessage>(this, this.HandleEmployeeNameChangedMessage);
 			Messenger.Default.Register<ContentPresenterChangedMessage>(this, this.HandleContentPresenterChangedMessage);
-			Messenger.Default.Register<ListItemChangedMessage>(this, this.HandleListItemChangedMessage);
 			Messenger.Default.Register<AdminDataCloseMessage>(this, this.HandleAdminDataCloseMessage);
+			Messenger.Default.Register<NotifyResultMessage>(this, this.HandleNotifyResultMessage);
+
 
 			this.AddEmployeeCommand = new RelayCommand(this.ExecuteAddEmployeeCommand, this.CanExecuteAddEmployeeCommand);
 			this.EditEmployeeCommand = new RelayCommand(this.ExecuteEditEmployeeCommand, this.CanExecuteEditEmployeeCommand);
@@ -589,145 +329,209 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.CancelEmployeeCommand = new RelayCommand(this.ExecuteCancelEmployeeCommand, this.CanExecuteCancelEmployeeCommand);
 			this.NotificationMessageViewedCommand = new RelayCommand(this.ExecuteNotificationMessageViewedCommand, thisCanExecuteNotificationMessageViewedCommand);
 
-			this.isInitializing = false;
 			this.ShowEditButtons(true);
-			this.IsFormEnabled = true;
-			
+			this.GetDataListsAsync();
+
+			#region CreateManualLists
+			//var dist = new Employee() { PK_Employee=1, EmployeeName = "Gap Employee", FK_Region = 2 };
+			//this.EmployeeList = new ObservableCollection<Employee>
+			//{
+			//	dist
+			//};
+
+			//if (this.EmployeeList.Count > 0)
+			//{ 
+			//	this.SelectedListItem = this.EmployeeList[0];
+			//}
+
+			//var reg = new Region() { PK_Region=2, RegionName = "Pennsylvania Region" };
+			//this.RegionList = new ObservableCollection<Region> { reg };
+			//reg = new Region() { PK_Region=1, RegionName = "Alabama Region" };
+			//this.RegionList.Add(reg);
+			//if (this.RegionList.Count > 0)
+			//{
+			//	var item = this.RegionList.Where(w => w.PK_Region == dist.FK_Region).FirstOrDefault();
+			//	if(item != null)
+			//	{
+			//		this.SelectedRegionItem = item;
+			//	}
+			//}
+			#endregion
 		}
 
-		private void HandleAdminDataCloseMessage(AdminDataCloseMessage m)
+		public override void Cleanup()
 		{
-			if (this.IsDirty)
+			SimpleIoc.Default.Unregister<EmployeeEditViewModel>();
+			SimpleIoc.Default.Register<EmployeeEditViewModel>();
+			base.Cleanup();
+		}
+
+		public void SaveEmployee(bool skipNotify = false)
+		{
+			var isError = false;
+			var message = "Changes successfully sent to database.";
+			try
+			{
+				var resp = _ds.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/Employee/", this.SelectedListItem.PK_Employee);
+			}
+			catch (Exception e)
+			{
+				isError = true;
+				message = e.Message;
+			}
+			this.isNew = false;
+
+			if (!skipNotify)
 			{
 				Helpers.Helpers.Notify(
+					"Employee",
+					NotifyButtonEnum.OneButton,
+					new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok },
+					message,
+					isError,
+					"EmployeeSave");
+			}
+
+			this.IsDirty = false;
+			this.ShowEditButtons(true);
+			this.EnableEditControls(false);
+		}
+
+		public void NotifyUserIsDirty(string origin = null)
+		{
+			Helpers.Helpers.Notify(
 					"Employee",
 					NotifyButtonEnum.ThreeButton,
 					new List<NotifyButtonLabelEnum> { { NotifyButtonLabelEnum.Yes }, { NotifyButtonLabelEnum.No }, { NotifyButtonLabelEnum.Cancel } },
 					"You have unsaved changes.  Save now?",
-					false);
+					false,
+					origin);
 
-			}
+
 		}
 
-
-		private void BuildEmployeeName()
-		{
-			if (this.SelectedEmployee != null)
-			{
-				var first = this.SelectedEmployee.FirstName.IsNotNullOrEmpty() ? this.SelectedEmployee.FirstName.Trim() + " " : "";
-				var middle = this.SelectedEmployee.MiddleName.IsNotNullOrEmpty() ? this.SelectedEmployee.MiddleName.Trim() + " " : "";
-				var last = this.SelectedEmployee.LastName.IsNotNullOrEmpty() ? this.SelectedEmployee.LastName.Trim() + " " : " ";
-				var suff = this.SelectedEmployee.NameSuffix.IsNotNullOrEmpty() ? this.SelectedEmployee.NameSuffix.Trim() : "";
-				var name = first + middle + last + suff;
-				this.EmployeeName = name;
-			}
-		}
 		private void EnableEditControls(bool isEnabled = false)
 		{
 			this.IsEmployeeNameEnabled = isEnabled;
+			this.IsRegionComboEnabled = isEnabled;
 		}
 
 		private void ShowEditButtons(bool show)
 		{
 			this.IsEditButtonPanelVisible = show ? Visibility.Visible : Visibility.Hidden;
 			this.IsSaveButtonPanelVisible = show ? Visibility.Hidden : Visibility.Visible;
+
+			this.IsEditing = (this.IsEditButtonPanelVisible == Visibility.Hidden);
+			Messenger.Default.Send(new EnableAdminTreePanelMessage { Action = (this.IsEditButtonPanelVisible == Visibility.Visible) });
 		}
 
-
-		private void GetEmployeeListAsync()
+		private ObservableCollection<Region> GetRegionListAsync()
 		{
-			var task = _es.GetTableList(HttpRequestMethods.Get, "api/Employee/");
-			this.EmployeeList = task;
+			var task = _rs.GetTableList(HttpRequestMethods.Get, "api/region/");
+			return task;
+		}
+
+		private ObservableCollection<Employee> GetEmployeeListAsync()
+		{
+			var task = _ds.GetTableList(HttpRequestMethods.Get, "api/Employee/");
+			return task;
+		}
+
+		private void GetDataListsAsync()
+		{
+			this.IsBusy = true;
+			ObservableCollection<Region> regTask = this.GetRegionListAsync();
+			this.RegionList = regTask;
+
+			ObservableCollection<Employee> disTask = this.GetEmployeeListAsync();
+			this.EmployeeList = disTask;
 
 			if (this.EmployeeList.IsNotNull() && this.EmployeeList.Count > 0)
 			{
-				this.SelectedEmployee = this.EmployeeList[0];
+				this.SelectedListItem = this.EmployeeList[0];
+			}
+
+			this.IsBusy = false;
+		}
+
+		#region Message handlers
+		private void HandleNotifyResultMessage(NotifyResultMessage nrm)
+		{
+			switch (nrm.ButtonSelected)
+			{
+				case NotifyButtonLabelEnum.No:
+
+					this.IsDirty = false;
+
+					if (nrm.Origin == "Main")
+					{
+					}
+					else if (nrm.Origin == "Admin")
+					{
+						Messenger.Default.Send(new CleanUpMessage());
+						Messenger.Default.Send(new NavigationMessage { Action = "Close" });
+					}
+					else
+					{
+						this.RaisePropertyChanged(SelectedListItemProperty);
+
+						this.ShowEditButtons(true);
+						this.EnableEditControls(false);
+					}
+
+					break;
+				case NotifyButtonLabelEnum.Cancel:
+					//this.ShowEditButtons(true);
+					//this.EnableEditControls(false);
+					break;
+			}
+		}
+
+		private void HandleAdminDataCloseMessage(AdminDataCloseMessage m)
+		{
+			if (this.IsDirty)
+			{
+				this.NotifyUserIsDirty("Admin");
+			}
+			else
+			{
+				Messenger.Default.Send(new CleanUpMessage());
+				Messenger.Default.Send(new NavigationMessage { Action = "Close" });
 			}
 
 		}
 
-
-		#region Message handlers
 		private void HandleContentPresenterChangedMessage(ContentPresenterChangedMessage obj)
 		{
 			if (obj.Action.Contains("Employee"))
 			{
 				this.IsBusy = true;
-				this.GetRaceListAsync();
-				this.GetGenderListAsync();
-				this.GetStateListAsync();
-				this.CountryListAsync();
-				this.GetEmployeeListAsync();
-			
+				ObservableCollection<Region> regTask = this.GetRegionListAsync();
+				this.RegionList = regTask;
+
+				ObservableCollection<Employee> disTask = this.GetEmployeeListAsync();
+				this.EmployeeList = disTask;
+
+				if (this.EmployeeList.IsNotNull() && this.EmployeeList.Count > 0)
+				{
+					this.SelectedListItem = this.EmployeeList[0];
+				}
+
 				this.IsBusy = false;
 			}
 		}
 
-		private void GetGenderListAsync()
+		
+		private void HandleEmployeeNameChangedMessage(EmployeeNameChangedMessage dm)
 		{
-			var task = _gs.GetTableList(HttpRequestMethods.Get, "api/Gender/");
-			this.GenderList = task;
-
-			if (this.GenderList.IsNotNull() && this.GenderList.Count > 0)
-			{
-				this.SelectedGender = this.GenderList[0];
-			}
-
-
-		}
-
-		private void GetRaceListAsync()
-		{
-			var task = _rs.GetTableList(HttpRequestMethods.Get, "api/Race/");
-			this.RaceList = task;
-
-			if (this.RaceList.IsNotNull() && this.RaceList.Count > 0)
-			{
-				this.SelectedRace = this.RaceList[0];
-			}
-
-		}
-
-		private void CountryListAsync()
-		{
-				var task = _cs.GetTableList(HttpRequestMethods.Get, "api/Country/");
-				this.CountryList = task;
-
-				if (this.CountryList.IsNotNull() && this.CountryList.Count > 0)
-				{
-					this.SelectedCountry = this.CountryList[0];
-				}
-
-			}
-
-		private void GetStateListAsync()
-		{
-				var task = _ss.GetTableList(HttpRequestMethods.Get, "api/State/");
-				this.StateList = task;
-		}
-
-		private void HandleListItemChangedMessage(ListItemChangedMessage obj)
-		{
-			if (this.SelectedEmployee != null)
-			{
-			}
-		}
-
-		private void HandleEmployeeNameChangedMessage(EmployeeNameChangedMessage nc)
-		{
-			if ((nc.Action.Trim()).IsNullOrEmpty())
+			if (!this.isInitializing && this.IsEditing && this.SelectedListItem != null)
 			{
 				this.IsDirty = true;
-				this.SaveEmployeeCommand.RaiseCanExecuteChanged();
+				Console.WriteLine("is dirty = true;");
 			}
-			this.BuildEmployeeName();
-		}
 
-		private void ValidateName()
-		{
-			//show error on ui
+			this.SaveEmployeeCommand.RaiseCanExecuteChanged();
 		}
-
 
 		#endregion
 
@@ -735,6 +539,14 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteCancelEmployeeCommand()
 		{
+			if (this.IsDirty)
+			{
+				this.NotifyUserIsDirty("Employee");
+			}
+
+			this.ShowEditButtons(true);
+			this.EnableEditControls(false);
+
 		}
 
 
@@ -745,8 +557,15 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteDeleteEmployeeCommand()
 		{
-			var resp = _es.UpdateTable(this.SelectedEmployee, HttpRequestMethods.Delete, "api/Employee/", null);
+			//var index = this.SelectedListItem.PK_Employee;
+			var resp = _ds.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/Employee/", this.SelectedListItem.PK_Employee);
+			this.EmployeeList.Remove(this.SelectedListItem);
+			if (this.EmployeeList.Count > 0)
+			{
+				this.SelectedListItem = this.EmployeeList[0];
+			}
 			this.ShowEditButtons(false);
+			//this.EnableEditControls(true);
 
 		}
 
@@ -766,8 +585,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			return true;
 
 			//var retVal = this.IsDirty &&   
-			//	this.SelectedEmployee.EmployeeName.IsNotNull() && 
-			//	this.SelectedEmployee.EmployeeName != "New Employee" && 
+			//	this.SelectedListItem.EmployeeName.IsNotNull() && 
+			//	this.SelectedListItem.EmployeeName != "New Employee" && 
 			//	this.SelectedRegionItem.RegionName.IsNotNull();
 
 			//return retVal;
@@ -775,6 +594,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteSaveEmployeeCommand()
 		{
+			Messenger.Default.Send(new UpdateSourceEmployeeMessage());
 			this.SaveEmployee();
 		}
 
@@ -789,9 +609,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.isNew = true;
 			this.IsDirty = true;
 
-			var item = new Employee();
+			var item = new Employee { EmployeeName = "New Employee" };
 			this.EmployeeList.Add(item);
-			this.SelectedEmployee = item;
+			this.SelectedListItem = item;
+			this.SelectedRegionItem = null;
 
 			this.isNew = false;
 			this.ShowEditButtons(false);
@@ -823,33 +644,6 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		}
 
 		#endregion
-
-		public void SaveEmployee(bool skipNotify = false)
-		{
-			var isError = false;
-			var message = "Changes successfully sent to database.";
-
-			try
-			{
-				var resp = _es.UpdateTable(this.SelectedEmployee, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/Employee/", this.SelectedEmployee.PK_Employee);
-			}
-			catch (Exception e)
-			{
-				isError = true;
-				message = e.Message;
-			}
-			this.isNew = false;
-
-			if (!skipNotify)
-			{
-				Helpers.Helpers.Notify("Employee", NotifyButtonEnum.OneButton, new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok }, message, isError);
-			}
-
-			this.IsDirty = false;
-			this.ShowEditButtons(true);
-			this.EnableEditControls(false);
-		}
-
 
 	}
 }

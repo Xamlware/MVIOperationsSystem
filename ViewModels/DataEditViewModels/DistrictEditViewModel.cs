@@ -572,8 +572,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 				this.NotifyUserIsDirty("District");
 			}
 
-			this.ShowEditButtons(true);
-			this.EnableEditControls(false);
+			//this.ShowEditButtons(true);
+			//this.EnableEditControls(false);
 		
 		}
 

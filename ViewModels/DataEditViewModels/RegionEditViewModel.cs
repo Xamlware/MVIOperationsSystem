@@ -1,22 +1,19 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
-using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
-using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
 using MVIOperationsSystem.Views.DataEditViews;
-using MVIOperationsSystem.Helpers;
-using Syncfusion.UI.Xaml.TreeGrid;
+using Syncfusion.Windows.Controls.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using Xamlware.Framework.Extensions;
 using Region = MVIOperationsSystem.Models.Region;
 
@@ -24,8 +21,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
 	public class RegionEditViewModel : MVIViewModelBase
 	{
+		private readonly IDataService<Region> _ds;
 		private readonly IDataService<Region> _rs;
 		private readonly ILocalStorageService _ls;
+		private MainViewModel _vm;
 		private bool isInitializing = false;
 		private bool isNew = false;
 
@@ -40,6 +39,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		#region Properties
 
+		private Region PreEditValues = new Region();
 		public const string IsSaveButtonPanelVisibleProperty = "IsSaveButtonPanelVisible";
 		private Visibility _isSaveButtonPanelVisible;
 
@@ -154,38 +154,21 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 
 
-		//public const string RegionListProperty = "RegionList";
-		//private ObservableCollection<Region> _RegionList;
-
-		//public ObservableCollection<Region> RegionList
-		//{
-		//	get
-		//	{
-		//		return _RegionList;
-		//	}
-		//	set
-		//	{
-		//		_RegionList = value;
-		//		this.RaisePropertyChanged(RegionListProperty);
-		//	}
-		//}
-
 		public const string RegionListProperty = "RegionList";
-		private ObservableCollection<Region> _RegionList;
+		private ObservableCollection<Region> _regionList;
 
 		public ObservableCollection<Region> RegionList
 		{
 			get
 			{
-				return _RegionList;
+				return _regionList;
 			}
 			set
 			{
-				_RegionList = value;
+				_regionList = value;
 				this.RaisePropertyChanged(RegionListProperty);
 			}
 		}
-
 
 		public const string SelectedListItemProperty = "SelectedListItem";
 		private Region _selectedListItem;
@@ -196,7 +179,6 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			set
 			{
 				_selectedListItem = value;
-				//				this.SelectedRegionItem.PK_Region = this.SelectedListItem.FK_Region;
 				this.RaisePropertyChanged(SelectedListItemProperty);
 			}
 		}
@@ -229,9 +211,13 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 			set
 			{
+				var oldName = _RegionName;
 				_RegionName = value;
+				//if (!this.isInitializing && oldName != _RegionName)
+				//{
+				//	//this.IsDirty = true;
+				//}
 				this.RaisePropertyChanged(RegionNameProperty);
-				this.IsDirty = true;
 				this.SaveRegionCommand.RaiseCanExecuteChanged();
 			}
 		}
@@ -245,10 +231,15 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			get { return _region; }
 			set
 			{
+				var oldName = _region;
 				_region = value;
+				//if (!this.isInitializing && oldName != _region)
+				//{
+				//	//this.IsDirty = true;
+				//}
+
 				this.RaisePropertyChanged(RegionProperty);
 				this.SaveRegionCommand.RaiseCanExecuteChanged();
-				this.IsDirty = true;
 			}
 		}
 
@@ -265,25 +256,57 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			set
 			{
 				_isDirty = value;
+				if (this.IsDirty)
+				{
+					var d = _vm.DirtyViews.FirstOrDefault(f => f.Key == "Region").Key == "Region";
+					if (d.IsFalse())
+					{
+						_vm.DirtyViews.Add("Region", "");
+					}
+				}
+				else
+				{
+					_vm.DirtyViews.Remove("Region");
+				}
 				SaveRegionCommand.RaiseCanExecuteChanged();
 				this.RaisePropertyChanged(IsDirtyTextProperty);
+			}
+		}
+
+		public const string IsEditingTextProperty = "IsEditing";
+		private bool _isEditing;
+
+		public bool IsEditing
+		{
+			get
+			{
+				return _isEditing;
+			}
+			set
+			{
+				_isEditing = value;
+				SaveRegionCommand.RaiseCanExecuteChanged();
+				this.RaisePropertyChanged(IsEditingTextProperty);
 			}
 		}
 		#endregion
 
 
 		//
-		public RegionEditViewModel(IDataService<Region> rs, ILocalStorageService ls)
+		public RegionEditViewModel(IDataService<Region> ds, IDataService<Region> rs, ILocalStorageService ls, MainViewModel vm)
 		{
+			_vm = vm;
+			_ds = ds;
 			_rs = rs;
 			_ls = ls;
+
 			this.isInitializing = true;
+			_vm.ActiveViewModels.Add(this.GetType(), "Region");
 
 			Messenger.Default.Register<RegionNameChangedMessage>(this, this.HandleRegionNameChangedMessage);
 			Messenger.Default.Register<ContentPresenterChangedMessage>(this, this.HandleContentPresenterChangedMessage);
-			Messenger.Default.Register<ListItemChangedMessage>(this, this.HandleListItemChangedMessage);
-			//Messenger.Default.Register<RegionComboChangedMessage>(this, this.HandleRegionComboChangedMessage);
 			Messenger.Default.Register<AdminDataCloseMessage>(this, this.HandleAdminDataCloseMessage);
+			Messenger.Default.Register<NotifyResultMessage>(this, this.HandleNotifyResultMessage);
 
 
 			this.AddRegionCommand = new RelayCommand(this.ExecuteAddRegionCommand, this.CanExecuteAddRegionCommand);
@@ -293,8 +316,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.CancelRegionCommand = new RelayCommand(this.ExecuteCancelRegionCommand, this.CanExecuteCancelRegionCommand);
 			this.NotificationMessageViewedCommand = new RelayCommand(this.ExecuteNotificationMessageViewedCommand, thisCanExecuteNotificationMessageViewedCommand);
 
-			this.isInitializing = false;
 			this.ShowEditButtons(true);
+			this.GetDataListsAsync();
 
 			#region CreateManualLists
 			//var dist = new Region() { PK_Region=1, RegionName = "Gap Region", FK_Region = 2 };
@@ -323,31 +346,85 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			#endregion
 		}
 
-		private void HandleAdminDataCloseMessage(AdminDataCloseMessage m)
+		public override void Cleanup()
 		{
-			if (this.IsDirty)
+			SimpleIoc.Default.Unregister<RegionEditViewModel>();
+			SimpleIoc.Default.Register<RegionEditViewModel>();
+			base.Cleanup();
+		}
+
+		public void SaveRegion(bool skipNotify = false)
+		{
+			var isError = false;
+			var message = "Changes successfully sent to database.";
+			try
+			{
+				var resp = _ds.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/Region/", this.SelectedListItem.PK_Region);
+			}
+			catch (Exception e)
+			{
+				isError = true;
+				message = e.Message;
+			}
+			this.isNew = false;
+
+			if (!skipNotify)
 			{
 				Helpers.Helpers.Notify(
+					"Region",
+					NotifyButtonEnum.OneButton,
+					new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok },
+					message,
+					isError,
+					"RegionSave");
+			}
+
+			this.IsDirty = false;
+			this.ShowEditButtons(true);
+			this.EnableEditControls(false);
+		}
+
+		public void NotifyUserIsDirty(string origin = null)
+		{
+			Helpers.Helpers.Notify(
 					"Region",
 					NotifyButtonEnum.ThreeButton,
 					new List<NotifyButtonLabelEnum> { { NotifyButtonLabelEnum.Yes }, { NotifyButtonLabelEnum.No }, { NotifyButtonLabelEnum.Cancel } },
 					"You have unsaved changes.  Save now?",
-					false);
+					false,
+					origin);
 
-			}
+
 		}
 
 		private void EnableEditControls(bool isEnabled = false)
 		{
 			this.IsRegionNameEnabled = isEnabled;
-			this.IsRegionComboEnabled = isEnabled;
 		}
 
 		private void ShowEditButtons(bool show)
 		{
 			this.IsEditButtonPanelVisible = show ? Visibility.Visible : Visibility.Hidden;
 			this.IsSaveButtonPanelVisible = show ? Visibility.Hidden : Visibility.Visible;
+
+			this.IsEditing = (this.IsEditButtonPanelVisible == Visibility.Hidden);
+			Messenger.Default.Send(new EnableAdminTreePanelMessage { Action = (this.IsEditButtonPanelVisible == Visibility.Visible) });
 		}
+
+		private void GetDataListsAsync()
+		{
+			this.IsBusy = true;
+			ObservableCollection<Region> regTask = this.GetRegionListAsync();
+			this.RegionList = regTask;
+
+			if (this.RegionList.IsNotNull() && this.RegionList.Count > 0)
+			{
+				this.SelectedListItem = this.RegionList[0];
+			}
+
+			this.IsBusy = false;
+		}
+
 
 		private ObservableCollection<Region> GetRegionListAsync()
 		{
@@ -355,19 +432,60 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			return task;
 		}
 
-		//private ObservableCollection<Region> GetRegionListAsync()
-		//{
-		//	var task = _RegionDataService.GetTableList(HttpRequestMethods.Get, "api/Region/");
-		//	return task;
-		//}
+			#region Message handlers
+		private void HandleNotifyResultMessage(NotifyResultMessage nrm)
+		{
+			switch (nrm.ButtonSelected)
+			{
+				case NotifyButtonLabelEnum.No:
 
+					this.IsDirty = false;
 
-		#region Message handlers
+					if (nrm.Origin == "Main")
+					{
+					}
+					else if (nrm.Origin == "Admin")
+					{
+						Messenger.Default.Send(new CleanUpMessage());
+						Messenger.Default.Send(new NavigationMessage { Action = "Close" });
+					}
+					else
+					{
+						this.RaisePropertyChanged(SelectedListItemProperty);
+
+						this.ShowEditButtons(true);
+						this.EnableEditControls(false);
+					}
+
+					break;
+				case NotifyButtonLabelEnum.Cancel:
+					//this.ShowEditButtons(true);
+					//this.EnableEditControls(false);
+					break;
+			}
+		}
+
+		private void HandleAdminDataCloseMessage(AdminDataCloseMessage m)
+		{
+			if (this.IsDirty)
+			{
+				this.NotifyUserIsDirty("Admin");
+			}
+			else
+			{
+				Messenger.Default.Send(new CleanUpMessage());
+				Messenger.Default.Send(new NavigationMessage { Action = "Close" });
+			}
+
+		}
+
 		private void HandleContentPresenterChangedMessage(ContentPresenterChangedMessage obj)
 		{
 			if (obj.Action.Contains("Region"))
 			{
 				this.IsBusy = true;
+				ObservableCollection<Region> regTask = this.GetRegionListAsync();
+				this.RegionList = regTask;
 
 				ObservableCollection<Region> disTask = this.GetRegionListAsync();
 				this.RegionList = disTask;
@@ -381,31 +499,19 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 		}
 
-		private void HandleListItemChangedMessage(ListItemChangedMessage obj)
-		{
-			if (this.SelectedListItem != null)
-			{
-				this.SelectedRegionItem = this.RegionList.Where(w => w.PK_Region == this.SelectedListItem.PK_Region).FirstOrDefault();
-			}
-		}
-
-		//private void HandleRegionComboChangedMessage(RegionComboChangedMessage obj)
-		//{
-		//	if (!this.isInitializing && this.SelectedRegionItem != null)
-		//	{
-		//		this.SelectedListItem.FK_Region = this.SelectedRegionItem.PK_Region;
-		//	}
-
-		//	this.IsDirty = true;
-		//	this.SaveRegionCommand.RaiseCanExecuteChanged();
-		//}
-
+	
 		private void HandleRegionNameChangedMessage(RegionNameChangedMessage dm)
 		{
-			if ((dm.Action.Trim()).IsNullOrEmpty())
+			if (!this.isInitializing && this.IsEditing && this.SelectedListItem != null)
 			{
 				this.IsDirty = true;
-				this.SaveRegionCommand.RaiseCanExecuteChanged();
+				Console.WriteLine("is dirty = true;");
+			}
+
+			this.SaveRegionCommand.RaiseCanExecuteChanged();
+			if (this.isInitializing)
+			{
+				this.isInitializing = false;
 			}
 		}
 
@@ -415,6 +521,14 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteCancelRegionCommand()
 		{
+			if (this.IsDirty)
+			{
+				this.NotifyUserIsDirty("Region");
+			}
+
+			//this.ShowEditButtons(true);
+			//this.EnableEditControls(false);
+
 		}
 
 
@@ -425,8 +539,15 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteDeleteRegionCommand()
 		{
-			var resp = _rs.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/Region/", null);
+			//var index = this.SelectedListItem.PK_Region;
+			var resp = _ds.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/Region/", this.SelectedListItem.PK_Region);
+			this.RegionList.Remove(this.SelectedListItem);
+			if (this.RegionList.Count > 0)
+			{
+				this.SelectedListItem = this.RegionList[0];
+			}
 			this.ShowEditButtons(false);
+			//this.EnableEditControls(true);
 
 		}
 
@@ -455,6 +576,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteSaveRegionCommand()
 		{
+			Messenger.Default.Send(new UpdateSourceRegionMessage());
 			this.SaveRegion();
 		}
 
@@ -504,33 +626,6 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		}
 
 		#endregion
-
-		public void SaveRegion(bool skipNotify = false)
-		{
-			var isError = false;
-			var message = "Changes successfully sent to database.";
-
-			try
-			{
-				var resp = _rs.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/Region/", this.SelectedListItem.PK_Region);
-			}
-			catch (Exception e)
-			{
-				isError = true;
-				message = e.Message;
-			}
-			this.isNew = false;
-
-			if (!skipNotify)
-			{
-				Helpers.Helpers.Notify("Region", NotifyButtonEnum.OneButton, new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok }, message, isError);
-			}
-
-			this.IsDirty = false;
-			this.ShowEditButtons(true);
-			this.EnableEditControls(false);
-		}
-
 
 	}
 }

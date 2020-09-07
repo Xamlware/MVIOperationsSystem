@@ -147,12 +147,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\RegionViewModelOld.cs" />
     <Compile Include="Messages\ClosedMessage.cs" />
     <Compile Include="Messages\ContentFilledMessage.cs" />
     <Compile Include="Controls\MVIContentPresenter.cs" />
     <Compile Include="Controls\MVINotifyBox.cs" />
     <Compile Include="Messages\EnableAdminTreePanelMessage.cs" />
     <Compile Include="Messages\NotifyResultMessage.cs" />
+    <Compile Include="Messages\UpdateSourceEmployeeMessage.cs" />
+    <Compile Include="Messages\UpdateSourceRegionMessage.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\TabItem.cs" />
     <Compile Include="ViewModels\AdminDataViewModel.cs" />
@@ -257,7 +260,7 @@
     <Compile Include="Views\AdminManagementView.xaml.cs">
       <DependentUpon>AdminManagementView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DataEditViews\UpdateSourceDistrictMessage.cs" />
+    <Compile Include="Messages\UpdateSourceDistrictMessage.cs" />
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>

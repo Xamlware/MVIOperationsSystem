@@ -174,7 +174,7 @@ namespace MVIOperationsSystem.ViewModels
 					}
 					else
 					{
-						SetSelectedTab();
+						SetSelectedTab("District");
 
 					}
 					break;
@@ -210,9 +210,9 @@ namespace MVIOperationsSystem.ViewModels
 
 		}
 
-		public void SetSelectedTab()
+		public void SetSelectedTab(string tab)
 		{
-			var i = this.TabsUsed.First(f => f.Value == "District");
+			var i = this.TabsUsed.First(f => f.Value == tab);
 			this.SelectedItem = this.TabItems[i.Key];
 		}
 
