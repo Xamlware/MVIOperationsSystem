@@ -102,6 +102,11 @@
       <HintPath>packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Expressions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Linq.Expressions.4.3.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -148,16 +153,30 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\RegionViewModelOld.cs" />
+    <Compile Include="Data\OfflineContext.cs" />
+    <Compile Include="Messages\AddressChangedMessage.cs" />
     <Compile Include="Messages\ClosedMessage.cs" />
     <Compile Include="Messages\ContentFilledMessage.cs" />
     <Compile Include="Controls\MVIContentPresenter.cs" />
     <Compile Include="Controls\MVINotifyBox.cs" />
     <Compile Include="Messages\EnableAdminTreePanelMessage.cs" />
+    <Compile Include="Messages\NetworkConnectionMessage.cs" />
     <Compile Include="Messages\NotifyResultMessage.cs" />
+    <Compile Include="Messages\UpdateSourceAddressMessage.cs" />
     <Compile Include="Messages\UpdateSourceEmployeeMessage.cs" />
     <Compile Include="Messages\UpdateSourceRegionMessage.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\TabItem.cs" />
+    <Compile Include="Repositories\IDistrictRepository.cs" />
+    <Compile Include="Repositories\IEmployeeRepository.cs" />
+    <Compile Include="Repositories\IRegionRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Repositories\IUnitOfWork.cs" />
+    <Compile Include="Repositories\UnitOfWork.cs" />
+    <Compile Include="Services\DistrictRepository.cs" />
+    <Compile Include="Services\EmployeeRepository.cs" />
+    <Compile Include="Services\RegionRepository.cs" />
     <Compile Include="ViewModels\AdminDataViewModel.cs" />
     <Compile Include="ViewModels\CustomViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\CustomViewModels\NameViewModel.cs" />
@@ -184,7 +203,7 @@
     <Compile Include="Messages\ContentEmptyMessage.cs" />
     <Compile Include="Messages\ContentPresenterChangedMessage.cs" />
     <Compile Include="Messages\DistrictNameChangedMessage.cs" />
-    <Compile Include="Messages\EmployeeNameChangedMessage.cs" />
+    <Compile Include="Messages\EmployeeChangedMessage.cs" />
     <Compile Include="Messages\GenderNameChangedMessage.cs" />
     <Compile Include="Messages\ContentPresenterControlChangedMessage.cs" />
     <Compile Include="Messages\InventoryNameChangedMessage.cs" />
@@ -234,7 +253,7 @@
     </Compile>
     <Compile Include="DataServices\LoginDataRequest.cs" />
     <Compile Include="Services\LocalStorageService.cs" />
-    <Compile Include="HttpRequestMethods.cs" />
+    <Compile Include="Enums\HttpRequestMethods.cs" />
     <Compile Include="Messages\CancelLoginMessage.cs" />
     <Compile Include="Messages\ClosingMessage.cs" />
     <Compile Include="Messages\PasswordMessage.cs" />

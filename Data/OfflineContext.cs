@@ -1,24 +1,24 @@
-namespace MVIOperationsSystem.Data
+﻿namespace MVIOperationsSystem.Data
 {
-	using MVIOperations.Models;
-	using MVIOperationsSystem.Models;
+    using MVIOperations.Models;
+    using MVIOperationsSystem.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
     using System.Linq;
 
-    public class MVIOperationsContext : DbContext
+    public class OfflineContext : DbContext
     {
-        // Your context has been configured to use a 'MVIOperationsContext' connection string from your application's 
+        // Your context has been configured to use a 'Offlinecontext' connection string from your application's 
         // configuration file (App.config or Web.config). By default, this connection string targets the 
-        // 'MVIOperationsSystem.Data.MVIOperationsContext' database on your LocalDb instance. 
+        // 'MVIOperationsSystem.Data.Offlinecontext' database on your LocalDb instance. 
         // 
-        // If you wish to target a different database and/or database provider, modify the 'MVIOperationsContext' 
+        // If you wish to target a different database and/or database provider, modify the 'Offlinecontext' 
         // connection string in the application configuration file.
-        public MVIOperationsContext()
-            : base("name=MVIOperationsContext")
+        public OfflineContext()
+            : base("name=OfflineContext")
         {
-            //if (MVIOperationsContext.Database.CanConnect())
+            //if (Offlinecontext.Database.CanConnect())
             //{
             //    // all good
             //}
@@ -33,7 +33,7 @@ namespace MVIOperationsSystem.Data
         // Add a DbSet for each entity type that you want to include in your model. For more information 
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
 
-        public virtual DbSet<Country> Country{ get; set; }
+        public virtual DbSet<Country> Country { get; set; }
         public virtual DbSet<District> District { get; set; }
         public virtual DbSet<Region> Region { get; set; }
         public virtual DbSet<Employee> Employee { get; set; }

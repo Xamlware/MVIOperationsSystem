@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
+using MVIOperationsSystem.Data;
 using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Services;
@@ -254,7 +255,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 				//{
 				//	//this.IsDirty = true;
 				//}
-				
+
 				this.RaisePropertyChanged(RegionProperty);
 				this.SaveDistrictCommand.RaiseCanExecuteChanged();
 			}
@@ -275,7 +276,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 				_isDirty = value;
 				if (this.IsDirty)
 				{
-					var d = _vm.DirtyViews.FirstOrDefault(f => f.Key == "District").Key=="District";
+					var d = _vm.DirtyViews.FirstOrDefault(f => f.Key == "District").Key == "District";
 					if (d.IsFalse())
 					{
 						_vm.DirtyViews.Add("District", "");
@@ -308,14 +309,13 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		}
 		#endregion
 
-
-		//
 		public DistrictEditViewModel(IDataService<District> ds, IDataService<Region> rs, ILocalStorageService ls, MainViewModel vm)
 		{
 			_vm = vm;
 			_ds = ds;
 			_rs = rs;
 			_ls = ls;
+
 			this.isInitializing = true;
 			_vm.ActiveViewModels.Add(this.GetType(), "District");
 
@@ -373,11 +373,19 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		public void SaveDistrict(bool skipNotify = false)
 		{
+
 			var isError = false;
 			var message = "Changes successfully sent to database.";
 			try
 			{
-				var resp = _ds.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district/", this.SelectedListItem.PK_District);
+				if (_vm.IsConnected)
+				{
+					var resp = _ds.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district/", this.SelectedListItem.PK_District);
+				}
+				else
+				{
+
+				}
 			}
 			catch (Exception e)
 			{
@@ -389,10 +397,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			if (!skipNotify)
 			{
 				Helpers.Helpers.Notify(
-					"District", 
-					NotifyButtonEnum.OneButton, 
-					new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok }, 
-					message, 
+					"District",
+					NotifyButtonEnum.OneButton,
+					new List<NotifyButtonLabelEnum> { NotifyButtonLabelEnum.Ok },
+					message,
 					isError,
 					"DistrictSave");
 			}
@@ -402,7 +410,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.EnableEditControls(false);
 		}
 
-		public void NotifyUserIsDirty(string origin=null)
+		public void NotifyUserIsDirty(string origin = null)
 		{
 			Helpers.Helpers.Notify(
 					"District",
@@ -432,13 +440,15 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private ObservableCollection<Region> GetRegionListAsync()
 		{
-			var task = _rs.GetTableList(HttpRequestMethods.Get, "api/region/");
+			var region = new Region();
+			var task = _rs.GetTableList(_vm.IsConnected, region, HttpRequestMethods.Get, "api/region/");
 			return task;
 		}
 
 		private ObservableCollection<District> GetDistrictListAsync()
 		{
-			var task = _ds.GetTableList(HttpRequestMethods.Get, "api/district/");
+			var district = new District();
+			var task = _ds.GetTableList(_vm.IsConnected, district, HttpRequestMethods.Get, "api/district/");
 			return task;
 		}
 
@@ -464,7 +474,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		{
 			switch (nrm.ButtonSelected)
 			{
-				case NotifyButtonLabelEnum.No :
+				case NotifyButtonLabelEnum.No:
 
 					this.IsDirty = false;
 
@@ -528,12 +538,12 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void HandleListItemChangedMessage(ListItemChangedMessage obj)
 		{
-			if (this.SelectedListItem != null)
+			if (this.SelectedListItem != null && this.RegionList != null)
 			{
 				this.SelectedRegionItem = this.RegionList.Where(w => w.PK_Region == this.SelectedListItem.FK_Region).FirstOrDefault();
 			}
 		}
-	
+
 		private void HandleRegionComboChangedMessage(RegionComboChangedMessage obj)
 		{
 			if (!this.isInitializing && this.IsEditing && this.SelectedRegionItem != null)
@@ -574,7 +584,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 			//this.ShowEditButtons(true);
 			//this.EnableEditControls(false);
-		
+
 		}
 
 

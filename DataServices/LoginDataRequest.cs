@@ -1,5 +1,6 @@
 ﻿using MilVetIndApi.Authentication.Models;
 using MVIOperations.Models;
+using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Services;
 using Newtonsoft.Json;
 using System;

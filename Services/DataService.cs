@@ -1,17 +1,29 @@
-﻿using Newtonsoft.Json;
+﻿using MVIOperations.Models;
+using MVIOperationsSystem.Data;
+using MVIOperationsSystem.Enums;
+using MVIOperationsSystem.Models;
+using MVIOperationsSystem.Repositories;
+using Newtonsoft.Json;
+using Syncfusion.Data.Extensions;
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace MVIOperationsSystem.Services
 {
 
 	public class DataService<T> : IDataService<T>
 	{
+
 		ExecuteDataRequest edr = new ExecuteDataRequest();
+		OfflineContext _dbOffline = new OfflineContext();
+		IUnitOfWork unitOfWork = new UnitOfWork(new OfflineContext());
+
+
 		public T UpdateTable(T t, HttpRequestMethods method, string route = "", int? id = null)
 		{
 			T retVal = default(T);
+
 			try
 			{
 				var jsonString = JsonConvert.SerializeObject(t);
@@ -27,28 +39,81 @@ namespace MVIOperationsSystem.Services
 
 
 			}
+
 			return retVal;
 		}
 
-		public ObservableCollection<T> GetTableList(HttpRequestMethods method, string route)
-		{
-			try
+
+
+		public ObservableCollection<T> GetTableList(bool isConnected, T t, HttpRequestMethods method, string route)
+		{ 
+
+			string jsonString = null;
+			if (isConnected)
 			{
-				var task = edr.ExecuteRequest(route, method);
-				if (task.Result.Contains("Exception"))
+				try
+				{
+					var task = edr.ExecuteRequest(route, method);
+					if (task.Result.Contains("Exception"))
+					{
+						return null;
+					}
+					else
+					{
+						return JsonConvert.DeserializeObject<ObservableCollection<T>>(task.Result);
+					}
+				}
+				catch (Exception e)
 				{
 					return null;
 				}
+			}
+			else
+			{
+
+				var oc = new ObservableCollection<T>();
+				if (t is District)
+				{
+					
+					var resp = unitOfWork.District.GetAll();
+					jsonString = JsonConvert.SerializeObject(resp);
+
+				}
 				else
 				{
-					return JsonConvert.DeserializeObject<ObservableCollection<T>>(task.Result);
+					if(t is Region)
+					{
+						var resp = unitOfWork.Region.GetAll();
+						jsonString = JsonConvert.SerializeObject(resp);
+
+					}
 				}
+
+				oc = JsonConvert.DeserializeObject<ObservableCollection<T>>(jsonString);
+				return oc;
+
 			}
-			catch (Exception e)
-			{
-				return null;
-			}
-			
 		}
+
+		//public ObservableCollection<T> GetOfflineTableList(T t)
+		//{
+		//	var oc = new ObservableCollection<T>();
+		//	try
+		//	{
+		//		if (t is District)
+		//		{
+		//			oc = (ObservableCollection<T>)unitOfWork.District.GetAll();
+		//			return oc;
+		//		}
+
+		//	}
+		//	catch (Exception e)
+		//	{
+		//		return null;
+		//	}
+
+		//	return null;
+		//}
 	}
 }
+

@@ -1,12 +1,10 @@
-﻿
-using MVIOperationsSystem.DataServices;
-using MVIOperationsSystem.Models;
+﻿using MVIOperationsSystem.Models;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace MVIOperationsSystem.Data
 {
-    public class LocalStorageContext : DbContext
+	public class LocalStorageContext : DbContext
     {
         // Your context has been configured to use a 'MVIOperationsContext' connection string from your application's 
         // configuration file (App.config or Web.config). By default, this connection string targets the 

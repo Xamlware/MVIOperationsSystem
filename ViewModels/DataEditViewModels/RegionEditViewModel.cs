@@ -1,19 +1,15 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
-using MVIOperations.Models;
 using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Services;
-using MVIOperationsSystem.Views.DataEditViews;
-using Syncfusion.Windows.Controls.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
-using System.Windows.Data;
 using Xamlware.Framework.Extensions;
 using Region = MVIOperationsSystem.Models.Region;
 
@@ -21,7 +17,6 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
 	public class RegionEditViewModel : MVIViewModelBase
 	{
-		private readonly IDataService<Region> _ds;
 		private readonly IDataService<Region> _rs;
 		private readonly ILocalStorageService _ls;
 		private MainViewModel _vm;
@@ -293,10 +288,9 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 
 		//
-		public RegionEditViewModel(IDataService<Region> ds, IDataService<Region> rs, ILocalStorageService ls, MainViewModel vm)
+		public RegionEditViewModel(IDataService<Region> rs, ILocalStorageService ls, MainViewModel vm)
 		{
 			_vm = vm;
-			_ds = ds;
 			_rs = rs;
 			_ls = ls;
 
@@ -359,7 +353,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			var message = "Changes successfully sent to database.";
 			try
 			{
-				var resp = _ds.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/Region/", this.SelectedListItem.PK_Region);
+				//var resp = _rs.UpdateTable(_vm.IsConnected, this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/Region/", this.SelectedListItem.PK_Region);
 			}
 			catch (Exception e)
 			{
@@ -428,7 +422,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private ObservableCollection<Region> GetRegionListAsync()
 		{
-			var task = _rs.GetTableList(HttpRequestMethods.Get, "api/region/");
+			var region = new Region();
+			var task = _rs.GetTableList(_vm.IsConnected, region, HttpRequestMethods.Get, "api/region/");
 			return task;
 		}
 
@@ -540,7 +535,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		private void ExecuteDeleteRegionCommand()
 		{
 			//var index = this.SelectedListItem.PK_Region;
-			var resp = _ds.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/Region/", this.SelectedListItem.PK_Region);
+			//var resp = _rs.UpdateTable(_vm.IsConnected, SelectedListItem, HttpRequestMethods.Delete, "api/Region/", this.SelectedListItem.PK_Region);
 			this.RegionList.Remove(this.SelectedListItem);
 			if (this.RegionList.Count > 0)
 			{

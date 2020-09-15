@@ -6,8 +6,8 @@
              xmlns:sf="http://schemas.syncfusion.com/wpf"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="500"
-			DataContext="{Binding AddressViewModel, Source={StaticResource Locator}}">
-
+			 >
+	<!--DataContext="{Binding AddressViewModel, Source={StaticResource Locator}}"-->
 
 	<Border Style="{ StaticResource MVIBorderStyle }"	>
 		<Grid>
@@ -58,7 +58,8 @@
                 Grid.Column="1"
                 Grid.ColumnSpan="6"
 				Style="{StaticResource MVITextBoxStyle}"
-                Text="{Binding SelectedEmployee.Address1, Mode=TwoWay}"
+                Text="{Binding SelectedListItem.Address, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+				TextChanged="AddressChanged"
                 HorizontalAlignment="Stretch"/>
 
 			<Label
@@ -75,7 +76,8 @@
                 Grid.Column="1"
                 Grid.ColumnSpan="6"
 				Style="{StaticResource MVITextBoxStyle}"
-                Text="{Binding SelectedEmployee.Address1, Mode=TwoWay}"
+                Text="{Binding SelectedListItem.Address1, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+				TextChanged="AddressChanged"
                 HorizontalAlignment="Stretch"/>
 
 			<Label
@@ -91,7 +93,8 @@
                 Grid.Column="1"
                 Grid.ColumnSpan="3"
 				Style="{StaticResource MVITextBoxStyle}"
-				Text="{Binding SelectedEmployee.City, Mode=TwoWay}"
+				Text="{Binding SelectedListItem.City, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+				TextChanged="AddressChanged"
                 HorizontalAlignment="Stretch"/>
 
 			<Label
@@ -106,10 +109,11 @@
 				Grid.Row="5"
 				Grid.Column="5"
                 Grid.ColumnSpan="2"
+				SelectionChanged="AddressChanged"
                 Style="{StaticResource MVIComboBoxStyle}"
                 SelectedValuePath="PK_GoverningDistrict"
                 ItemsSource="{Binding StateList, Mode=TwoWay}"
-                SelectedValue="{Binding SelectedEmployee.FK_State, Mode=TwoWay}"
+                SelectedValue="{Binding SelectedListItem.FK_State, Mode=TwoWay}"
                 HorizontalAlignment="Stretch" />
 
 			<Label
@@ -126,7 +130,8 @@
                 Grid.Column="1"
                 Grid.ColumnSpan="2"
  				Style="{StaticResource MVITextBoxStyle}"
-                Text="{Binding SelectedEmployee.ZipCode, Mode=TwoWay}"
+                Text="{Binding SelectedListItem.ZipCode, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+  				TextChanged="AddressChanged"
                 HorizontalAlignment="Stretch"/>
 
 			<Label
@@ -143,10 +148,11 @@
                 Grid.Column="4"
                 Grid.ColumnSpan="3"
                 Style="{StaticResource MVIComboBoxStyle}"
+				SelectionChanged="AddressChanged"
 				DisplayMemberPath="Name"
                 SelectedValuePath="PK_Country"
                 ItemsSource="{Binding CountryList, Mode=TwoWay}"
-                SelectedValue="{Binding SelectedEmployee.FK_Country, Mode=TwoWay}"
+                SelectedValue="{Binding SelectedListItem.FK_Country, Mode=TwoWay}"
                 HorizontalAlignment="Stretch"/>
 
 

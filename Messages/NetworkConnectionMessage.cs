@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVIOperationsSystem
+namespace MVIOperationsSystem.Messages
 {
-	public enum HttpRequestMethods
+	public class NetworkConnectionMessage
 	{
-		Delete,
-		Get,
-		Put,
-		Post
+		public bool IsConnected { get; set; }
 	}
 }

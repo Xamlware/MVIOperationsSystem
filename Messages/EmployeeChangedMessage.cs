@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace MVIOperationsSystem.Messages
 {
-	public class EmployeeNameChangedMessage
+	public class EmployeeChangedMessage
 	{
-		public string Action { get; set; }
 	}
 }

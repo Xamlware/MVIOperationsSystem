@@ -12,14 +12,12 @@ using System.Drawing;
 using System.Linq;
 using System.Windows;
 using Xamlware.Framework.Extensions;
-using Region = MVIOperationsSystem.Models.Region;
 
 namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 {
 	public class EmployeeEditViewModel : MVIViewModelBase
 	{
-		private readonly IDataService<Employee> _ds;
-		private readonly IDataService<Region> _rs;
+		private readonly IDataService<Employee> _es;
 		private readonly ILocalStorageService _ls;
 		private MainViewModel _vm;
 		private bool isInitializing = false;
@@ -99,24 +97,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 		}
 
-		public const string IsRegionComboEnabledProperty = "IsRegionComboEnabled";
-		private bool _isRegionComboEnabled;
-
-		public bool IsRegionComboEnabled
-		{
-			get
-			{
-				return _isRegionComboEnabled;
-			}
-			set
-			{
-				_isRegionComboEnabled = value;
-				this.RaisePropertyChanged(IsRegionComboEnabledProperty);
-			}
-		}
-
-
-		public const string IsEmployeeNameEnabledProperty = "IsEmployeeNameEnabled";
+			public const string IsEmployeeNameEnabledProperty = "IsEmployeeNameEnabled";
 		private bool _isEmployeeNameEnabled;
 
 		public bool IsEmployeeNameEnabled
@@ -152,37 +133,22 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 
 		public const string EmployeeListProperty = "EmployeeList";
-		private ObservableCollection<Employee> _EmployeeList;
+		private ObservableCollection<Employee> _employeeList;
 
 		public ObservableCollection<Employee> EmployeeList
 		{
 			get
 			{
-				return _EmployeeList;
+				return _employeeList;
 			}
 			set
 			{
-				_EmployeeList = value;
+				_employeeList = value;
 				this.RaisePropertyChanged(EmployeeListProperty);
 			}
 		}
 
-		public const string RegionListProperty = "RegionList";
-		private ObservableCollection<Region> _RegionList;
-
-		public ObservableCollection<Region> RegionList
-		{
-			get
-			{
-				return _RegionList;
-			}
-			set
-			{
-				_RegionList = value;
-				this.RaisePropertyChanged(RegionListProperty);
-			}
-		}
-
+		
 
 		public const string SelectedListItemProperty = "SelectedListItem";
 		private Employee _selectedListItem;
@@ -199,64 +165,27 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 
 
-		public const string SelectedRegionItemProperty = "SelectedRegionItem";
-		private Region _selectedRegionItem;
+		//public const string EmployeeNameProperty = "EmployeeName";
+		//private string _employeeName;
 
-		public Region SelectedRegionItem
-		{
-			get { return _selectedRegionItem; }
-			set
-			{
-				_selectedRegionItem = value;
-				this.RaisePropertyChanged(SelectedRegionItemProperty);
-			}
-		}
-
-
-
-		public const string EmployeeNameProperty = "EmployeeName";
-		private string _EmployeeName;
-
-		public string EmployeeName
-		{
-			get
-			{
-				return _EmployeeName;
-			}
-			set
-			{
-				var oldName = _EmployeeName;
-				_EmployeeName = value;
-				//if (!this.isInitializing && oldName != _EmployeeName)
-				//{
-				//	//this.IsDirty = true;
-				//}
-				this.RaisePropertyChanged(EmployeeNameProperty);
-				this.SaveEmployeeCommand.RaiseCanExecuteChanged();
-			}
-		}
-
-
-		public const string RegionProperty = "Region";
-		private string _region;
-
-		public string Region
-		{
-			get { return _region; }
-			set
-			{
-				var oldName = _region;
-				_region = value;
-				//if (!this.isInitializing && oldName != _region)
-				//{
-				//	//this.IsDirty = true;
-				//}
-
-				this.RaisePropertyChanged(RegionProperty);
-				this.SaveEmployeeCommand.RaiseCanExecuteChanged();
-			}
-		}
-
+		//public string EmployeeName
+		//{
+		//	get
+		//	{
+		//		return _employeeName;
+		//	}
+		//	set
+		//	{
+		//		var oldName = _employeeName;
+		//		_employeeName = value;
+		//		//if (!this.isInitializing && oldName != _employeeName)
+		//		//{
+		//		//	//this.IsDirty = true;
+		//		//}
+		//		this.RaisePropertyChanged(EmployeeNameProperty);
+		//		this.SaveEmployeeCommand.RaiseCanExecuteChanged();
+		//	}
+		//}
 
 		public const string IsDirtyTextProperty = "IsDirty";
 		private bool _isDirty;
@@ -307,16 +236,35 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 
 		//
-		public EmployeeEditViewModel(IDataService<Employee> ds, IDataService<Region> rs, ILocalStorageService ls, MainViewModel vm)
+		public EmployeeEditViewModel(IDataService<Employee> es, ILocalStorageService ls, MainViewModel vm)
 		{
 			_vm = vm;
-			_ds = ds;
-			_rs = rs;
+			_es = es;
 			_ls = ls;
 			this.isInitializing = true;
-			_vm.ActiveViewModels.Add(this.GetType(), "Employee");
+			try
+			{
+				if (_vm.ActiveViewModels.Count > 0)
+				{
+					var employee = _vm.ActiveViewModels.First(f => f.Value == "Employee").Value == "Employee";
+					if (employee.IsFalse())
+					{
+						_vm.ActiveViewModels.Add(this.GetType(), "Employee");
+					}
+				}
+				else
+				{
+					_vm.ActiveViewModels.Add(this.GetType(), "Employee");
+				}
+			}
+			catch (Exception e)
+			{
+				_vm.ActiveViewModels.Add(this.GetType(), "Employee");
 
-			Messenger.Default.Register<EmployeeNameChangedMessage>(this, this.HandleEmployeeNameChangedMessage);
+			}
+
+
+			Messenger.Default.Register<EmployeeChangedMessage>(this, this.HandleEmployeeChangedMessage);
 			Messenger.Default.Register<ContentPresenterChangedMessage>(this, this.HandleContentPresenterChangedMessage);
 			Messenger.Default.Register<AdminDataCloseMessage>(this, this.HandleAdminDataCloseMessage);
 			Messenger.Default.Register<NotifyResultMessage>(this, this.HandleNotifyResultMessage);
@@ -372,7 +320,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			var message = "Changes successfully sent to database.";
 			try
 			{
-				var resp = _ds.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/Employee/", this.SelectedListItem.PK_Employee);
+				// _es.UpdateTable(_vm.IsConnected, this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district/", this.SelectedListItem.PK_Employee);
 			}
 			catch (Exception e)
 			{
@@ -413,7 +361,6 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		private void EnableEditControls(bool isEnabled = false)
 		{
 			this.IsEmployeeNameEnabled = isEnabled;
-			this.IsRegionComboEnabled = isEnabled;
 		}
 
 		private void ShowEditButtons(bool show)
@@ -425,26 +372,20 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			Messenger.Default.Send(new EnableAdminTreePanelMessage { Action = (this.IsEditButtonPanelVisible == Visibility.Visible) });
 		}
 
-		private ObservableCollection<Region> GetRegionListAsync()
-		{
-			var task = _rs.GetTableList(HttpRequestMethods.Get, "api/region/");
-			return task;
-		}
-
+	
 		private ObservableCollection<Employee> GetEmployeeListAsync()
 		{
-			var task = _ds.GetTableList(HttpRequestMethods.Get, "api/Employee/");
+			var employee = new Employee();
+			var task = _es.GetTableList(_vm.IsConnected, employee, HttpRequestMethods.Get, "api/employee/");
 			return task;
 		}
 
 		private void GetDataListsAsync()
 		{
 			this.IsBusy = true;
-			ObservableCollection<Region> regTask = this.GetRegionListAsync();
-			this.RegionList = regTask;
 
-			ObservableCollection<Employee> disTask = this.GetEmployeeListAsync();
-			this.EmployeeList = disTask;
+			ObservableCollection<Employee> eTask = this.GetEmployeeListAsync();
+			this.EmployeeList = eTask;
 
 			if (this.EmployeeList.IsNotNull() && this.EmployeeList.Count > 0)
 			{
@@ -506,9 +447,6 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			if (obj.Action.Contains("Employee"))
 			{
 				this.IsBusy = true;
-				ObservableCollection<Region> regTask = this.GetRegionListAsync();
-				this.RegionList = regTask;
-
 				ObservableCollection<Employee> disTask = this.GetEmployeeListAsync();
 				this.EmployeeList = disTask;
 
@@ -521,8 +459,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 		}
 
-		
-		private void HandleEmployeeNameChangedMessage(EmployeeNameChangedMessage dm)
+
+		private void HandleEmployeeChangedMessage(EmployeeChangedMessage dm)
 		{
 			if (!this.isInitializing && this.IsEditing && this.SelectedListItem != null)
 			{
@@ -544,8 +482,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 				this.NotifyUserIsDirty("Employee");
 			}
 
-			this.ShowEditButtons(true);
-			this.EnableEditControls(false);
+			//this.ShowEditButtons(true);
+			//this.EnableEditControls(false);
 
 		}
 
@@ -558,7 +496,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		private void ExecuteDeleteEmployeeCommand()
 		{
 			//var index = this.SelectedListItem.PK_Employee;
-			var resp = _ds.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/Employee/", this.SelectedListItem.PK_Employee);
+			//var resp = _es.UpdateTable(_vm.IsConnected, SelectedListItem, HttpRequestMethods.Delete, "api/employee/", this.SelectedListItem.PK_Employee);
 			this.EmployeeList.Remove(this.SelectedListItem);
 			if (this.EmployeeList.Count > 0)
 			{
@@ -612,7 +550,6 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			var item = new Employee { EmployeeName = "New Employee" };
 			this.EmployeeList.Add(item);
 			this.SelectedListItem = item;
-			this.SelectedRegionItem = null;
 
 			this.isNew = false;
 			this.ShowEditButtons(false);

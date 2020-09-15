@@ -12,12 +12,11 @@
 			DataContext="{Binding EmployeeEditViewModel, Source={StaticResource Locator}}">
 
 	<Border
-		BorderBrush="SaddleBrown" 
-		BorderThickness="1"
-		CornerRadius="30"
+		Style="{StaticResource MVIBorderStyle}"
 		Width="Auto">
 
-		<Grid Background="LightGoldenrodYellow">
+
+		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="40"/>
 				<RowDefinition Height="*"/>
@@ -82,7 +81,7 @@
 						Grid.Column="0"
 						ItemsSource="{Binding EmployeeList, Mode=TwoWay}"
 						DisplayMemberPath="EmployeeName"
-						SelectedItem="{Binding SelectedEmployee, Mode=TwoWay}"
+						SelectedItem="{Binding SelectedListItem, Mode=TwoWay}"
 						Background="LightGoldenrodYellow"
 						BorderBrush="SaddleBrown"
 						BorderThickness="0,0,1,1" 
@@ -171,33 +170,30 @@
 									<sf:ComboBoxAdv
 										Grid.Row="0"
 										Grid.Column="3"
+										Grid.ColumnSpan="2"
 										DisplayMemberPath="StoreName"
 										Style="{StaticResource MVIComboBoxStyle}"
 										ItemsSource="{Binding StoreList, Mode=TwoWay}"
-										SelectedItem="{Binding SelectedStore, Mode=TwoWay}" Grid.ColumnSpan="2"/>
-
+										SelectedItem="{Binding SelectedStore, Mode=TwoWay}"
+										/>
 
 									<Label
 										Grid.Row="0"
 										Grid.Column="6"
 										Style="{StaticResource MVILabelStyle}"
 										Content="Employee Id:"
-										HorizontalAlignment="Right" Margin="0,2,0,3"
+										HorizontalAlignment="Right" 
+										Margin="0,2,0,3"
 										/>
 
 									<sf:SfTextBoxExt 
 										x:Name="EmployeeId"
 										Grid.Row="0"
 										Grid.Column="8"
+										TextChanged="EmployeeChanged"
 										Style="{StaticResource MVITextBoxStyle}"
-										Width="150"
-										Height="30"
-										VerticalAlignment="Top"
-										HorizontalAlignment="Left"
-										HorizontalContentAlignment="Left"
-										VerticalContentAlignment="Center"
 										IsEnabled="{Binding IsDistrictNameEnabled}"
-										Text="{Binding SelectedEmployee.EmployeeId, Mode=TwoWay}" 
+										Text="{Binding SelectedListItem.EmployeeId, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
 										/>
 
 									<Label 
@@ -213,8 +209,9 @@
 										Grid.ColumnSpan="2"
 										Style="{StaticResource MVITextBoxStyle}"						
 										Padding="10,5,0,0"
-										Height="30"
-										Text="{Binding SelectedEmployee.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></sf:SfTextBoxExt>
+										Text="{Binding SelectedListItem.FirstName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+										TextChanged="EmployeeChanged"
+									/>
 
 									<Label 
 										Grid.Row="4"
@@ -228,12 +225,11 @@
 										Grid.Row="4"
 										Grid.Column="3" 
 										Grid.ColumnSpan="2"
-										Height="30"
-										Style="{StaticResource MVITextBoxStyle}"
-										Text="{Binding SelectedEmployee.MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-										TextChanged="EmployeeNameChanged"
-										/>
 
+										Style="{StaticResource MVITextBoxStyle}"
+										Text="{Binding SelectedListItem.MiddleName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+										TextChanged="EmployeeChanged"
+										/>
 
 									<Label 
 										Content="Last:"
@@ -247,8 +243,8 @@
 										Grid.Column="8" 
 										Height="30"
 										Style="{StaticResource MVITextBoxStyle}"						
-										Text="{Binding SelectedEmployee.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-										TextChanged="EmployeeNameChanged"
+										Text="{Binding SelectedListItem.LastName, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+										TextChanged="EmployeeChanged"
 										/>
 
 									<Label 
@@ -262,10 +258,9 @@
 										x:Name="NameSuffix"
 										Grid.Row="4"
 										Grid.Column="8" 
-										Height="30"
 										Style="{StaticResource MVITextBoxStyle}"
-										Text="{Binding NameSuffix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-										TextChanged="EmployeeNameChanged"
+										Text="{Binding NameSuffix, Mode=TwoWay, UpdateSourceTrigger=Explicit}" 
+										TextChanged="EmployeeChanged"
 										/>
 
 									<Label
@@ -273,13 +268,15 @@
 										Grid.Column="1"
 										Style="{StaticResource MVILabelStyle}"
 										Content="Gender"
-										HorizontalAlignment="Right" Margin="0,2,0,3"
+										HorizontalAlignment="Right"
+										Margin="0,2,0,3"
 										/>
 
 									<sf:ComboBoxAdv
 										Grid.Row="6"
 										Grid.Column="3" 
 										DisplayMemberPath="GenderName"
+										SelectionChanged="EmployeeChanged"
 										Style="{StaticResource MVIComboBoxStyle}"
 										ItemsSource="{Binding GenderList, Mode=TwoWay}"
 										SelectedItem="{Binding SelectedGender, Mode=TwoWay}" Grid.ColumnSpan="2"/>
@@ -295,19 +292,20 @@
 										Grid.Row="6"
 										Grid.Column="8" 
 										Style="{StaticResource MVIComboBoxStyle}"
+										SelectionChanged="EmployeeChanged"
 										DisplayMemberPath="RaceName"
 										ItemsSource="{Binding RaceList, Mode=TwoWay}"
 										SelectedItem="{Binding SelectedRace, Mode=TwoWay}"/>
 
-									<Label 
+									<!--<Label 
 										Grid.Row="10"
 										Grid.Column="1" 
 										Grid.ColumnSpan="8"
 													HorizontalAlignment="Center"
 										Content="{Binding EmployeeName, Mode=TwoWay}"
-										Width="200"
+
 										Style="{StaticResource MVILabelStyle}"
-											/>
+											/>-->
 
 
 									<!--{Binding NotifyVisibility }"-->
@@ -321,7 +319,7 @@
 								</Grid>
 							</Border>
 						</sf:TabItemExt>
-						
+
 						<sf:TabItemExt 
 							Background="{StaticResource LightBackgroundColorBrush}"
 							Foreground="{StaticResource DarkestForegroundColorBrush}"
@@ -348,22 +346,16 @@
 									<ColumnDefinition Width="*" />
 								</Grid.ColumnDefinitions>
 
-
-
 								<c:AddressView
-										x:Name="Address"
-										Grid.Row="1"
-										Grid.Column="1"
-										Grid.ColumnSpan="8"
-										Height="200" 
-										>
-								</c:AddressView>
-
-
-
+									x:Name="AddressView"
+									Grid.Row="1"
+									Grid.Column="1"
+									Grid.ColumnSpan="9"
+									Height="200" 
+									Margin="10,0,10,0"
+								/>
 							</Grid>
 						</sf:TabItemExt>
-
 					</sf:TabControlExt>
 
 					<StackPanel

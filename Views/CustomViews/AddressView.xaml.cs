@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using GalaSoft.MvvmLight.Messaging;
+using MVIOperationsSystem.Messages;
+using Syncfusion.Windows.Controls.Input;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MVIOperationsSystem.Views.CustomViews
 {
@@ -24,5 +15,16 @@ namespace MVIOperationsSystem.Views.CustomViews
 		{
 			InitializeComponent();
 		}
+	
+		private void AddressChanged(object sender, TextChangedEventArgs e)
+		{
+			Messenger.Default.Send(new AddressChangedMessage());
+		}
+
+		private void AddressChanged(object sender, SelectionChangedEventArgs e)
+		{
+			Messenger.Default.Send(new AddressChangedMessage());
+		}
 	}
+	
 }

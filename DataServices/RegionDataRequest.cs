@@ -1,5 +1,6 @@
 ﻿using MilVetIndApi.Authentication.Models;
 using MVIOperations.Models;
+using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Models.DataRequestObjects;
 using MVIOperationsSystem.Services;
