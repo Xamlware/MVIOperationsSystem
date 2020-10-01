@@ -25,9 +25,10 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		private readonly IDataService<District> _ds;
 		private readonly IDataService<Region> _rs;
 		private readonly ILocalStorageService _ls;
+
 		private MainViewModel _vm;
 		private bool isInitializing = false;
-		private bool isNew = false;
+//		private bool isNew = false;
 
 		#region Commands
 		public RelayCommand AddDistrictCommand { get; private set; }
@@ -57,9 +58,26 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			}
 		}
 
+		public const string IsNewProperty = "IsNew";
+		private bool _isNew;
+
+
+		public bool IsNew
+		{
+			get
+			{
+				return _isNew;
+			}
+			set
+			{
+				_isNew = value;
+				this.RaisePropertyChanged(IsNewProperty);
+			}
+		}
+
+
 		public const string IsEditButtonPanelVisibleProperty = "IsEditButtonPanelVisible";
 		private Visibility _isEditButtonPanelVisible;
-
 		public Visibility IsEditButtonPanelVisible
 		{
 			get
@@ -316,6 +334,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			_rs = rs;
 			_ls = ls;
 
+
 			this.isInitializing = true;
 			_vm.ActiveViewModels.Add(this.GetType(), "District");
 
@@ -378,21 +397,15 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			var message = "Changes successfully sent to database.";
 			try
 			{
-				if (_vm.IsConnected)
-				{
-					var resp = _ds.UpdateTable(this.SelectedListItem, this.isNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district/", this.SelectedListItem.PK_District);
-				}
-				else
-				{
-
-				}
+				var resp = _ds.UpdateTable(_vm.IsConnected, this.SelectedListItem, this.IsNew ? HttpRequestMethods.Post : HttpRequestMethods.Put, "api/district/", this.SelectedListItem.PK_District);
+				
 			}
 			catch (Exception e)
 			{
 				isError = true;
 				message = e.Message;
 			}
-			this.isNew = false;
+			this.IsNew = false;
 
 			if (!skipNotify)
 			{
@@ -595,8 +608,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private void ExecuteDeleteDistrictCommand()
 		{
-			//var index = this.SelectedListItem.PK_District;
-			var resp = _ds.UpdateTable(SelectedListItem, HttpRequestMethods.Delete, "api/district/", this.SelectedListItem.PK_District);
+
+			var resp = _ds.UpdateTable(_vm.IsConnected, this.SelectedListItem, HttpRequestMethods.Delete, "api/district/", this.SelectedListItem.PK_District);
 			this.DistrictList.Remove(this.SelectedListItem);
 			if (this.DistrictList.Count > 0)
 			{
@@ -638,13 +651,13 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		private bool CanExecuteAddDistrictCommand()
 		{
-			return !this.isNew;
+			return !this.IsNew;
 
 		}
 
 		private void ExecuteAddDistrictCommand()
 		{
-			this.isNew = true;
+			this.IsNew = true;
 			this.IsDirty = true;
 
 			var item = new District { DistrictName = "New District" };
@@ -652,8 +665,9 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.SelectedListItem = item;
 			this.SelectedRegionItem = null;
 
-			this.isNew = false;
+			//this.IsNew = false;
 			this.ShowEditButtons(false);
+			this.EnableEditControls(true);
 
 		}
 

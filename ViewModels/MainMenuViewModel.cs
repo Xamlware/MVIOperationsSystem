@@ -1,20 +1,14 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Models;
 using MVIOperationsSystem.Services;
-using Syncfusion.Windows.Controls;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Net;
+using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
-using Xamlware.Framework.Extensions;
 
 namespace MVIOperationsSystem.ViewModels
 {
@@ -29,6 +23,8 @@ namespace MVIOperationsSystem.ViewModels
 
 
 		#region Properties
+
+		//public bool IsConnected { get; set; }
 
 		private string SelectedMenuItemProperty { get; set; }
 		private object selectedMenuItem;
@@ -129,21 +125,10 @@ namespace MVIOperationsSystem.ViewModels
 			this.OpenAdminDataManagementCommand = new RelayCommand(this.ExecuteOpenAdminDataManagementCommand, CanExecuteOpenAdminDataManagementCommand);
 			Messenger.Default.Register<MenuMessage>(this, this.HandleShowMenuMessage);
 			Messenger.Default.Register<AdminLoginMessage>(this, this.HandleAdminLoginMessage);
-			Messenger.Default.Register<NetworkConnectionMessage>(this, this.HandleNetworkConnectionMessage);
 
-			//this.InitialzieMenuItems();
-			this.IsGreenLightVisible = Visibility.Collapsed;
-			this.IsRedLightVisible = Visibility.Visible;
-			base.CheckForConnectivity();
-
-
+			this.InitializeMenuItems();
 		}
 
-		private void SetNetworkLight()
-		{
-			this.IsGreenLightVisible = this.IsConnected ? Visibility.Visible : Visibility.Collapsed;
-			this.IsRedLightVisible = this.IsConnected ? Visibility.Collapsed : Visibility.Visible;
-		}
 
 
 		private void HandleShowMenuMessage(MenuMessage m)
@@ -170,7 +155,7 @@ namespace MVIOperationsSystem.ViewModels
 
 		}
 
-		public void InitialzieMenuItems()
+		public void InitializeMenuItems()
 		{
 			this.MenuItems = new ObservableCollection<MainMenuModel>();
 			MainMenuModel DataRoot = new MainMenuModel() { Header = "Data" };
@@ -226,14 +211,6 @@ namespace MVIOperationsSystem.ViewModels
 		private void ExecuteOpenAdminDataManagementCommand()
 		{
 			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "AdminLogin" });
-		}
-
-		private void HandleNetworkConnectionMessage(NetworkConnectionMessage ncm)
-		{
-			if (ncm.IsConnected)
-			{
-				this.SetNetworkLight();
-			}
 		}
 
 		#endregion

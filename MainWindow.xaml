@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sf="http://schemas.syncfusion.com/wpf"
         xmlns:c="clr-namespace:MVIOperationsSystem.Controls"
-        xmlns:m="clr-namespace:MVIOperationsSystem.Views"
-        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
+        xmlns:m="clr-namespace:MVIOperationsSystem.Views" 
+		xmlns:cv="clr-namespace:MVIOperationsSystem.ViewModels.CustomViewModels"
+		DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
 
 	
 	<Grid>
@@ -18,8 +19,8 @@
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="25"></RowDefinition>
-			<RowDefinition></RowDefinition>
-			<RowDefinition Height="40"></RowDefinition>
+			<RowDefinition Height="*"></RowDefinition>
+			<RowDefinition Height="30"></RowDefinition>
 		</Grid.RowDefinitions>
 
 		
@@ -49,8 +50,18 @@
 			Foreground="LightGoldenrodYellow" 
 			BorderBrush="Black" IconWidth="0" IconHeight="0"
 			/>
-	
-		<Image
+		
+
+		<cv:StatusBarView
+			Grid.Row="2"
+			Grid.Column="0"
+			Grid.ColumnSpan="6" 
+			>
+			
+		</cv:StatusBarView>
+			
+			<!--
+			<Image
 			x:Name="NetworkConnectionRed"
 			Visibility="{Binding IsRedLightVisible, Mode=TwoWay}"
 			Grid.Row="2"
@@ -72,7 +83,7 @@
 			Width="50"
 			Margin="0,0,10,0"
 			Source="/MVIOperationsSystem;component/Resources/GreenLight.png" 
-			ToolTip="Edit selected district" />
+			ToolTip="Edit selected district" />-->
 
 
 		<c:MVIContentPresenter 

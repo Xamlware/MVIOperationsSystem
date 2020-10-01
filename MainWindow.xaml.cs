@@ -1,12 +1,8 @@
 ﻿using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
-using MVIOperationsSystem.Controls;
-using MVIOperationsSystem.Data;
 using MVIOperationsSystem.Messages;
-using MVIOperationsSystem.Services;
 using MVIOperationsSystem.ViewModels;
 using MVIOperationsSystem.Views;
-using System;
 using System.ComponentModel;
 using System.Windows;
 using Xamlware.Framework.Extensions;
@@ -17,7 +13,7 @@ namespace MVIOperationsSystem
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
 	public partial class MainWindow : Window
-    {
+	{
 
 		public MainWindow()
 		{
@@ -48,7 +44,7 @@ namespace MVIOperationsSystem
 		private void OnWindowClosing(object sender, CancelEventArgs e)
 		{
 			var vm = SimpleIoc.Default.GetInstance<MainViewModel>();
-			if(vm.DirtyViews.Count > 0)
+			if (vm.DirtyViews.Count > 0)
 			{
 				e.Cancel = true;
 				Messenger.Default.Send<ClosingMessage>(new ClosingMessage { IsClosing = true });

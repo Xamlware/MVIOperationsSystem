@@ -3,7 +3,6 @@ using System.Windows.Controls;
 
 namespace MVIOperationsSystem.Controls
 {
-
 	public class MVIContentPresenter : ContentPresenter
 	{
 		#region RE: ContentChanged

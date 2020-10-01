@@ -1,20 +1,16 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperationsSystem.Messages;
-using Syncfusion.Windows.Tools.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using System.Timers;
-using System.Windows;
+using System.Windows.Threading;
 
 namespace MVIOperationsSystem.ViewModels
 {
 	public class MVIViewModelBase : ViewModelBase
 	{
+		DispatcherTimer _timer;
 		public const string IsConnectedProperty = "IsConnected";
 		private bool _isConnected;
 
@@ -31,50 +27,83 @@ namespace MVIOperationsSystem.ViewModels
 			}
 		}
 
-
 		public MVIViewModelBase()
 		{
-			this.IsConnected = false;
+			this.InitializeTimer();
+			this.CheckForConnectivity();
 		}
 
-
-		public void CheckForConnectivity()
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		private void InitializeTimer()
 		{
-			// Create a timer with a two second interval.
-			var timer = new System.Timers.Timer(30000);
-			// Hook up the Elapsed event for the timer. 
-			timer.Elapsed += OnTimedEvent;
-			timer.AutoReset = true;
-			timer.Enabled = true;
-
+			_timer = new DispatcherTimer();
+			_timer.Tick += _timer_Tick; 
+			_timer.Interval = new TimeSpan(0, 0, 10);
+			this.StartTimer();
 		}
 
-
-		private void OnTimedEvent(object source, ElapsedEventArgs e)
+		private void _timer_Tick(object sender, EventArgs e)
 		{
 			CheckForNetworkConnection();
 		}
 
+		public void CheckForConnectivity()
+		{
+			this.StartTimer();
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void StartTimer()
+		{
+			_timer.Start();
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public void StopTimer()
+		{
+			_timer.Stop();
+		}
+
+
 		public void CheckForNetworkConnection()
 		{
-			var retVal = false;
+			this.IsConnected = false;
 			try
 			{
-				HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://www.milvetindapi.com/");
-				request.Timeout = 5000;
-				request.Credentials = CredentialCache.DefaultNetworkCredentials;
-				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-				if (response.StatusCode == HttpStatusCode.OK)
-					retVal=true;
+				var resp = IsInternetAvailable();
+				this.IsConnected = resp;
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 			}
 
-			this.IsConnected = retVal;
+			//this.IsConnected = retVal;
 			Messenger.Default.Send(new NetworkConnectionMessage { IsConnected = this.IsConnected });
 		}
+
+		[DllImport("wininet.dll")]
+		private extern static bool InternetGetConnectedState(out int description, int reservedValue);
+		public static bool IsInternetAvailable()
+		{
+			try
+			{
+				int description;
+				return InternetGetConnectedState(out description, 0);
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+		}
+
 
 		private void HandleCleanUpMessage(CleanUpMessage cm)
 		{

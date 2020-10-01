@@ -12,6 +12,7 @@
 	<Color x:Key="LightBackgroundColor">#f0ddb2</Color>
 	<Color x:Key="LightestBackgroundColor">#fafad2</Color>
 
+	<Color x:Key="NoColor">Transparent</Color>
 
 	<!-- Brushes -->
 	<SolidColorBrush 

@@ -1,19 +1,15 @@
-﻿using CommonServiceLocator;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
-using MVIOperationsSystem.DataServices;
 using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Services;
 using MVIOperationsSystem.ViewModels.DataEditViewModels;
-using Syncfusion.UI.Xaml.Grid;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 
-namespace MVIOperationsSystem.ViewModels
+namespace MVIOperationsSystem.ViewModels.CustomViewModels
 {
 	public class NotifyViewModel : ViewModelBase
 	{

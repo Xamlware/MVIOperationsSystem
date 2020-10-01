@@ -23,7 +23,7 @@ namespace MVIOperationsSystem.ViewModels
         /// </summary>
         public ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => (IServiceLocator)SimpleIoc.Default);
+            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<MainMenuViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
@@ -35,9 +35,10 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<InventoryEditViewModel>();
             SimpleIoc.Default.Register<NameViewModel>();
             SimpleIoc.Default.Register<AddressViewModel>();
-
+            SimpleIoc.Default.Register<StatusBarViewModel>();
             SimpleIoc.Default.Register<NotifyViewModel>();
 
+            SimpleIoc.Default.Register<ISyncService, SyncService>();
             SimpleIoc.Default.Register<ILoginDataService, LoginDataService>();
             SimpleIoc.Default.Register<IDataService<District>, DataService<District>>();
             SimpleIoc.Default.Register<IDataService<Region>, DataService<Region>>();
@@ -47,6 +48,7 @@ namespace MVIOperationsSystem.ViewModels
             SimpleIoc.Default.Register<IDataService<Country>, DataService<Country>>();
             SimpleIoc.Default.Register<IDataService<Gender>, DataService<Gender>>();
             SimpleIoc.Default.Register<IDataService<Race>, DataService<Race>>();
+
 
             SimpleIoc.Default.Register<ILocalStorageService, LocalStorageService>();
 
@@ -60,13 +62,15 @@ namespace MVIOperationsSystem.ViewModels
             }
         }
 
-        public MainMenuViewModel MainMenuViewModel
+        public StatusBarViewModel StatusBarViewModel
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<MainMenuViewModel>();
+                return ServiceLocator.Current.GetInstance<StatusBarViewModel>();
             }
         }
+
+
 
         public LoginViewModel LoginViewModel
         {
