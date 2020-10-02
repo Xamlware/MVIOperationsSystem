@@ -1,8 +1,11 @@
-﻿using MVIOperations.Models;
+﻿using GalaSoft.MvvmLight.Messaging;
+using MVIOperations.Models;
+using MVIOperationsSystem.Messages;
 using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Threading;
+using Xamlware.Framework.Extensions;
 
 namespace MVIOperationsSystem.ViewModels.CustomViewModels
 {
@@ -10,9 +13,10 @@ namespace MVIOperationsSystem.ViewModels.CustomViewModels
 	{ 
 
 		DispatcherTimer _timer;
+		MainViewModel _mvm;
 		#region Properties
 
-		public const string StatusBarLoggedInEmployeeProperty = "LoggedInEmployee";
+		public const string StatusBarLoggedInEmployeeProperty = "StatusBarLoggedInEmployee";
 		private string _statusBarLoggedInEmployee;
 
 		public string StatusBarLoggedInEmployee
@@ -100,14 +104,69 @@ namespace MVIOperationsSystem.ViewModels.CustomViewModels
 			}
 		}
 
+		public const string IsGreenLightVisibleProperty = "IsGreenLightVisible";
+		private Visibility _isGreenLightVisible;
+
+		public Visibility IsGreenLightVisible
+		{
+			get
+			{
+				return _isGreenLightVisible;
+			}
+			set
+			{
+				_isGreenLightVisible = value;
+				this.RaisePropertyChanged(IsGreenLightVisibleProperty);
+			}
+		}
+
+		public const string IsRedLightVisibleProperty = "IsRedLightVisible";
+		private Visibility _isRedLightVisible;
+
+		public Visibility IsRedLightVisible
+		{
+			get
+			{
+				return _isRedLightVisible;
+			}
+			set
+			{
+				_isRedLightVisible = value;
+				this.RaisePropertyChanged(IsRedLightVisibleProperty);
+			}
+		}
 		#endregion
 
-		public StatusBarViewModel()
+
+		public StatusBarViewModel(MainViewModel mvm)
 		{
+			_mvm = mvm;	
 			this.InitializeTimer();
 			this.IsLoggedInEmployeeVisible = false;
 			this.IsProgressBarVisible = false;
+			this.IsGreenLightVisible = Visibility.Collapsed;
+			this.IsRedLightVisible = Visibility.Collapsed;
+			Messenger.Default.Register<NetworkConnectionMessage>(this, this.HandleNetworkConnectionMessage);
+			Messenger.Default.Register<LoggedInMessage>(this, this.HandleLoggedInMessage);
 			//this.ProgressBarText = "Retrieving data!";
+		}
+
+		private void HandleLoggedInMessage(LoggedInMessage lim)
+		{
+			this.IsLoggedInEmployeeVisible = lim.User.IsNotNullOrEmpty();
+			this.StatusBarLoggedInEmployee = lim.User;
+		}
+
+		private void HandleNetworkConnectionMessage(NetworkConnectionMessage ncm)
+		{
+			this.SetNetworkLight();
+		}
+
+
+		private void SetNetworkLight()
+		{
+			this.IsGreenLightVisible = _mvm.IsConnected ? Visibility.Visible : Visibility.Collapsed;
+			this.IsRedLightVisible = this.IsConnected ? Visibility.Collapsed : Visibility.Visible;
 		}
 
 		/// <summary>
@@ -118,14 +177,14 @@ namespace MVIOperationsSystem.ViewModels.CustomViewModels
 			_timer = new DispatcherTimer();
 			_timer.Tick += TimerTick;
 			_timer.Interval = new TimeSpan(0, 0, 10);
-			this.StartTimer();
+			this.StartStatusTimer();
 		}
 
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public void StartTimer()
+		public void StartStatusTimer()
 		{
 			_timer.Start();
 		}
@@ -134,7 +193,7 @@ namespace MVIOperationsSystem.ViewModels.CustomViewModels
 		/// <summary>
 		/// 
 		/// </summary>
-		public void StopTimer()
+		public void StopStatusTimer()
 		{
 			_timer.Stop();
 		}
@@ -150,5 +209,10 @@ namespace MVIOperationsSystem.ViewModels.CustomViewModels
 			this.StatusBarDateTime = DateTime.Now.ToString("g", CultureInfo.CreateSpecificCulture("en-us")).Trim();
 		}
 
+		public void ShowProgressBar(bool state, string text)
+		{
+			this.ProgressBarText = text;
+			this.IsProgressBarVisible = state;
+		}
 	}
 }

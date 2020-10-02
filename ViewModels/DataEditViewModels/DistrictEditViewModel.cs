@@ -2,19 +2,16 @@
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using MVIOperations.Models;
-using MVIOperationsSystem.Data;
 using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
 using MVIOperationsSystem.Services;
-using MVIOperationsSystem.Views.DataEditViews;
-using Syncfusion.Windows.Controls.Input;
+using MVIOperationsSystem.ViewModels.CustomViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
-using System.Windows.Data;
 using Xamlware.Framework.Extensions;
 using Region = MVIOperationsSystem.Models.Region;
 
@@ -25,7 +22,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		private readonly IDataService<District> _ds;
 		private readonly IDataService<Region> _rs;
 		private readonly ILocalStorageService _ls;
-
+		private StatusBarViewModel _svm;
 		private MainViewModel _vm;
 		private bool isInitializing = false;
 //		private bool isNew = false;
@@ -327,8 +324,9 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		}
 		#endregion
 
-		public DistrictEditViewModel(IDataService<District> ds, IDataService<Region> rs, ILocalStorageService ls, MainViewModel vm)
+		public DistrictEditViewModel(IDataService<District> ds, IDataService<Region> rs, ILocalStorageService ls, MainViewModel vm, StatusBarViewModel svm)
 		{
+			_svm = svm;
 			_vm = vm;
 			_ds = ds;
 			_rs = rs;
@@ -392,7 +390,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 
 		public void SaveDistrict(bool skipNotify = false)
 		{
-
+			_svm.ShowProgressBar(true, "updating District information");
 			var isError = false;
 			var message = "Changes successfully sent to database.";
 			try
@@ -404,6 +402,8 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			{
 				isError = true;
 				message = e.Message;
+				
+				Helpers.Helpers.LogErrorMessage(_vm.IsConnected, e.Message, e.Message);
 			}
 			this.IsNew = false;
 
@@ -421,6 +421,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			this.IsDirty = false;
 			this.ShowEditButtons(true);
 			this.EnableEditControls(false);
+			_svm.ShowProgressBar(false, "");
 		}
 
 		public void NotifyUserIsDirty(string origin = null)
@@ -468,6 +469,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 		private void GetDataListsAsync()
 		{
 			this.IsBusy = true;
+			_svm.ShowProgressBar(true, "Fetching Data Records");
 			ObservableCollection<Region> regTask = this.GetRegionListAsync();
 			this.RegionList = regTask;
 
@@ -477,6 +479,7 @@ namespace MVIOperationsSystem.ViewModels.DataEditViewModels
 			if (this.DistrictList.IsNotNull() && this.DistrictList.Count > 0)
 			{
 				this.SelectedListItem = this.DistrictList[0];
+				_svm.ShowProgressBar(false, "");
 			}
 
 			this.IsBusy = false;

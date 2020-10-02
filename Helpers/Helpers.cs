@@ -1,6 +1,9 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using MVIOperationsSystem.Data;
 using MVIOperationsSystem.Enums;
 using MVIOperationsSystem.Messages;
+using MVIOperationsSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects.DataClasses;
 
@@ -24,6 +27,24 @@ namespace MVIOperationsSystem.Helpers
 
 		}
 
+		public static void LogErrorMessage(bool isConnected, string error, string innerException)
+		{
+			MVIOperationsContext _db = new MVIOperationsContext();
+			OfflineContext _oc = new OfflineContext();
 
+			var e = new Error();
+			e.Time = DateTime.Now;
+			e.ErrorMessage = error;
+			e.InnerException = innerException;
+
+			if(isConnected)
+			{
+				_db.Error.Add(e);
+			}
+			else
+			{
+				_oc.Error.Add(e);
+			}
+		}
 	}
 }

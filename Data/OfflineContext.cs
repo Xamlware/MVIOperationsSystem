@@ -46,6 +46,8 @@
         public virtual DbSet<SaleItem> SaleItem { get; set; }
         public virtual DbSet<State> State { get; set; }
         public virtual DbSet<Sync> Sync { get; set; }
+        public virtual DbSet<Error> Error { get; set; }
+
 
     }
 }

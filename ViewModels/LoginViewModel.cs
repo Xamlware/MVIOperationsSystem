@@ -181,8 +181,8 @@ namespace MVIOperationsSystem.ViewModels
 			//	}
 			//}
 
-			Messenger.Default.Send<NavigationMessage>(new NavigationMessage { Action = "AdminLogin" });
-			Messenger.Default.Send<MenuMessage>(new MenuMessage { Action = "Show" });
+			Messenger.Default.Send(new NavigationMessage { Action = "AdminLogin" });
+			Messenger.Default.Send(new LoggedInMessage { Action = "Show", User = "John Baird" });
 
 		}
 		#endregion

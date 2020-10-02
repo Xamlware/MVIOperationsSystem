@@ -30,10 +30,15 @@ namespace MVIOperationsSystem.Data
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
 
-        // Add a DbSet for each entity type that you want to include in your model. For more information 
-        // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
+		internal void Add(Error error)
+		{
+			throw new NotImplementedException();
+		}
 
-        public virtual DbSet<Country> Country{ get; set; }
+		// Add a DbSet for each entity type that you want to include in your model. For more information 
+		// on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
+
+		public virtual DbSet<Country> Country{ get; set; }
         public virtual DbSet<District> District { get; set; }
         public virtual DbSet<Region> Region { get; set; }
         public virtual DbSet<Employee> Employee { get; set; }
@@ -45,6 +50,8 @@ namespace MVIOperationsSystem.Data
         public virtual DbSet<Sale> Sale { get; set; }
         public virtual DbSet<SaleItem> SaleItem { get; set; }
         public virtual DbSet<State> State { get; set; }
+        public virtual DbSet<Error> Error { get; set; }
+
 
     }
 }

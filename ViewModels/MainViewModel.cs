@@ -57,51 +57,51 @@ namespace MVIOperationsSystem.ViewModels
             }
         }
 
-        public const string IsGreenLightVisibleProperty = "IsGreenLightVisible";
-        private Visibility _isGreenLightVisible;
+  //      public const string IsGreenLightVisibleProperty = "IsGreenLightVisible";
+  //      private Visibility _isGreenLightVisible;
 
-        public Visibility IsGreenLightVisible
-        {
-            get
-            {
-                return _isGreenLightVisible;
-            }
-            set
-            {
-                _isGreenLightVisible = value;
-                this.RaisePropertyChanged(IsGreenLightVisibleProperty);
-            }
-        }
+  //      public Visibility IsGreenLightVisible
+  //      {
+  //          get
+  //          {
+  //              return _isGreenLightVisible;
+  //          }
+  //          set
+  //          {
+  //              _isGreenLightVisible = value;
+  //              this.RaisePropertyChanged(IsGreenLightVisibleProperty);
+  //          }
+  //      }
 
-        public const string IsRedLightVisibleProperty = "IsRedLightVisible";
-        private Visibility _isRedLightVisible;
+  //      public const string IsRedLightVisibleProperty = "IsRedLightVisible";
+  //      private Visibility _isRedLightVisible;
 
-        public Visibility IsRedLightVisible
-        {
-            get
-            {
-                return _isRedLightVisible;
-            }
-            set
-            {
-                _isRedLightVisible = value;
-                this.RaisePropertyChanged(IsRedLightVisibleProperty);
-            }
-        }
+  //      public Visibility IsRedLightVisible
+  //      {
+  //          get
+  //          {
+  //              return _isRedLightVisible;
+  //          }
+  //          set
+  //          {
+  //              _isRedLightVisible = value;
+  //              this.RaisePropertyChanged(IsRedLightVisibleProperty);
+  //          }
+  //      }
 		#endregion
 
-		public MainViewModel(ILocalStorageService ls, ISyncService ss, StatusBarViewModel sb)
+		public MainViewModel(ILocalStorageService ls, ISyncService ss)
         {
             _ls = ls;
             _ss = ss;
-            _sb = sb;
+//            _sb = sb;
 
             this.DirtyViews = new Dictionary<string, string>();
             this.ActiveViewModels = new Dictionary<Type, string>();
             this.LoginButtonVisibility = Visibility.Visible;
             this.LabelText = "Sign In";
-            this.IsGreenLightVisible = Visibility.Collapsed;
-            this.IsRedLightVisible = Visibility.Visible;
+            //this.IsGreenLightVisible = Visibility.Collapsed;
+            //this.IsRedLightVisible = Visibility.Visible;
 
             this.LoginCommand = new RelayCommand(this.ExecuteLoginCommand, CanExecuteLoginCommand);
             Messenger.Default.Register<ClosingMessage>(this, HandleClosingMessage);
@@ -109,16 +109,11 @@ namespace MVIOperationsSystem.ViewModels
             Messenger.Default.Register<ContentEmptyMessage>(this, HandleContentEmptyMessage);
             Messenger.Default.Register<ContentFilledMessage>(this, HandleContentFilledMessage);
             Messenger.Default.Register<NetworkConnectionMessage>(this, this.HandleNetworkConnectionMessage);
-
+            base.CheckForNetworkConnection();
             //_ss.SyncList = new List<SyncModel>();
             base.CheckForConnectivity();
         }
 
-        private void SetNetworkLight()
-        {
-            this.IsGreenLightVisible = this.IsConnected ? Visibility.Visible : Visibility.Collapsed;
-            this.IsRedLightVisible = this.IsConnected ? Visibility.Collapsed : Visibility.Visible;
-        }
 
         private void HandleClosedMessage(ClosedMessage obj)
 		{
@@ -131,13 +126,13 @@ namespace MVIOperationsSystem.ViewModels
         {
             if (ncm.IsConnected)
             {
-                this.SetNetworkLight();
                 this.StopTimer();
-                _ss.SyncOfflineDb();
+                //_ss.SyncOfflineDb();
+                this.StartTimer(10);
             }
         }
 
-
+          
         private void HandleContentFilledMessage(ContentFilledMessage obj)
 		{
             this.LoginButtonVisibility = Visibility.Hidden;

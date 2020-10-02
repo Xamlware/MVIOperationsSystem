@@ -41,8 +41,7 @@ namespace MVIOperationsSystem.ViewModels
 		{
 			_timer = new DispatcherTimer();
 			_timer.Tick += _timer_Tick; 
-			_timer.Interval = new TimeSpan(0, 0, 10);
-			this.StartTimer();
+			this.StartTimer(1);
 		}
 
 		private void _timer_Tick(object sender, EventArgs e)
@@ -52,14 +51,16 @@ namespace MVIOperationsSystem.ViewModels
 
 		public void CheckForConnectivity()
 		{
-			this.StartTimer();
+			this.StopTimer();
+			this.StartTimer(10);
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public void StartTimer()
+		public void StartTimer(int interval)
 		{
+			_timer.Interval = new TimeSpan(0, 0, interval);
 			_timer.Start();
 		}
 
@@ -75,7 +76,7 @@ namespace MVIOperationsSystem.ViewModels
 
 		public void CheckForNetworkConnection()
 		{
-			this.IsConnected = false;
+			//this.IsConnected = false;
 			try
 			{
 				var resp = IsInternetAvailable();

@@ -31,6 +31,7 @@ namespace MVIOperationsSystem.Services
 				{
 					var x = UpdateOfflineDb(t, method, route, id);
 
+					(t as District).PK_District = 0;
 					var jsonString = JsonConvert.SerializeObject(t);
 					var result = edr.ExecuteRequest(route, method, jsonString, id);
 					if (method.ToString() != "Put")

@@ -1,12 +1,14 @@
-﻿<UserControl xmlns:syncfusion="http://schemas.syncfusion.com/wpf"  x:Class="MVIOperationsSystem.ViewModels.CustomViewModels.StatusBarView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MVIOperationsSystem.ViewModels.CustomViewModels"
-             mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="800"
-          DataContext="{Binding StatusBarViewModel, Source={StaticResource Locator}}">
+﻿<UserControl
+    x:Class="MVIOperationsSystem.ViewModels.CustomViewModels.StatusBarView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    mc:Ignorable="d" 
+    d:DesignHeight="30" d:DesignWidth="800"
+    DataContext="{Binding StatusBarViewModel, Source={StaticResource Locator}}">
+
 	<UserControl.Resources>
 		<BooleanToVisibilityConverter x:Key="btvConverter" />
 	</UserControl.Resources>
@@ -32,6 +34,8 @@
 							<ColumnDefinition Width="3"/>
 							<ColumnDefinition Width="120"/>
 							<ColumnDefinition Width="3"/>
+							<ColumnDefinition Width="30" />
+							<ColumnDefinition Width="3" />
 						</Grid.ColumnDefinitions>
 					</Grid>
 				</ItemsPanelTemplate>
@@ -41,7 +45,7 @@
 				Grid.Column="1"
 				Visibility="{Binding IsLoggedInEmployeeVisible, Converter={StaticResource btvConverter}, Mode=TwoWay}"  >
 				<Border BorderBrush="Gainsboro" BorderThickness="0,0,1,1">
-					<Border BorderBrush="Gray" BorderThickness="1,1,0,0">
+					<Border BorderBrush="Black" BorderThickness="1,1,0,0">
 						<Grid VerticalAlignment="Stretch"  
 >
 							<Grid.ColumnDefinitions>
@@ -52,46 +56,15 @@
 							<syncfusion:SfTextBoxExt
                                 Grid.Column="0"
 								HorizontalContentAlignment="Center"
-                            Style="{StaticResource MVIStatusBarTextBoxStyle}"
-                                Text="{Binding StatusBarLoggedInEmployee, Mode=TwoWay}"
-/>
+								Style="{StaticResource MVIStatusBarTextBoxStyle}"
+                                Text="{Binding StatusBarLoggedInEmployee, Mode=TwoWay}" />
 						</Grid>
-
 					</Border>
 				</Border>
 			</StatusBarItem>
 
 			<Separator Grid.Column="2" Width="3"/>
 
-			<!--<StatusBarItem Grid.Column="3">
-				<Border BorderBrush="Gainsboro" BorderThickness="0,0,1,1">
-					<Border BorderBrush="Gray" BorderThickness="1,1,0,0">
-						<Grid VerticalAlignment="Stretch"  
->
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-							</Grid.ColumnDefinitions>
-
-							--><!--<controls:StatusControl
-                                x:Name="scVcs"
-                                Grid.Column="0"
-                                Margin="2,0,0,1"
-                                Width="Auto" />
-
-							<TextBlock 
-                                Grid.Column="1"
-                                FontWeight="Bold" 
-                                HorizontalAlignment="Center" 
-                                VerticalAlignment="Stretch"  
-                                Foreground="DarkGray"  
-                                Text=" VCS " 
-                                Padding="2,0,2,2" 
-                                Margin="0,0,0,0"/>--><!--
-						</Grid>
-					</Border>
-				</Border>
-			</StatusBarItem>-->
 
 			<Separator Grid.Column="2" Width="1"/>
 
@@ -99,7 +72,7 @@
 				Grid.Column="3"
 				Visibility="{Binding IsProgressBarVisible, Converter={StaticResource btvConverter}, Mode=TwoWay}"  >
 				<Border BorderBrush="Gainsboro" BorderThickness="0,0,1,1" >
-					<Border BorderBrush="Gray" BorderThickness="1,1,0,0" >
+					<Border BorderBrush="Black" BorderThickness="1,1,0,0" >
 						<Grid>
 							<syncfusion:SfLinearProgressBar 
 								IsIndeterminate="True"
@@ -124,7 +97,7 @@
 								Height="22"
 								Width="250"			/>
 
-								</Grid>
+						</Grid>
 
 					</Border>
 				</Border>
@@ -136,7 +109,7 @@
 
 			<StatusBarItem Grid.Column="7">
 				<Border BorderBrush="Gainsboro" BorderThickness="0,0,1,1">
-					<Border BorderBrush="Gray" BorderThickness="1,1,0,0">
+					<Border BorderBrush="Black" BorderThickness="1,1,0,0">
 						<Grid VerticalAlignment="Stretch"  
 >
 							<Grid.ColumnDefinitions>
@@ -149,6 +122,7 @@
 								Style="{StaticResource MVIStatusBarTextBoxStyle}"
 								Height="20"
 								Width="1105"
+								BorderBrush="Transparent"
                                 Text="{Binding StatusBarDateTime, Mode=TwoWay}"
                                 Padding="4,0,4,0" 
                                 Margin="0,0,0,-3"/>
@@ -158,6 +132,37 @@
 				</Border>
 			</StatusBarItem>
 
+			<StatusBarItem Grid.Column="9">
+				<Grid VerticalAlignment="Stretch">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+
+					<Image
+						x:Name="NetworkConnectionRed"
+						Visibility="{Binding IsRedLightVisible, Mode=TwoWay}"
+						Grid.Row="1"
+						Grid.Column="6"
+						HorizontalAlignment="Right"
+						Margin="0,1,0,0"
+						Height="20" 
+						Width="20"
+						Source="/MVIOperationsSystem;component/Resources/RedLight.png" 
+						ToolTip="Internet Disconnected" />
+
+					<Image
+						x:Name="NetworkConnectionGreen"
+						Visibility="{Binding IsGreenLightVisible, Mode=TwoWay}"
+						Grid.Row="2"
+						Grid.Column="6"
+						HorizontalAlignment="Right"
+						Height="20" 
+						Width="20"
+						Margin="0,1,0,0"
+						Source="/MVIOperationsSystem;component/Resources/GreenLight.png" 
+						ToolTip="Internet Connected" />
+				</Grid>
+			</StatusBarItem>
 		</StatusBar>
 	</Grid>
 </UserControl>

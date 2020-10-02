@@ -161,12 +161,14 @@
     <Compile Include="Controls\MVIContentPresenter.cs" />
     <Compile Include="Controls\MVINotifyBox.cs" />
     <Compile Include="Messages\EnableAdminTreePanelMessage.cs" />
+    <Compile Include="Messages\LoggedInMessage.cs" />
     <Compile Include="Messages\NetworkConnectionMessage.cs" />
     <Compile Include="Messages\NotifyResultMessage.cs" />
     <Compile Include="Messages\UpdateSourceAddressMessage.cs" />
     <Compile Include="Messages\UpdateSourceEmployeeMessage.cs" />
     <Compile Include="Messages\UpdateSourceRegionMessage.cs" />
     <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Sync.cs" />
     <Compile Include="Models\TabItem.cs" />
     <Compile Include="Repositories\IDistrictRepository.cs" />
